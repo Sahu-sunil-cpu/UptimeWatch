@@ -1,0 +1,27 @@
+{
+  "name": "@repo/redis-stream",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "@prisma/client": "6.16.3",
+    "@repo/typescript-config": "workspace:*",
+    "@repo/db": "workspace:*",
+    "redis": "^5.8.3"
+  },
+  "devDependencies": {
+    "prisma": "6.16.3"
+  },
+  "type": "commonjs"
+}

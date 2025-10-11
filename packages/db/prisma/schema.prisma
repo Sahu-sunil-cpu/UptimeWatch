@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Website {
+  id        String        @id @default(uuid())
+  url       String
+  timeAdded DateTime      @default(now())
+  ticks     WebsiteTick[]
+  User      User          @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Region {
+  id     String        @id @default(uuid())
+  name   String        @unique
+  tickes WebsiteTick[]
+}
+
+model WebsiteTick {
+  id               String        @id @default(uuid())
+  response_time_ms Int
+  status           WebsiteStatus
+  region           Region        @relation(fields: [region_id], references: [id])
+  website          Website       @relation(fields: [website_id], references: [id])
+  userId           String
+  region_id        String
+  website_id       String
+  CreatedAt        DateTime      @default(now())
+}
+
+enum WebsiteStatus {
+  Up
+  Down
+  Unknown
+}
+
+model User {
+  id        String     @id @default(uuid())
+  username  String
+  password  String
+  email     String
+  Websites  Website[]
+  incidents Incident[]
+}
+
+model Incident {
+  id         String   @id @default(uuid())
+  website_id String
+  website    User     @relation(fields: [userId], references: [id])
+  userId     String
+  created_at DateTime @default(now())
+}
