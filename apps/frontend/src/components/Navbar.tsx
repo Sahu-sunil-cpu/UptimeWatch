@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate  = useNavigate();
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-lg">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,10 +26,10 @@ const Navbar = () => {
           </div>
           
           <div className="flex items-center gap-4">
-            <Button variant="ghost" className="hidden sm:inline-flex">
+            <Button variant="ghost" className="hidden sm:inline-flex" onClick={() => navigate("/login")}>
               Sign In
             </Button>
-            <Button variant="hero" size="default" className="hidden sm:inline-flex">
+            <Button variant="hero" size="default" className="hidden sm:inline-flex" onClick={() => navigate("/signup")}>
               Start Free Trial
             </Button>
             <Button variant="ghost" size="icon" className="md:hidden">

@@ -1,0 +1,25 @@
+{
+  "name": "worker-dns",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -b",
+    "start": "node ./dist/index.js",
+    "dev": "npm run build && npm run start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@repo/db": "workspace:*",
+    "@repo/package-helper": "workspace:*",
+    "@repo/redis-stream": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^22.15.3",
+    "dotenv": "^17.2.3",
+       "@types/dns2": "^2.0.10",
+    "dns2": "^2.1.0"
+  }
+}

@@ -15,30 +15,106 @@ datasource db {
 }
 
 model Website {
-  id        String        @id @default(uuid())
+  id        String   @id @default(uuid())
   url       String
-  timeAdded DateTime      @default(now())
-  ticks     WebsiteTick[]
-  User      User          @relation(fields: [userId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
   userId    String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  ticks     WebsiteTick[]
 }
 
-model Region {
-  id     String        @id @default(uuid())
-  name   String        @unique
-  tickes WebsiteTick[]
+model Dns {
+  id            String   @id @default(uuid())
+  userId        String
+  domain        String // e.g. google.com
+  ip_addr       String
+  resolver      String? // which public resolver to use
+  interval      Int // how often to check
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  authoritative Boolean  @default(false) //query authoritative NS directly
+  ticks         DnsTick[]      
 }
 
 model WebsiteTick {
   id               String        @id @default(uuid())
   response_time_ms Int
   status           WebsiteStatus
-  region           Region        @relation(fields: [region_id], references: [id])
-  website          Website       @relation(fields: [website_id], references: [id])
+  region           String
   userId           String
-  region_id        String
   website_id       String
+  website          Website      @relation(fields: [website_id], references: [id])
   CreatedAt        DateTime      @default(now())
+}
+
+model DnsTick {
+  id          String    @id @default(uuid())
+  latency_ms  Int
+  status      DnsStatus
+  region      String
+  userId      String
+  dns_id      String
+  dns         Dns      @relation(fields: [dns_id], references: [id])
+  check_id    String?
+  resolver_ip String
+  CreatedAt   DateTime  @default(now())
+}
+
+model DnsRecord {
+  id       String  @id @default(uuid())
+  type     Record
+  response String?
+  region   String
+  user_id  String
+  dns_id   String
+}
+
+model User {
+  id       String    @id @default(uuid())
+  username String
+  password String
+  email    String
+  Websites Website[]
+  alert    Alerts[]
+}
+
+model Alerts {
+  id         String   @id @default(uuid())
+  website_id String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  alert_type Alert
+  type       MsgType
+  verified   Boolean? @default(false)
+  status     AlertStatus  @default(Ongoing)
+  msg        String
+  created_at DateTime @default(now())
+}
+
+model Region {
+  id   String @default(uuid())
+  name String @unique
+}
+
+enum Alert {
+  Dns
+  Ping
+}
+
+enum AlertStatus {
+  Ongoing
+  Resolved
+}
+
+enum MsgType {
+  Email
+  Sms
+  Slack
+  Discord
+  Call
 }
 
 enum WebsiteStatus {
@@ -47,19 +123,15 @@ enum WebsiteStatus {
   Unknown
 }
 
-model User {
-  id        String     @id @default(uuid())
-  username  String
-  password  String
-  email     String
-  Websites  Website[]
-  incidents Incident[]
+enum DnsStatus {
+  Ok
+  Warning
+  Fail
 }
 
-model Incident {
-  id         String   @id @default(uuid())
-  website_id String
-  website    User     @relation(fields: [userId], references: [id])
-  userId     String
-  created_at DateTime @default(now())
+enum Record {
+  A
+  AAAA
+  MX
+  CNAME
 }

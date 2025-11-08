@@ -47,8 +47,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
-const navigationItems = [
-  { title: "Incidents", url: "/dashboard/incidents", icon: AlertCircle, badge: 1 },
+interface Items {
+  title: string;
+  url: string;
+  icon: any;
+  badge?: number;
+}
+const navigationItems: Items[] = [
+  { title: "Incidents", url: "/dashboard/incidents", icon: AlertCircle, },
   { title: "Who's on-call?", url: "/dashboard/oncall", icon: Calendar },
   { title: "Monitors", url: "/dashboard/monitors", icon: Activity },
   { title: "Heartbeats", url: "/dashboard/heartbeats", icon: Zap },
@@ -60,6 +66,7 @@ const navigationItems = [
 function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
+
 
   return (
     <Sidebar className={collapsed ? "w-16" : "w-64"} collapsible="icon">
@@ -84,10 +91,9 @@ function AppSidebar() {
                     <NavLink
                       to={item.url}
                       className={({ isActive }) =>
-                        `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                          isActive
-                            ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                            : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                        `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                          : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                         }`
                       }
                     >
@@ -112,6 +118,7 @@ function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
       </SidebarContent>
     </Sidebar>
   );
@@ -126,7 +133,7 @@ const incidentFormSchema = z.object({
 export default function DashboardLayout() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isIncidentDialogOpen, setIsIncidentDialogOpen] = useState(false);
-  
+
   const form = useForm<z.infer<typeof incidentFormSchema>>({
     resolver: zodResolver(incidentFormSchema),
     defaultValues: {
@@ -152,29 +159,8 @@ export default function DashboardLayout() {
         <AppSidebar />
 
         <div className="flex-1 flex flex-col">
-          <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border bg-background/80 backdrop-blur-lg px-6">
+          <header className="sticky top-0 z-10 flex h-16 items-center gap-2 bg-background/80 backdrop-blur-lg px-6">
             <SidebarTrigger />
-            
-            <div className="flex-1 flex items-center gap-4 max-w-3xl">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 bg-muted/50 border-border"
-                />
-              </div>
-            </div>
-
-            <Button 
-              variant="default" 
-              className="bg-primary hover:bg-primary/90"
-              onClick={() => setIsIncidentDialogOpen(true)}
-            >
-              Report a new incident
-            </Button>
           </header>
 
           <main className="flex-1 p-6">
@@ -206,7 +192,7 @@ export default function DashboardLayout() {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="affectedMonitor"

@@ -11,6 +11,7 @@ import DashboardLayout from "./components/DashboardLayout";
 import Incidents from "./pages/Incidents";
 import DashboardMonitors from "./pages/DashboardMonitors";
 import DashboardMonitorDetail from "./pages/DashboardMonitorDetail";
+import DashboardDnsMonitorDetail from "./pages/DashboardDnsMonitorDetail";
 import DashboardOnCall from "./pages/DashboardOnCall";
 import NotFound from "./pages/NotFound";
 
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="incidents" element={<Incidents />} />
             <Route path="monitors" element={<DashboardMonitors />} />
             <Route path="monitors/:monitorId" element={<DashboardMonitorDetail />} />
+            <Route path="dns-monitors/:monitorId" element={<DashboardDnsMonitorDetail />} />
             <Route path="oncall" element={<DashboardOnCall />} />
             <Route path="heartbeats" element={<NotFound />} />
             <Route path="status-pages" element={<NotFound />} />

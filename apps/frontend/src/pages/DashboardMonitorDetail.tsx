@@ -21,29 +21,39 @@ import {
 } from "recharts";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { BASE_URL } from "@/lib/config";
+import { AUTHORIZATION, BASE_URL } from "@/lib/config";
 
 interface Tick {
   time: string;
-  value: string
+  responseTime: string
 }
 
 
+const mockData = [
+  { time: "00:00", responseTime: 120 },
+  { time: "04:00", responseTime: 135 },
+  { time: "08:00", responseTime: 150 },
+  { time: "12:00", responseTime: 145 },
+  { time: "16:00", responseTime: 160 },
+  { time: "20:00", responseTime: 140 },
+  { time: "24:00", responseTime: 130 },
+];
 
 export default function DashboardMonitorDetail() {
   const { monitorId } = useParams();
   const navigate = useNavigate();
   const [ticks, setTicks] = useState<Tick[]>([])
 
+  
   const getTicks = async () => {
-    const res = await axios.get(`${BASE_URL}/api/v1/core/ticks/${monitorId}`, {
+    const res = await axios.get(`${BASE_URL}/api/v1/core/website/ticks/${monitorId}`, {
       headers: {
-        'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmZDI4MmE0YS0zNzE0LTRlYzUtYjNiNS1mMDZlZTZjYzg0Y2MiLCJpYXQiOjE3NTk1NjE0MDd9.E_SQTxdjoNDUbS0csMk3pmb7pgUlsrJC8xy2HScFuuE'
+        'Authorization': AUTHORIZATION
       }
     }
     )
 
-    console.log(res.data)
+    //console.log(res.data)
 
     if (!res.data.message) {
       return
@@ -51,7 +61,7 @@ export default function DashboardMonitorDetail() {
 
     const responseData: Tick[] = res.data.message.map(d => (
       {
-        value: d.response_time_ms,
+        responseTime: d.response_time_ms,
         time: new Date(d.CreatedAt).toLocaleString([], {
           hour: "2-digit",
           minute: "2-digit",
@@ -62,7 +72,7 @@ export default function DashboardMonitorDetail() {
 
     responseData.sort((a, b) => a.time.localeCompare(b.time));
 
-    //.log(responseData)
+    //console.log(responseData)
 
     setTicks([...responseData])
   }
@@ -71,7 +81,7 @@ export default function DashboardMonitorDetail() {
     getTicks()
     const interval = setInterval(() => {
       getTicks();
-      console.log("websites refreshed")
+      //console.log("websites refreshed")
     }, 1000 * 30)
 
     return () => clearInterval(interval);
@@ -170,35 +180,38 @@ export default function DashboardMonitorDetail() {
           </div>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={ticks}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                  <XAxis
-                    dataKey="time"
-                    stroke="hsl(var(--muted-foreground))"
-                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
-                  />
-                  <YAxis
-                    stroke="hsl(var(--muted-foreground))"
-                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
-                    label={{ value: 'ms', angle: -90, position: 'insideLeft', fill: 'hsl(var(--muted-foreground))' }}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: 'hsl(var(--card))',
-                      border: '1px solid hsl(var(--border))',
-                      borderRadius: '8px'
-                    }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke="hsl(var(--primary))"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-          </ResponsiveContainer>
+        
+         
+            <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={ticks}>
+              <CartesianGrid strokeDasharray="5 5" stroke="hsl(var(--border))" />
+              <XAxis
+                dataKey="time"
+                stroke="hsl(var(--muted-foreground))"
+                fontSize={12}
+              />
+              <YAxis
+                stroke="hsl(var(--muted-foreground))"
+                fontSize={12}
+                label={{ value: "ms", angle: -90, position: "insideLeft" }}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "hsl(var(--card))",
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: "8px",
+                }}
+              />
+              <Line
+                type="monotone"
+                dataKey="responseTime"
+                stroke="hsl(var(--primary))"
+                strokeWidth={2}
+                dot={{ fill: "hsl(var(--primary))", r: 1 }}
+              />
+            </LineChart>
+            </ResponsiveContainer>
+        
         </CardContent>
       </Card>
     </div>

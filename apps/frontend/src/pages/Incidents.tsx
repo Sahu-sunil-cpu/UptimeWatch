@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Shield, Copy, CheckCircle, Users, FileText, MoreVertical, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +13,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
+import axios from "axios";
+import { AUTHORIZATION, BASE_URL } from "@/lib/config";
+
+interface Incident {
+  id: string;
+  name: string;
+  description: string;
+  status: "Ongoing" | "Resolved";
+  startedAt: string;
+  length: string;
+  commentsCount: number
+}
 
 const mockIncidents = [
   {
@@ -57,11 +69,11 @@ const onboardingSteps = [
 
 export default function Incidents() {
   const [activeTab, setActiveTab] = useState("comments");
-  const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [copiedId, setCopiedId] = useState<number | string | null>(null);
   const completedSteps = onboardingSteps.filter(step => step.completed).length;
   const totalSteps = onboardingSteps.length;
 
-  const copyIncidentDetails = (incident: typeof mockIncidents[0]) => {
+  const copyIncidentDetails = (incident: Incident) => {
     const details = `Incident: ${incident.name}\nDescription: ${incident.description}\nStatus: ${incident.status}\nStarted: ${incident.startedAt}\nLength: ${incident.length}`;
     navigator.clipboard.writeText(details);
     setCopiedId(incident.id);
@@ -71,6 +83,46 @@ export default function Incidents() {
     });
     setTimeout(() => setCopiedId(null), 2000);
   };
+
+  const [incidents, setIncidents] = useState<Incident[]>([])
+
+
+  const getIncidents = async () => {
+    const res = await axios.get(`${BASE_URL}/api/v1/core/alerts`, {
+      headers: {
+        'Authorization': AUTHORIZATION
+      }
+    }
+    )
+
+    //console.log(res.data)
+
+    if (!res.data.message) {
+      return
+    }
+
+    const responseData: Incident[] = res.data.message.map(d => (
+      {
+        id: d.id,
+        name: d.alert_type,
+        description: d.msg,
+        status: d.status,
+        startedAt: new Date(d.created_at).toLocaleString(),
+        length: d.status,
+        commentsCount: 2,
+      }
+    ))
+
+
+    //console.log(responseData)
+
+    setIncidents([...responseData])
+  }
+
+  useEffect(() => {
+    getIncidents()
+  }, [])
+
 
   return (
     <div className="space-y-6 max-w-7xl">
@@ -110,7 +162,7 @@ export default function Incidents() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockIncidents.map((incident) => (
+                  {incidents.map((incident) => (
                     <TableRow
                       key={incident.id}
                       className="border-border hover:bg-muted/50 cursor-pointer"
@@ -145,9 +197,9 @@ export default function Incidents() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           className="h-8 w-8"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -200,11 +252,10 @@ export default function Incidents() {
               className="flex items-start gap-4 p-4 rounded-lg border border-border hover:bg-muted/30 transition-colors"
             >
               <div
-                className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                  step.completed
+                className={`flex items-center justify-center w-10 h-10 rounded-full ${step.completed
                     ? "bg-primary/20 text-primary"
                     : "bg-muted text-muted-foreground"
-                }`}
+                  }`}
               >
                 <step.icon className="h-5 w-5" />
               </div>

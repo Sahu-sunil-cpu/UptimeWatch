@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.16.3
- * Query Engine version: bb420e667c1820a8c05a38023385f6cc7ef8e83a
+ * Prisma Client JS version: 6.18.0
+ * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
  */
 Prisma.prismaVersion = {
-  client: "6.16.3",
-  engine: "bb420e667c1820a8c05a38023385f6cc7ef8e83a"
+  client: "6.18.0",
+  engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -123,23 +123,54 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.WebsiteScalarFieldEnum = {
   id: 'id',
   url: 'url',
-  timeAdded: 'timeAdded',
-  userId: 'userId'
+  userId: 'userId',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.RegionScalarFieldEnum = {
+exports.Prisma.DnsScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  userId: 'userId',
+  domain: 'domain',
+  ip_addr: 'ip_addr',
+  resolver: 'resolver',
+  interval: 'interval',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  authoritative: 'authoritative'
 };
 
 exports.Prisma.WebsiteTickScalarFieldEnum = {
   id: 'id',
   response_time_ms: 'response_time_ms',
   status: 'status',
+  region: 'region',
   userId: 'userId',
-  region_id: 'region_id',
   website_id: 'website_id',
   CreatedAt: 'CreatedAt'
+};
+
+exports.Prisma.DnsTickScalarFieldEnum = {
+  id: 'id',
+  latency_ms: 'latency_ms',
+  status: 'status',
+  region: 'region',
+  userId: 'userId',
+  dns_id: 'dns_id',
+  check_id: 'check_id',
+  resolver_ip: 'resolver_ip',
+  CreatedAt: 'CreatedAt'
+};
+
+exports.Prisma.DnsRecordScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  response: 'response',
+  region: 'region',
+  user_id: 'user_id',
+  dns_id: 'dns_id'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -149,11 +180,21 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email'
 };
 
-exports.Prisma.IncidentScalarFieldEnum = {
+exports.Prisma.AlertsScalarFieldEnum = {
   id: 'id',
   website_id: 'website_id',
   userId: 'userId',
+  alert_type: 'alert_type',
+  type: 'type',
+  verified: 'verified',
+  status: 'status',
+  msg: 'msg',
   created_at: 'created_at'
+};
+
+exports.Prisma.RegionScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
 };
 
 exports.Prisma.SortOrder = {
@@ -165,18 +206,57 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
 exports.WebsiteStatus = exports.$Enums.WebsiteStatus = {
   Up: 'Up',
   Down: 'Down',
   Unknown: 'Unknown'
 };
 
+exports.DnsStatus = exports.$Enums.DnsStatus = {
+  Ok: 'Ok',
+  Warning: 'Warning',
+  Fail: 'Fail'
+};
+
+exports.Record = exports.$Enums.Record = {
+  A: 'A',
+  AAAA: 'AAAA',
+  MX: 'MX',
+  CNAME: 'CNAME'
+};
+
+exports.Alert = exports.$Enums.Alert = {
+  Dns: 'Dns',
+  Ping: 'Ping'
+};
+
+exports.MsgType = exports.$Enums.MsgType = {
+  Email: 'Email',
+  Sms: 'Sms',
+  Slack: 'Slack',
+  Discord: 'Discord',
+  Call: 'Call'
+};
+
+exports.AlertStatus = exports.$Enums.AlertStatus = {
+  Ongoing: 'Ongoing',
+  Resolved: 'Resolved'
+};
+
 exports.Prisma.ModelName = {
   Website: 'Website',
-  Region: 'Region',
+  Dns: 'Dns',
   WebsiteTick: 'WebsiteTick',
+  DnsTick: 'DnsTick',
+  DnsRecord: 'DnsRecord',
   User: 'User',
-  Incident: 'Incident'
+  Alerts: 'Alerts',
+  Region: 'Region'
 };
 
 /**

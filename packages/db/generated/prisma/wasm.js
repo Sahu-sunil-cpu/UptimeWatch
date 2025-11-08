@@ -35,12 +35,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.16.3
- * Query Engine version: bb420e667c1820a8c05a38023385f6cc7ef8e83a
+ * Prisma Client JS version: 6.18.0
+ * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
  */
 Prisma.prismaVersion = {
-  client: "6.16.3",
-  engine: "bb420e667c1820a8c05a38023385f6cc7ef8e83a"
+  client: "6.18.0",
+  engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -95,23 +95,54 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.WebsiteScalarFieldEnum = {
   id: 'id',
   url: 'url',
-  timeAdded: 'timeAdded',
-  userId: 'userId'
+  userId: 'userId',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.RegionScalarFieldEnum = {
+exports.Prisma.DnsScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  userId: 'userId',
+  domain: 'domain',
+  ip_addr: 'ip_addr',
+  resolver: 'resolver',
+  interval: 'interval',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  authoritative: 'authoritative'
 };
 
 exports.Prisma.WebsiteTickScalarFieldEnum = {
   id: 'id',
   response_time_ms: 'response_time_ms',
   status: 'status',
+  region: 'region',
   userId: 'userId',
-  region_id: 'region_id',
   website_id: 'website_id',
   CreatedAt: 'CreatedAt'
+};
+
+exports.Prisma.DnsTickScalarFieldEnum = {
+  id: 'id',
+  latency_ms: 'latency_ms',
+  status: 'status',
+  region: 'region',
+  userId: 'userId',
+  dns_id: 'dns_id',
+  check_id: 'check_id',
+  resolver_ip: 'resolver_ip',
+  CreatedAt: 'CreatedAt'
+};
+
+exports.Prisma.DnsRecordScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  response: 'response',
+  region: 'region',
+  user_id: 'user_id',
+  dns_id: 'dns_id'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -121,11 +152,21 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email'
 };
 
-exports.Prisma.IncidentScalarFieldEnum = {
+exports.Prisma.AlertsScalarFieldEnum = {
   id: 'id',
   website_id: 'website_id',
   userId: 'userId',
+  alert_type: 'alert_type',
+  type: 'type',
+  verified: 'verified',
+  status: 'status',
+  msg: 'msg',
   created_at: 'created_at'
+};
+
+exports.Prisma.RegionScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
 };
 
 exports.Prisma.SortOrder = {
@@ -137,18 +178,57 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.Alert = exports.$Enums.Alert = {
+  Dns: 'Dns',
+  Ping: 'Ping'
+};
+
+exports.AlertStatus = exports.$Enums.AlertStatus = {
+  Ongoing: 'Ongoing',
+  Resolved: 'Resolved'
+};
+
+exports.MsgType = exports.$Enums.MsgType = {
+  Email: 'Email',
+  Sms: 'Sms',
+  Slack: 'Slack',
+  Discord: 'Discord',
+  Call: 'Call'
+};
+
 exports.WebsiteStatus = exports.$Enums.WebsiteStatus = {
   Up: 'Up',
   Down: 'Down',
   Unknown: 'Unknown'
 };
 
+exports.DnsStatus = exports.$Enums.DnsStatus = {
+  Ok: 'Ok',
+  Warning: 'Warning',
+  Fail: 'Fail'
+};
+
+exports.Record = exports.$Enums.Record = {
+  A: 'A',
+  AAAA: 'AAAA',
+  MX: 'MX',
+  CNAME: 'CNAME'
+};
+
 exports.Prisma.ModelName = {
   Website: 'Website',
-  Region: 'Region',
+  Dns: 'Dns',
   WebsiteTick: 'WebsiteTick',
+  DnsTick: 'DnsTick',
+  DnsRecord: 'DnsRecord',
   User: 'User',
-  Incident: 'Incident'
+  Alerts: 'Alerts',
+  Region: 'Region'
 };
 /**
  * Create the Client
@@ -183,8 +263,8 @@ const config = {
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "../../prisma",
-  "clientVersion": "6.16.3",
-  "engineVersion": "bb420e667c1820a8c05a38023385f6cc7ef8e83a",
+  "clientVersion": "6.18.0",
+  "engineVersion": "34b5a692b7bd79939a9a2c3ef97d816e749cda2f",
   "datasourceNames": [
     "db"
   ],
@@ -198,13 +278,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Website {\n  id        String        @id @default(uuid())\n  url       String\n  timeAdded DateTime      @default(now())\n  ticks     WebsiteTick[]\n  User      User          @relation(fields: [userId], references: [id])\n  userId    String\n}\n\nmodel Region {\n  id     String        @id @default(uuid())\n  name   String        @unique\n  tickes WebsiteTick[]\n}\n\nmodel WebsiteTick {\n  id               String        @id @default(uuid())\n  response_time_ms Int\n  status           WebsiteStatus\n  region           Region        @relation(fields: [region_id], references: [id])\n  website          Website       @relation(fields: [website_id], references: [id])\n  userId           String\n  region_id        String\n  website_id       String\n  CreatedAt        DateTime      @default(now())\n}\n\nenum WebsiteStatus {\n  Up\n  Down\n  Unknown\n}\n\nmodel User {\n  id        String     @id @default(uuid())\n  username  String\n  password  String\n  email     String\n  Websites  Website[]\n  incidents Incident[]\n}\n\nmodel Incident {\n  id         String   @id @default(uuid())\n  website_id String\n  website    User     @relation(fields: [userId], references: [id])\n  userId     String\n  created_at DateTime @default(now())\n}\n",
-  "inlineSchemaHash": "b509d5dbe8ada1bd073840a185918dbf1c0634020b9b3c433b2ef64f20aea223",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Website {\n  id        String        @id @default(uuid())\n  url       String\n  User      User          @relation(fields: [userId], references: [id])\n  userId    String\n  active    Boolean       @default(true)\n  createdAt DateTime      @default(now())\n  updatedAt DateTime      @default(now())\n  ticks     WebsiteTick[]\n}\n\nmodel Dns {\n  id            String    @id @default(uuid())\n  userId        String\n  domain        String // e.g. google.com\n  ip_addr       String\n  resolver      String? // which public resolver to use\n  interval      Int // how often to check\n  active        Boolean   @default(true)\n  createdAt     DateTime  @default(now())\n  updatedAt     DateTime  @default(now())\n  authoritative Boolean   @default(false) //query authoritative NS directly\n  ticks         DnsTick[]\n}\n\nmodel WebsiteTick {\n  id               String        @id @default(uuid())\n  response_time_ms Int\n  status           WebsiteStatus\n  region           String\n  userId           String\n  website_id       String\n  website          Website       @relation(fields: [website_id], references: [id])\n  CreatedAt        DateTime      @default(now())\n}\n\nmodel DnsTick {\n  id          String    @id @default(uuid())\n  latency_ms  Int\n  status      DnsStatus\n  region      String\n  userId      String\n  dns_id      String\n  dns         Dns       @relation(fields: [dns_id], references: [id])\n  check_id    String?\n  resolver_ip String\n  CreatedAt   DateTime  @default(now())\n}\n\nmodel DnsRecord {\n  id       String  @id @default(uuid())\n  type     Record\n  response String?\n  region   String\n  user_id  String\n  dns_id   String\n}\n\nmodel User {\n  id       String    @id @default(uuid())\n  username String\n  password String\n  email    String\n  Websites Website[]\n  alert    Alerts[]\n}\n\nmodel Alerts {\n  id         String      @id @default(uuid())\n  website_id String\n  user       User        @relation(fields: [userId], references: [id])\n  userId     String\n  alert_type Alert\n  type       MsgType\n  verified   Boolean?    @default(false)\n  status     AlertStatus @default(Ongoing)\n  msg        String\n  created_at DateTime    @default(now())\n}\n\nmodel Region {\n  id   String @default(uuid())\n  name String @unique\n}\n\nenum Alert {\n  Dns\n  Ping\n}\n\nenum AlertStatus {\n  Ongoing\n  Resolved\n}\n\nenum MsgType {\n  Email\n  Sms\n  Slack\n  Discord\n  Call\n}\n\nenum WebsiteStatus {\n  Up\n  Down\n  Unknown\n}\n\nenum DnsStatus {\n  Ok\n  Warning\n  Fail\n}\n\nenum Record {\n  A\n  AAAA\n  MX\n  CNAME\n}\n",
+  "inlineSchemaHash": "f521a2471ee94dd5ded48b79e09b0808e25f231edf521927d40644c499d97bb1",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Website\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timeAdded\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"ticks\",\"kind\":\"object\",\"type\":\"WebsiteTick\",\"relationName\":\"WebsiteToWebsiteTick\"},{\"name\":\"User\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToWebsite\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"Region\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tickes\",\"kind\":\"object\",\"type\":\"WebsiteTick\",\"relationName\":\"RegionToWebsiteTick\"}],\"dbName\":null},\"WebsiteTick\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"response_time_ms\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"WebsiteStatus\"},{\"name\":\"region\",\"kind\":\"object\",\"type\":\"Region\",\"relationName\":\"RegionToWebsiteTick\"},{\"name\":\"website\",\"kind\":\"object\",\"type\":\"Website\",\"relationName\":\"WebsiteToWebsiteTick\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"region_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"CreatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Websites\",\"kind\":\"object\",\"type\":\"Website\",\"relationName\":\"UserToWebsite\"},{\"name\":\"incidents\",\"kind\":\"object\",\"type\":\"Incident\",\"relationName\":\"IncidentToUser\"}],\"dbName\":null},\"Incident\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"IncidentToUser\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Website\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"User\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToWebsite\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"ticks\",\"kind\":\"object\",\"type\":\"WebsiteTick\",\"relationName\":\"WebsiteToWebsiteTick\"}],\"dbName\":null},\"Dns\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"domain\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ip_addr\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"resolver\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"interval\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"authoritative\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"ticks\",\"kind\":\"object\",\"type\":\"DnsTick\",\"relationName\":\"DnsToDnsTick\"}],\"dbName\":null},\"WebsiteTick\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"response_time_ms\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"WebsiteStatus\"},{\"name\":\"region\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website\",\"kind\":\"object\",\"type\":\"Website\",\"relationName\":\"WebsiteToWebsiteTick\"},{\"name\":\"CreatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"DnsTick\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"latency_ms\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"DnsStatus\"},{\"name\":\"region\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dns_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dns\",\"kind\":\"object\",\"type\":\"Dns\",\"relationName\":\"DnsToDnsTick\"},{\"name\":\"check_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"resolver_ip\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"CreatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"DnsRecord\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"Record\"},{\"name\":\"response\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"region\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dns_id\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"Websites\",\"kind\":\"object\",\"type\":\"Website\",\"relationName\":\"UserToWebsite\"},{\"name\":\"alert\",\"kind\":\"object\",\"type\":\"Alerts\",\"relationName\":\"AlertsToUser\"}],\"dbName\":null},\"Alerts\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AlertsToUser\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"alert_type\",\"kind\":\"enum\",\"type\":\"Alert\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"MsgType\"},{\"name\":\"verified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"AlertStatus\"},{\"name\":\"msg\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Region\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

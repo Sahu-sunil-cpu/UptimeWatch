@@ -123,14 +123,15 @@ export async function processXAdd(message: any, stream: string) {
         stream, '*', message
     )
 
-    console.log(res);
+    //console.log(res);
 
     //not destrying connection because connection is needed to be again and again
     //redisClient.destroy();
 }
 
 export async function processXRead(stream: string, workerId: string, consumerGroup: string, len: number) {
-    const redisClient = await createClient()
+    try {
+        const redisClient = await createClient()
         .on("error", (err) => console.log("Redis Client Error", err))
         .connect();
 
@@ -146,7 +147,11 @@ export async function processXRead(stream: string, workerId: string, consumerGro
     }
     )
 
-    return res;
+    return res; 
+    } catch (error) {
+        console.error(error)
+    }
+
 }
 
 
@@ -155,7 +160,9 @@ export async function createGroup(consumerGroup: string, stream: string) {
         .on("error", (err) => console.log("Redis Client Error", err))
         .connect();
 
-    const res = await redisClient.xGroupCreate(stream, consumerGroup, '0')
+    const res = await redisClient.xGroupCreate(stream, consumerGroup, '0', {
+        MKSTREAM: true
+    })
     console.log(res);
     redisClient.destroy();
 }

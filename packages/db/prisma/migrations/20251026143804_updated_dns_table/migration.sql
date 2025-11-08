@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Dns" ALTER COLUMN "enabled" SET DEFAULT false,
+ALTER COLUMN "updatedAt" SET DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "authoritative" SET DEFAULT false;

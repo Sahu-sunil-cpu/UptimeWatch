@@ -1,0 +1,18 @@
+FROM node:alpine
+
+WORKDIR /usr/src/app
+
+COPY ./packages ./packages
+COPY ./pnpm-lock.yaml ./pnpm-lock.yaml
+
+COPY ./package.json ./package.json
+COPY ./turbo.json ./turbo.json
+
+COPY ./apps/worker-pusher ./apps/worker-pusher
+
+RUN npm install -g pnpm
+RUN pnpm install --frozen-lockfile
+
+RUN pnpm run db:generate
+
+CMD [ "pnpm", "run", "start:worker-pusher" ]

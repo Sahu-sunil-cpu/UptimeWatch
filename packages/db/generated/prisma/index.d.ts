@@ -19,31 +19,73 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Website = $Result.DefaultSelection<Prisma.$WebsitePayload>
 /**
- * Model Region
+ * Model Dns
  * 
  */
-export type Region = $Result.DefaultSelection<Prisma.$RegionPayload>
+export type Dns = $Result.DefaultSelection<Prisma.$DnsPayload>
 /**
  * Model WebsiteTick
  * 
  */
 export type WebsiteTick = $Result.DefaultSelection<Prisma.$WebsiteTickPayload>
 /**
+ * Model DnsTick
+ * 
+ */
+export type DnsTick = $Result.DefaultSelection<Prisma.$DnsTickPayload>
+/**
+ * Model DnsRecord
+ * 
+ */
+export type DnsRecord = $Result.DefaultSelection<Prisma.$DnsRecordPayload>
+/**
  * Model User
  * 
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model Incident
+ * Model Alerts
  * 
  */
-export type Incident = $Result.DefaultSelection<Prisma.$IncidentPayload>
+export type Alerts = $Result.DefaultSelection<Prisma.$AlertsPayload>
+/**
+ * Model Region
+ * 
+ */
+export type Region = $Result.DefaultSelection<Prisma.$RegionPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const WebsiteStatus: {
+  export const Alert: {
+  Dns: 'Dns',
+  Ping: 'Ping'
+};
+
+export type Alert = (typeof Alert)[keyof typeof Alert]
+
+
+export const AlertStatus: {
+  Ongoing: 'Ongoing',
+  Resolved: 'Resolved'
+};
+
+export type AlertStatus = (typeof AlertStatus)[keyof typeof AlertStatus]
+
+
+export const MsgType: {
+  Email: 'Email',
+  Sms: 'Sms',
+  Slack: 'Slack',
+  Discord: 'Discord',
+  Call: 'Call'
+};
+
+export type MsgType = (typeof MsgType)[keyof typeof MsgType]
+
+
+export const WebsiteStatus: {
   Up: 'Up',
   Down: 'Down',
   Unknown: 'Unknown'
@@ -51,11 +93,50 @@ export namespace $Enums {
 
 export type WebsiteStatus = (typeof WebsiteStatus)[keyof typeof WebsiteStatus]
 
+
+export const DnsStatus: {
+  Ok: 'Ok',
+  Warning: 'Warning',
+  Fail: 'Fail'
+};
+
+export type DnsStatus = (typeof DnsStatus)[keyof typeof DnsStatus]
+
+
+export const Record: {
+  A: 'A',
+  AAAA: 'AAAA',
+  MX: 'MX',
+  CNAME: 'CNAME'
+};
+
+export type Record = (typeof Record)[keyof typeof Record]
+
 }
+
+export type Alert = $Enums.Alert
+
+export const Alert: typeof $Enums.Alert
+
+export type AlertStatus = $Enums.AlertStatus
+
+export const AlertStatus: typeof $Enums.AlertStatus
+
+export type MsgType = $Enums.MsgType
+
+export const MsgType: typeof $Enums.MsgType
 
 export type WebsiteStatus = $Enums.WebsiteStatus
 
 export const WebsiteStatus: typeof $Enums.WebsiteStatus
+
+export type DnsStatus = $Enums.DnsStatus
+
+export const DnsStatus: typeof $Enums.DnsStatus
+
+export type Record = $Enums.Record
+
+export const Record: typeof $Enums.Record
 
 /**
  * ##  Prisma Client ʲˢ
@@ -186,14 +267,14 @@ export class PrismaClient<
   get website(): Prisma.WebsiteDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.region`: Exposes CRUD operations for the **Region** model.
+   * `prisma.dns`: Exposes CRUD operations for the **Dns** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Regions
-    * const regions = await prisma.region.findMany()
+    * // Fetch zero or more Dns
+    * const dns = await prisma.dns.findMany()
     * ```
     */
-  get region(): Prisma.RegionDelegate<ExtArgs, ClientOptions>;
+  get dns(): Prisma.DnsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.websiteTick`: Exposes CRUD operations for the **WebsiteTick** model.
@@ -206,6 +287,26 @@ export class PrismaClient<
   get websiteTick(): Prisma.WebsiteTickDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.dnsTick`: Exposes CRUD operations for the **DnsTick** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DnsTicks
+    * const dnsTicks = await prisma.dnsTick.findMany()
+    * ```
+    */
+  get dnsTick(): Prisma.DnsTickDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.dnsRecord`: Exposes CRUD operations for the **DnsRecord** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DnsRecords
+    * const dnsRecords = await prisma.dnsRecord.findMany()
+    * ```
+    */
+  get dnsRecord(): Prisma.DnsRecordDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -216,14 +317,24 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.incident`: Exposes CRUD operations for the **Incident** model.
+   * `prisma.alerts`: Exposes CRUD operations for the **Alerts** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Incidents
-    * const incidents = await prisma.incident.findMany()
+    * // Fetch zero or more Alerts
+    * const alerts = await prisma.alerts.findMany()
     * ```
     */
-  get incident(): Prisma.IncidentDelegate<ExtArgs, ClientOptions>;
+  get alerts(): Prisma.AlertsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.region`: Exposes CRUD operations for the **Region** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Regions
+    * const regions = await prisma.region.findMany()
+    * ```
+    */
+  get region(): Prisma.RegionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -282,8 +393,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.16.3
-   * Query Engine version: bb420e667c1820a8c05a38023385f6cc7ef8e83a
+   * Prisma Client JS version: 6.18.0
+   * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
    */
   export type PrismaVersion = {
     client: string
@@ -296,6 +407,7 @@ export namespace Prisma {
    */
 
 
+  export import Bytes = runtime.Bytes
   export import JsonObject = runtime.JsonObject
   export import JsonArray = runtime.JsonArray
   export import JsonValue = runtime.JsonValue
@@ -665,10 +777,13 @@ export namespace Prisma {
 
   export const ModelName: {
     Website: 'Website',
-    Region: 'Region',
+    Dns: 'Dns',
     WebsiteTick: 'WebsiteTick',
+    DnsTick: 'DnsTick',
+    DnsRecord: 'DnsRecord',
     User: 'User',
-    Incident: 'Incident'
+    Alerts: 'Alerts',
+    Region: 'Region'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -687,7 +802,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "website" | "region" | "websiteTick" | "user" | "incident"
+      modelProps: "website" | "dns" | "websiteTick" | "dnsTick" | "dnsRecord" | "user" | "alerts" | "region"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -765,77 +880,77 @@ export namespace Prisma {
           }
         }
       }
-      Region: {
-        payload: Prisma.$RegionPayload<ExtArgs>
-        fields: Prisma.RegionFieldRefs
+      Dns: {
+        payload: Prisma.$DnsPayload<ExtArgs>
+        fields: Prisma.DnsFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.RegionFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RegionPayload> | null
+            args: Prisma.DnsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.RegionFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+            args: Prisma.DnsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsPayload>
           }
           findFirst: {
-            args: Prisma.RegionFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RegionPayload> | null
+            args: Prisma.DnsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.RegionFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+            args: Prisma.DnsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsPayload>
           }
           findMany: {
-            args: Prisma.RegionFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RegionPayload>[]
+            args: Prisma.DnsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsPayload>[]
           }
           create: {
-            args: Prisma.RegionCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+            args: Prisma.DnsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsPayload>
           }
           createMany: {
-            args: Prisma.RegionCreateManyArgs<ExtArgs>
+            args: Prisma.DnsCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.RegionCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RegionPayload>[]
+            args: Prisma.DnsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsPayload>[]
           }
           delete: {
-            args: Prisma.RegionDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+            args: Prisma.DnsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsPayload>
           }
           update: {
-            args: Prisma.RegionUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+            args: Prisma.DnsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsPayload>
           }
           deleteMany: {
-            args: Prisma.RegionDeleteManyArgs<ExtArgs>
+            args: Prisma.DnsDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.RegionUpdateManyArgs<ExtArgs>
+            args: Prisma.DnsUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.RegionUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RegionPayload>[]
+            args: Prisma.DnsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsPayload>[]
           }
           upsert: {
-            args: Prisma.RegionUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+            args: Prisma.DnsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsPayload>
           }
           aggregate: {
-            args: Prisma.RegionAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateRegion>
+            args: Prisma.DnsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDns>
           }
           groupBy: {
-            args: Prisma.RegionGroupByArgs<ExtArgs>
-            result: $Utils.Optional<RegionGroupByOutputType>[]
+            args: Prisma.DnsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DnsGroupByOutputType>[]
           }
           count: {
-            args: Prisma.RegionCountArgs<ExtArgs>
-            result: $Utils.Optional<RegionCountAggregateOutputType> | number
+            args: Prisma.DnsCountArgs<ExtArgs>
+            result: $Utils.Optional<DnsCountAggregateOutputType> | number
           }
         }
       }
@@ -913,6 +1028,154 @@ export namespace Prisma {
           }
         }
       }
+      DnsTick: {
+        payload: Prisma.$DnsTickPayload<ExtArgs>
+        fields: Prisma.DnsTickFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DnsTickFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsTickPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DnsTickFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsTickPayload>
+          }
+          findFirst: {
+            args: Prisma.DnsTickFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsTickPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DnsTickFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsTickPayload>
+          }
+          findMany: {
+            args: Prisma.DnsTickFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsTickPayload>[]
+          }
+          create: {
+            args: Prisma.DnsTickCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsTickPayload>
+          }
+          createMany: {
+            args: Prisma.DnsTickCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DnsTickCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsTickPayload>[]
+          }
+          delete: {
+            args: Prisma.DnsTickDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsTickPayload>
+          }
+          update: {
+            args: Prisma.DnsTickUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsTickPayload>
+          }
+          deleteMany: {
+            args: Prisma.DnsTickDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DnsTickUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DnsTickUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsTickPayload>[]
+          }
+          upsert: {
+            args: Prisma.DnsTickUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsTickPayload>
+          }
+          aggregate: {
+            args: Prisma.DnsTickAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDnsTick>
+          }
+          groupBy: {
+            args: Prisma.DnsTickGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DnsTickGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DnsTickCountArgs<ExtArgs>
+            result: $Utils.Optional<DnsTickCountAggregateOutputType> | number
+          }
+        }
+      }
+      DnsRecord: {
+        payload: Prisma.$DnsRecordPayload<ExtArgs>
+        fields: Prisma.DnsRecordFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DnsRecordFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsRecordPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DnsRecordFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsRecordPayload>
+          }
+          findFirst: {
+            args: Prisma.DnsRecordFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsRecordPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DnsRecordFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsRecordPayload>
+          }
+          findMany: {
+            args: Prisma.DnsRecordFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsRecordPayload>[]
+          }
+          create: {
+            args: Prisma.DnsRecordCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsRecordPayload>
+          }
+          createMany: {
+            args: Prisma.DnsRecordCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DnsRecordCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsRecordPayload>[]
+          }
+          delete: {
+            args: Prisma.DnsRecordDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsRecordPayload>
+          }
+          update: {
+            args: Prisma.DnsRecordUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsRecordPayload>
+          }
+          deleteMany: {
+            args: Prisma.DnsRecordDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DnsRecordUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DnsRecordUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsRecordPayload>[]
+          }
+          upsert: {
+            args: Prisma.DnsRecordUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DnsRecordPayload>
+          }
+          aggregate: {
+            args: Prisma.DnsRecordAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDnsRecord>
+          }
+          groupBy: {
+            args: Prisma.DnsRecordGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DnsRecordGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DnsRecordCountArgs<ExtArgs>
+            result: $Utils.Optional<DnsRecordCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -987,77 +1250,151 @@ export namespace Prisma {
           }
         }
       }
-      Incident: {
-        payload: Prisma.$IncidentPayload<ExtArgs>
-        fields: Prisma.IncidentFieldRefs
+      Alerts: {
+        payload: Prisma.$AlertsPayload<ExtArgs>
+        fields: Prisma.AlertsFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.IncidentFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$IncidentPayload> | null
+            args: Prisma.AlertsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertsPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.IncidentFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$IncidentPayload>
+            args: Prisma.AlertsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertsPayload>
           }
           findFirst: {
-            args: Prisma.IncidentFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$IncidentPayload> | null
+            args: Prisma.AlertsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertsPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.IncidentFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$IncidentPayload>
+            args: Prisma.AlertsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertsPayload>
           }
           findMany: {
-            args: Prisma.IncidentFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$IncidentPayload>[]
+            args: Prisma.AlertsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertsPayload>[]
           }
           create: {
-            args: Prisma.IncidentCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$IncidentPayload>
+            args: Prisma.AlertsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertsPayload>
           }
           createMany: {
-            args: Prisma.IncidentCreateManyArgs<ExtArgs>
+            args: Prisma.AlertsCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.IncidentCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$IncidentPayload>[]
+            args: Prisma.AlertsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertsPayload>[]
           }
           delete: {
-            args: Prisma.IncidentDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$IncidentPayload>
+            args: Prisma.AlertsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertsPayload>
           }
           update: {
-            args: Prisma.IncidentUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$IncidentPayload>
+            args: Prisma.AlertsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertsPayload>
           }
           deleteMany: {
-            args: Prisma.IncidentDeleteManyArgs<ExtArgs>
+            args: Prisma.AlertsDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.IncidentUpdateManyArgs<ExtArgs>
+            args: Prisma.AlertsUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.IncidentUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$IncidentPayload>[]
+            args: Prisma.AlertsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertsPayload>[]
           }
           upsert: {
-            args: Prisma.IncidentUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$IncidentPayload>
+            args: Prisma.AlertsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertsPayload>
           }
           aggregate: {
-            args: Prisma.IncidentAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateIncident>
+            args: Prisma.AlertsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAlerts>
           }
           groupBy: {
-            args: Prisma.IncidentGroupByArgs<ExtArgs>
-            result: $Utils.Optional<IncidentGroupByOutputType>[]
+            args: Prisma.AlertsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AlertsGroupByOutputType>[]
           }
           count: {
-            args: Prisma.IncidentCountArgs<ExtArgs>
-            result: $Utils.Optional<IncidentCountAggregateOutputType> | number
+            args: Prisma.AlertsCountArgs<ExtArgs>
+            result: $Utils.Optional<AlertsCountAggregateOutputType> | number
+          }
+        }
+      }
+      Region: {
+        payload: Prisma.$RegionPayload<ExtArgs>
+        fields: Prisma.RegionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RegionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RegionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+          }
+          findFirst: {
+            args: Prisma.RegionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RegionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+          }
+          findMany: {
+            args: Prisma.RegionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionPayload>[]
+          }
+          create: {
+            args: Prisma.RegionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+          }
+          createMany: {
+            args: Prisma.RegionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RegionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionPayload>[]
+          }
+          delete: {
+            args: Prisma.RegionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+          }
+          update: {
+            args: Prisma.RegionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+          }
+          deleteMany: {
+            args: Prisma.RegionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RegionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RegionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionPayload>[]
+          }
+          upsert: {
+            args: Prisma.RegionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionPayload>
+          }
+          aggregate: {
+            args: Prisma.RegionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRegion>
+          }
+          groupBy: {
+            args: Prisma.RegionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RegionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RegionCountArgs<ExtArgs>
+            result: $Utils.Optional<RegionCountAggregateOutputType> | number
           }
         }
       }
@@ -1158,10 +1495,13 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     website?: WebsiteOmit
-    region?: RegionOmit
+    dns?: DnsOmit
     websiteTick?: WebsiteTickOmit
+    dnsTick?: DnsTickOmit
+    dnsRecord?: DnsRecordOmit
     user?: UserOmit
-    incident?: IncidentOmit
+    alerts?: AlertsOmit
+    region?: RegionOmit
   }
 
   /* Types for Logging */
@@ -1269,33 +1609,33 @@ export namespace Prisma {
 
 
   /**
-   * Count Type RegionCountOutputType
+   * Count Type DnsCountOutputType
    */
 
-  export type RegionCountOutputType = {
-    tickes: number
+  export type DnsCountOutputType = {
+    ticks: number
   }
 
-  export type RegionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tickes?: boolean | RegionCountOutputTypeCountTickesArgs
+  export type DnsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    ticks?: boolean | DnsCountOutputTypeCountTicksArgs
   }
 
   // Custom InputTypes
   /**
-   * RegionCountOutputType without action
+   * DnsCountOutputType without action
    */
-  export type RegionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the RegionCountOutputType
+     * Select specific fields to fetch from the DnsCountOutputType
      */
-    select?: RegionCountOutputTypeSelect<ExtArgs> | null
+    select?: DnsCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * RegionCountOutputType without action
+   * DnsCountOutputType without action
    */
-  export type RegionCountOutputTypeCountTickesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WebsiteTickWhereInput
+  export type DnsCountOutputTypeCountTicksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DnsTickWhereInput
   }
 
 
@@ -1305,12 +1645,12 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     Websites: number
-    incidents: number
+    alert: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Websites?: boolean | UserCountOutputTypeCountWebsitesArgs
-    incidents?: boolean | UserCountOutputTypeCountIncidentsArgs
+    alert?: boolean | UserCountOutputTypeCountAlertArgs
   }
 
   // Custom InputTypes
@@ -1334,8 +1674,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountIncidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: IncidentWhereInput
+  export type UserCountOutputTypeCountAlertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlertsWhereInput
   }
 
 
@@ -1356,22 +1696,28 @@ export namespace Prisma {
   export type WebsiteMinAggregateOutputType = {
     id: string | null
     url: string | null
-    timeAdded: Date | null
     userId: string | null
+    active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type WebsiteMaxAggregateOutputType = {
     id: string | null
     url: string | null
-    timeAdded: Date | null
     userId: string | null
+    active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type WebsiteCountAggregateOutputType = {
     id: number
     url: number
-    timeAdded: number
     userId: number
+    active: number
+    createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -1379,22 +1725,28 @@ export namespace Prisma {
   export type WebsiteMinAggregateInputType = {
     id?: true
     url?: true
-    timeAdded?: true
     userId?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type WebsiteMaxAggregateInputType = {
     id?: true
     url?: true
-    timeAdded?: true
     userId?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type WebsiteCountAggregateInputType = {
     id?: true
     url?: true
-    timeAdded?: true
     userId?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -1473,8 +1825,10 @@ export namespace Prisma {
   export type WebsiteGroupByOutputType = {
     id: string
     url: string
-    timeAdded: Date
     userId: string
+    active: boolean
+    createdAt: Date
+    updatedAt: Date
     _count: WebsiteCountAggregateOutputType | null
     _min: WebsiteMinAggregateOutputType | null
     _max: WebsiteMaxAggregateOutputType | null
@@ -1497,40 +1851,48 @@ export namespace Prisma {
   export type WebsiteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     url?: boolean
-    timeAdded?: boolean
     userId?: boolean
-    ticks?: boolean | Website$ticksArgs<ExtArgs>
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     User?: boolean | UserDefaultArgs<ExtArgs>
+    ticks?: boolean | Website$ticksArgs<ExtArgs>
     _count?: boolean | WebsiteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["website"]>
 
   export type WebsiteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     url?: boolean
-    timeAdded?: boolean
     userId?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     User?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["website"]>
 
   export type WebsiteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     url?: boolean
-    timeAdded?: boolean
     userId?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     User?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["website"]>
 
   export type WebsiteSelectScalar = {
     id?: boolean
     url?: boolean
-    timeAdded?: boolean
     userId?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type WebsiteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "timeAdded" | "userId", ExtArgs["result"]["website"]>
+  export type WebsiteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "userId" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["website"]>
   export type WebsiteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    ticks?: boolean | Website$ticksArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
+    ticks?: boolean | Website$ticksArgs<ExtArgs>
     _count?: boolean | WebsiteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WebsiteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1543,14 +1905,16 @@ export namespace Prisma {
   export type $WebsitePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Website"
     objects: {
-      ticks: Prisma.$WebsiteTickPayload<ExtArgs>[]
       User: Prisma.$UserPayload<ExtArgs>
+      ticks: Prisma.$WebsiteTickPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       url: string
-      timeAdded: Date
       userId: string
+      active: boolean
+      createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["website"]>
     composites: {}
   }
@@ -1945,8 +2309,8 @@ export namespace Prisma {
    */
   export interface Prisma__WebsiteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    ticks<T extends Website$ticksArgs<ExtArgs> = {}>(args?: Subset<T, Website$ticksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebsiteTickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    ticks<T extends Website$ticksArgs<ExtArgs> = {}>(args?: Subset<T, Website$ticksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebsiteTickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1978,8 +2342,10 @@ export namespace Prisma {
   interface WebsiteFieldRefs {
     readonly id: FieldRef<"Website", 'String'>
     readonly url: FieldRef<"Website", 'String'>
-    readonly timeAdded: FieldRef<"Website", 'DateTime'>
     readonly userId: FieldRef<"Website", 'String'>
+    readonly active: FieldRef<"Website", 'Boolean'>
+    readonly createdAt: FieldRef<"Website", 'DateTime'>
+    readonly updatedAt: FieldRef<"Website", 'DateTime'>
   }
     
 
@@ -2419,310 +2785,440 @@ export namespace Prisma {
 
 
   /**
-   * Model Region
+   * Model Dns
    */
 
-  export type AggregateRegion = {
-    _count: RegionCountAggregateOutputType | null
-    _min: RegionMinAggregateOutputType | null
-    _max: RegionMaxAggregateOutputType | null
+  export type AggregateDns = {
+    _count: DnsCountAggregateOutputType | null
+    _avg: DnsAvgAggregateOutputType | null
+    _sum: DnsSumAggregateOutputType | null
+    _min: DnsMinAggregateOutputType | null
+    _max: DnsMaxAggregateOutputType | null
   }
 
-  export type RegionMinAggregateOutputType = {
+  export type DnsAvgAggregateOutputType = {
+    interval: number | null
+  }
+
+  export type DnsSumAggregateOutputType = {
+    interval: number | null
+  }
+
+  export type DnsMinAggregateOutputType = {
     id: string | null
-    name: string | null
+    userId: string | null
+    domain: string | null
+    ip_addr: string | null
+    resolver: string | null
+    interval: number | null
+    active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    authoritative: boolean | null
   }
 
-  export type RegionMaxAggregateOutputType = {
+  export type DnsMaxAggregateOutputType = {
     id: string | null
-    name: string | null
+    userId: string | null
+    domain: string | null
+    ip_addr: string | null
+    resolver: string | null
+    interval: number | null
+    active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    authoritative: boolean | null
   }
 
-  export type RegionCountAggregateOutputType = {
+  export type DnsCountAggregateOutputType = {
     id: number
-    name: number
+    userId: number
+    domain: number
+    ip_addr: number
+    resolver: number
+    interval: number
+    active: number
+    createdAt: number
+    updatedAt: number
+    authoritative: number
     _all: number
   }
 
 
-  export type RegionMinAggregateInputType = {
-    id?: true
-    name?: true
+  export type DnsAvgAggregateInputType = {
+    interval?: true
   }
 
-  export type RegionMaxAggregateInputType = {
-    id?: true
-    name?: true
+  export type DnsSumAggregateInputType = {
+    interval?: true
   }
 
-  export type RegionCountAggregateInputType = {
+  export type DnsMinAggregateInputType = {
     id?: true
-    name?: true
+    userId?: true
+    domain?: true
+    ip_addr?: true
+    resolver?: true
+    interval?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+    authoritative?: true
+  }
+
+  export type DnsMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    domain?: true
+    ip_addr?: true
+    resolver?: true
+    interval?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+    authoritative?: true
+  }
+
+  export type DnsCountAggregateInputType = {
+    id?: true
+    userId?: true
+    domain?: true
+    ip_addr?: true
+    resolver?: true
+    interval?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+    authoritative?: true
     _all?: true
   }
 
-  export type RegionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Region to aggregate.
+     * Filter which Dns to aggregate.
      */
-    where?: RegionWhereInput
+    where?: DnsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Regions to fetch.
+     * Determine the order of Dns to fetch.
      */
-    orderBy?: RegionOrderByWithRelationInput | RegionOrderByWithRelationInput[]
+    orderBy?: DnsOrderByWithRelationInput | DnsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: RegionWhereUniqueInput
+    cursor?: DnsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Regions from the position of the cursor.
+     * Take `±n` Dns from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Regions.
+     * Skip the first `n` Dns.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Regions
+     * Count returned Dns
     **/
-    _count?: true | RegionCountAggregateInputType
+    _count?: true | DnsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DnsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DnsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: RegionMinAggregateInputType
+    _min?: DnsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: RegionMaxAggregateInputType
+    _max?: DnsMaxAggregateInputType
   }
 
-  export type GetRegionAggregateType<T extends RegionAggregateArgs> = {
-        [P in keyof T & keyof AggregateRegion]: P extends '_count' | 'count'
+  export type GetDnsAggregateType<T extends DnsAggregateArgs> = {
+        [P in keyof T & keyof AggregateDns]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateRegion[P]>
-      : GetScalarType<T[P], AggregateRegion[P]>
+        : GetScalarType<T[P], AggregateDns[P]>
+      : GetScalarType<T[P], AggregateDns[P]>
   }
 
 
 
 
-  export type RegionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RegionWhereInput
-    orderBy?: RegionOrderByWithAggregationInput | RegionOrderByWithAggregationInput[]
-    by: RegionScalarFieldEnum[] | RegionScalarFieldEnum
-    having?: RegionScalarWhereWithAggregatesInput
+  export type DnsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DnsWhereInput
+    orderBy?: DnsOrderByWithAggregationInput | DnsOrderByWithAggregationInput[]
+    by: DnsScalarFieldEnum[] | DnsScalarFieldEnum
+    having?: DnsScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: RegionCountAggregateInputType | true
-    _min?: RegionMinAggregateInputType
-    _max?: RegionMaxAggregateInputType
+    _count?: DnsCountAggregateInputType | true
+    _avg?: DnsAvgAggregateInputType
+    _sum?: DnsSumAggregateInputType
+    _min?: DnsMinAggregateInputType
+    _max?: DnsMaxAggregateInputType
   }
 
-  export type RegionGroupByOutputType = {
+  export type DnsGroupByOutputType = {
     id: string
-    name: string
-    _count: RegionCountAggregateOutputType | null
-    _min: RegionMinAggregateOutputType | null
-    _max: RegionMaxAggregateOutputType | null
+    userId: string
+    domain: string
+    ip_addr: string
+    resolver: string | null
+    interval: number
+    active: boolean
+    createdAt: Date
+    updatedAt: Date
+    authoritative: boolean
+    _count: DnsCountAggregateOutputType | null
+    _avg: DnsAvgAggregateOutputType | null
+    _sum: DnsSumAggregateOutputType | null
+    _min: DnsMinAggregateOutputType | null
+    _max: DnsMaxAggregateOutputType | null
   }
 
-  type GetRegionGroupByPayload<T extends RegionGroupByArgs> = Prisma.PrismaPromise<
+  type GetDnsGroupByPayload<T extends DnsGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<RegionGroupByOutputType, T['by']> &
+      PickEnumerable<DnsGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof RegionGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof DnsGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], RegionGroupByOutputType[P]>
-            : GetScalarType<T[P], RegionGroupByOutputType[P]>
+              : GetScalarType<T[P], DnsGroupByOutputType[P]>
+            : GetScalarType<T[P], DnsGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type RegionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type DnsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    name?: boolean
-    tickes?: boolean | Region$tickesArgs<ExtArgs>
-    _count?: boolean | RegionCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["region"]>
+    userId?: boolean
+    domain?: boolean
+    ip_addr?: boolean
+    resolver?: boolean
+    interval?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authoritative?: boolean
+    ticks?: boolean | Dns$ticksArgs<ExtArgs>
+    _count?: boolean | DnsCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dns"]>
 
-  export type RegionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type DnsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    name?: boolean
-  }, ExtArgs["result"]["region"]>
+    userId?: boolean
+    domain?: boolean
+    ip_addr?: boolean
+    resolver?: boolean
+    interval?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authoritative?: boolean
+  }, ExtArgs["result"]["dns"]>
 
-  export type RegionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type DnsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    name?: boolean
-  }, ExtArgs["result"]["region"]>
+    userId?: boolean
+    domain?: boolean
+    ip_addr?: boolean
+    resolver?: boolean
+    interval?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authoritative?: boolean
+  }, ExtArgs["result"]["dns"]>
 
-  export type RegionSelectScalar = {
+  export type DnsSelectScalar = {
     id?: boolean
-    name?: boolean
+    userId?: boolean
+    domain?: boolean
+    ip_addr?: boolean
+    resolver?: boolean
+    interval?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authoritative?: boolean
   }
 
-  export type RegionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["region"]>
-  export type RegionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tickes?: boolean | Region$tickesArgs<ExtArgs>
-    _count?: boolean | RegionCountOutputTypeDefaultArgs<ExtArgs>
+  export type DnsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "domain" | "ip_addr" | "resolver" | "interval" | "active" | "createdAt" | "updatedAt" | "authoritative", ExtArgs["result"]["dns"]>
+  export type DnsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    ticks?: boolean | Dns$ticksArgs<ExtArgs>
+    _count?: boolean | DnsCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type RegionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type RegionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type DnsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type DnsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
-  export type $RegionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Region"
+  export type $DnsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Dns"
     objects: {
-      tickes: Prisma.$WebsiteTickPayload<ExtArgs>[]
+      ticks: Prisma.$DnsTickPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      name: string
-    }, ExtArgs["result"]["region"]>
+      userId: string
+      domain: string
+      ip_addr: string
+      resolver: string | null
+      interval: number
+      active: boolean
+      createdAt: Date
+      updatedAt: Date
+      authoritative: boolean
+    }, ExtArgs["result"]["dns"]>
     composites: {}
   }
 
-  type RegionGetPayload<S extends boolean | null | undefined | RegionDefaultArgs> = $Result.GetResult<Prisma.$RegionPayload, S>
+  type DnsGetPayload<S extends boolean | null | undefined | DnsDefaultArgs> = $Result.GetResult<Prisma.$DnsPayload, S>
 
-  type RegionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<RegionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: RegionCountAggregateInputType | true
+  type DnsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DnsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DnsCountAggregateInputType | true
     }
 
-  export interface RegionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Region'], meta: { name: 'Region' } }
+  export interface DnsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Dns'], meta: { name: 'Dns' } }
     /**
-     * Find zero or one Region that matches the filter.
-     * @param {RegionFindUniqueArgs} args - Arguments to find a Region
+     * Find zero or one Dns that matches the filter.
+     * @param {DnsFindUniqueArgs} args - Arguments to find a Dns
      * @example
-     * // Get one Region
-     * const region = await prisma.region.findUnique({
+     * // Get one Dns
+     * const dns = await prisma.dns.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends RegionFindUniqueArgs>(args: SelectSubset<T, RegionFindUniqueArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends DnsFindUniqueArgs>(args: SelectSubset<T, DnsFindUniqueArgs<ExtArgs>>): Prisma__DnsClient<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Region that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Dns that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {RegionFindUniqueOrThrowArgs} args - Arguments to find a Region
+     * @param {DnsFindUniqueOrThrowArgs} args - Arguments to find a Dns
      * @example
-     * // Get one Region
-     * const region = await prisma.region.findUniqueOrThrow({
+     * // Get one Dns
+     * const dns = await prisma.dns.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends RegionFindUniqueOrThrowArgs>(args: SelectSubset<T, RegionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends DnsFindUniqueOrThrowArgs>(args: SelectSubset<T, DnsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DnsClient<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Region that matches the filter.
+     * Find the first Dns that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {RegionFindFirstArgs} args - Arguments to find a Region
+     * @param {DnsFindFirstArgs} args - Arguments to find a Dns
      * @example
-     * // Get one Region
-     * const region = await prisma.region.findFirst({
+     * // Get one Dns
+     * const dns = await prisma.dns.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends RegionFindFirstArgs>(args?: SelectSubset<T, RegionFindFirstArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends DnsFindFirstArgs>(args?: SelectSubset<T, DnsFindFirstArgs<ExtArgs>>): Prisma__DnsClient<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Region that matches the filter or
+     * Find the first Dns that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {RegionFindFirstOrThrowArgs} args - Arguments to find a Region
+     * @param {DnsFindFirstOrThrowArgs} args - Arguments to find a Dns
      * @example
-     * // Get one Region
-     * const region = await prisma.region.findFirstOrThrow({
+     * // Get one Dns
+     * const dns = await prisma.dns.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends RegionFindFirstOrThrowArgs>(args?: SelectSubset<T, RegionFindFirstOrThrowArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends DnsFindFirstOrThrowArgs>(args?: SelectSubset<T, DnsFindFirstOrThrowArgs<ExtArgs>>): Prisma__DnsClient<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Regions that matches the filter.
+     * Find zero or more Dns that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {RegionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {DnsFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Regions
-     * const regions = await prisma.region.findMany()
+     * // Get all Dns
+     * const dns = await prisma.dns.findMany()
      * 
-     * // Get first 10 Regions
-     * const regions = await prisma.region.findMany({ take: 10 })
+     * // Get first 10 Dns
+     * const dns = await prisma.dns.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const regionWithIdOnly = await prisma.region.findMany({ select: { id: true } })
+     * const dnsWithIdOnly = await prisma.dns.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends RegionFindManyArgs>(args?: SelectSubset<T, RegionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends DnsFindManyArgs>(args?: SelectSubset<T, DnsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Region.
-     * @param {RegionCreateArgs} args - Arguments to create a Region.
+     * Create a Dns.
+     * @param {DnsCreateArgs} args - Arguments to create a Dns.
      * @example
-     * // Create one Region
-     * const Region = await prisma.region.create({
+     * // Create one Dns
+     * const Dns = await prisma.dns.create({
      *   data: {
-     *     // ... data to create a Region
+     *     // ... data to create a Dns
      *   }
      * })
      * 
      */
-    create<T extends RegionCreateArgs>(args: SelectSubset<T, RegionCreateArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends DnsCreateArgs>(args: SelectSubset<T, DnsCreateArgs<ExtArgs>>): Prisma__DnsClient<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Regions.
-     * @param {RegionCreateManyArgs} args - Arguments to create many Regions.
+     * Create many Dns.
+     * @param {DnsCreateManyArgs} args - Arguments to create many Dns.
      * @example
-     * // Create many Regions
-     * const region = await prisma.region.createMany({
+     * // Create many Dns
+     * const dns = await prisma.dns.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends RegionCreateManyArgs>(args?: SelectSubset<T, RegionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends DnsCreateManyArgs>(args?: SelectSubset<T, DnsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Regions and returns the data saved in the database.
-     * @param {RegionCreateManyAndReturnArgs} args - Arguments to create many Regions.
+     * Create many Dns and returns the data saved in the database.
+     * @param {DnsCreateManyAndReturnArgs} args - Arguments to create many Dns.
      * @example
-     * // Create many Regions
-     * const region = await prisma.region.createManyAndReturn({
+     * // Create many Dns
+     * const dns = await prisma.dns.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Regions and only return the `id`
-     * const regionWithIdOnly = await prisma.region.createManyAndReturn({
+     * // Create many Dns and only return the `id`
+     * const dnsWithIdOnly = await prisma.dns.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -2732,28 +3228,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends RegionCreateManyAndReturnArgs>(args?: SelectSubset<T, RegionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends DnsCreateManyAndReturnArgs>(args?: SelectSubset<T, DnsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Region.
-     * @param {RegionDeleteArgs} args - Arguments to delete one Region.
+     * Delete a Dns.
+     * @param {DnsDeleteArgs} args - Arguments to delete one Dns.
      * @example
-     * // Delete one Region
-     * const Region = await prisma.region.delete({
+     * // Delete one Dns
+     * const Dns = await prisma.dns.delete({
      *   where: {
-     *     // ... filter to delete one Region
+     *     // ... filter to delete one Dns
      *   }
      * })
      * 
      */
-    delete<T extends RegionDeleteArgs>(args: SelectSubset<T, RegionDeleteArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends DnsDeleteArgs>(args: SelectSubset<T, DnsDeleteArgs<ExtArgs>>): Prisma__DnsClient<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Region.
-     * @param {RegionUpdateArgs} args - Arguments to update one Region.
+     * Update one Dns.
+     * @param {DnsUpdateArgs} args - Arguments to update one Dns.
      * @example
-     * // Update one Region
-     * const region = await prisma.region.update({
+     * // Update one Dns
+     * const dns = await prisma.dns.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2763,30 +3259,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends RegionUpdateArgs>(args: SelectSubset<T, RegionUpdateArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends DnsUpdateArgs>(args: SelectSubset<T, DnsUpdateArgs<ExtArgs>>): Prisma__DnsClient<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Regions.
-     * @param {RegionDeleteManyArgs} args - Arguments to filter Regions to delete.
+     * Delete zero or more Dns.
+     * @param {DnsDeleteManyArgs} args - Arguments to filter Dns to delete.
      * @example
-     * // Delete a few Regions
-     * const { count } = await prisma.region.deleteMany({
+     * // Delete a few Dns
+     * const { count } = await prisma.dns.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends RegionDeleteManyArgs>(args?: SelectSubset<T, RegionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends DnsDeleteManyArgs>(args?: SelectSubset<T, DnsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Regions.
+     * Update zero or more Dns.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {RegionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {DnsUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Regions
-     * const region = await prisma.region.updateMany({
+     * // Update many Dns
+     * const dns = await prisma.dns.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2796,14 +3292,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends RegionUpdateManyArgs>(args: SelectSubset<T, RegionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends DnsUpdateManyArgs>(args: SelectSubset<T, DnsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Regions and returns the data updated in the database.
-     * @param {RegionUpdateManyAndReturnArgs} args - Arguments to update many Regions.
+     * Update zero or more Dns and returns the data updated in the database.
+     * @param {DnsUpdateManyAndReturnArgs} args - Arguments to update many Dns.
      * @example
-     * // Update many Regions
-     * const region = await prisma.region.updateManyAndReturn({
+     * // Update many Dns
+     * const dns = await prisma.dns.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2812,8 +3308,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Regions and only return the `id`
-     * const regionWithIdOnly = await prisma.region.updateManyAndReturn({
+     * // Update zero or more Dns and only return the `id`
+     * const dnsWithIdOnly = await prisma.dns.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -2826,56 +3322,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends RegionUpdateManyAndReturnArgs>(args: SelectSubset<T, RegionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends DnsUpdateManyAndReturnArgs>(args: SelectSubset<T, DnsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Region.
-     * @param {RegionUpsertArgs} args - Arguments to update or create a Region.
+     * Create or update one Dns.
+     * @param {DnsUpsertArgs} args - Arguments to update or create a Dns.
      * @example
-     * // Update or create a Region
-     * const region = await prisma.region.upsert({
+     * // Update or create a Dns
+     * const dns = await prisma.dns.upsert({
      *   create: {
-     *     // ... data to create a Region
+     *     // ... data to create a Dns
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Region we want to update
+     *     // ... the filter for the Dns we want to update
      *   }
      * })
      */
-    upsert<T extends RegionUpsertArgs>(args: SelectSubset<T, RegionUpsertArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends DnsUpsertArgs>(args: SelectSubset<T, DnsUpsertArgs<ExtArgs>>): Prisma__DnsClient<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Regions.
+     * Count the number of Dns.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {RegionCountArgs} args - Arguments to filter Regions to count.
+     * @param {DnsCountArgs} args - Arguments to filter Dns to count.
      * @example
-     * // Count the number of Regions
-     * const count = await prisma.region.count({
+     * // Count the number of Dns
+     * const count = await prisma.dns.count({
      *   where: {
-     *     // ... the filter for the Regions we want to count
+     *     // ... the filter for the Dns we want to count
      *   }
      * })
     **/
-    count<T extends RegionCountArgs>(
-      args?: Subset<T, RegionCountArgs>,
+    count<T extends DnsCountArgs>(
+      args?: Subset<T, DnsCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], RegionCountAggregateOutputType>
+          : GetScalarType<T['select'], DnsCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Region.
+     * Allows you to perform aggregations operations on a Dns.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {RegionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {DnsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -2895,13 +3391,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends RegionAggregateArgs>(args: Subset<T, RegionAggregateArgs>): Prisma.PrismaPromise<GetRegionAggregateType<T>>
+    aggregate<T extends DnsAggregateArgs>(args: Subset<T, DnsAggregateArgs>): Prisma.PrismaPromise<GetDnsAggregateType<T>>
 
     /**
-     * Group by Region.
+     * Group by Dns.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {RegionGroupByArgs} args - Group by arguments.
+     * @param {DnsGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -2916,14 +3412,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends RegionGroupByArgs,
+      T extends DnsGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: RegionGroupByArgs['orderBy'] }
-        : { orderBy?: RegionGroupByArgs['orderBy'] },
+        ? { orderBy: DnsGroupByArgs['orderBy'] }
+        : { orderBy?: DnsGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -2972,22 +3468,22 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, RegionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRegionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, DnsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDnsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Region model
+   * Fields of the Dns model
    */
-  readonly fields: RegionFieldRefs;
+  readonly fields: DnsFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Region.
+   * The delegate class that acts as a "Promise-like" for Dns.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__RegionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__DnsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    tickes<T extends Region$tickesArgs<ExtArgs> = {}>(args?: Subset<T, Region$tickesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebsiteTickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ticks<T extends Dns$ticksArgs<ExtArgs> = {}>(args?: Subset<T, Dns$ticksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3014,438 +3510,446 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Region model
+   * Fields of the Dns model
    */
-  interface RegionFieldRefs {
-    readonly id: FieldRef<"Region", 'String'>
-    readonly name: FieldRef<"Region", 'String'>
+  interface DnsFieldRefs {
+    readonly id: FieldRef<"Dns", 'String'>
+    readonly userId: FieldRef<"Dns", 'String'>
+    readonly domain: FieldRef<"Dns", 'String'>
+    readonly ip_addr: FieldRef<"Dns", 'String'>
+    readonly resolver: FieldRef<"Dns", 'String'>
+    readonly interval: FieldRef<"Dns", 'Int'>
+    readonly active: FieldRef<"Dns", 'Boolean'>
+    readonly createdAt: FieldRef<"Dns", 'DateTime'>
+    readonly updatedAt: FieldRef<"Dns", 'DateTime'>
+    readonly authoritative: FieldRef<"Dns", 'Boolean'>
   }
     
 
   // Custom InputTypes
   /**
-   * Region findUnique
+   * Dns findUnique
    */
-  export type RegionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelect<ExtArgs> | null
+    select?: DnsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RegionInclude<ExtArgs> | null
+    include?: DnsInclude<ExtArgs> | null
     /**
-     * Filter, which Region to fetch.
+     * Filter, which Dns to fetch.
      */
-    where: RegionWhereUniqueInput
+    where: DnsWhereUniqueInput
   }
 
   /**
-   * Region findUniqueOrThrow
+   * Dns findUniqueOrThrow
    */
-  export type RegionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelect<ExtArgs> | null
+    select?: DnsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RegionInclude<ExtArgs> | null
+    include?: DnsInclude<ExtArgs> | null
     /**
-     * Filter, which Region to fetch.
+     * Filter, which Dns to fetch.
      */
-    where: RegionWhereUniqueInput
+    where: DnsWhereUniqueInput
   }
 
   /**
-   * Region findFirst
+   * Dns findFirst
    */
-  export type RegionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelect<ExtArgs> | null
+    select?: DnsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RegionInclude<ExtArgs> | null
+    include?: DnsInclude<ExtArgs> | null
     /**
-     * Filter, which Region to fetch.
+     * Filter, which Dns to fetch.
      */
-    where?: RegionWhereInput
+    where?: DnsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Regions to fetch.
+     * Determine the order of Dns to fetch.
      */
-    orderBy?: RegionOrderByWithRelationInput | RegionOrderByWithRelationInput[]
+    orderBy?: DnsOrderByWithRelationInput | DnsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Regions.
+     * Sets the position for searching for Dns.
      */
-    cursor?: RegionWhereUniqueInput
+    cursor?: DnsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Regions from the position of the cursor.
+     * Take `±n` Dns from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Regions.
+     * Skip the first `n` Dns.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Regions.
+     * Filter by unique combinations of Dns.
      */
-    distinct?: RegionScalarFieldEnum | RegionScalarFieldEnum[]
+    distinct?: DnsScalarFieldEnum | DnsScalarFieldEnum[]
   }
 
   /**
-   * Region findFirstOrThrow
+   * Dns findFirstOrThrow
    */
-  export type RegionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelect<ExtArgs> | null
+    select?: DnsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RegionInclude<ExtArgs> | null
+    include?: DnsInclude<ExtArgs> | null
     /**
-     * Filter, which Region to fetch.
+     * Filter, which Dns to fetch.
      */
-    where?: RegionWhereInput
+    where?: DnsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Regions to fetch.
+     * Determine the order of Dns to fetch.
      */
-    orderBy?: RegionOrderByWithRelationInput | RegionOrderByWithRelationInput[]
+    orderBy?: DnsOrderByWithRelationInput | DnsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Regions.
+     * Sets the position for searching for Dns.
      */
-    cursor?: RegionWhereUniqueInput
+    cursor?: DnsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Regions from the position of the cursor.
+     * Take `±n` Dns from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Regions.
+     * Skip the first `n` Dns.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Regions.
+     * Filter by unique combinations of Dns.
      */
-    distinct?: RegionScalarFieldEnum | RegionScalarFieldEnum[]
+    distinct?: DnsScalarFieldEnum | DnsScalarFieldEnum[]
   }
 
   /**
-   * Region findMany
+   * Dns findMany
    */
-  export type RegionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelect<ExtArgs> | null
+    select?: DnsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RegionInclude<ExtArgs> | null
+    include?: DnsInclude<ExtArgs> | null
     /**
-     * Filter, which Regions to fetch.
+     * Filter, which Dns to fetch.
      */
-    where?: RegionWhereInput
+    where?: DnsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Regions to fetch.
+     * Determine the order of Dns to fetch.
      */
-    orderBy?: RegionOrderByWithRelationInput | RegionOrderByWithRelationInput[]
+    orderBy?: DnsOrderByWithRelationInput | DnsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Regions.
+     * Sets the position for listing Dns.
      */
-    cursor?: RegionWhereUniqueInput
+    cursor?: DnsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Regions from the position of the cursor.
+     * Take `±n` Dns from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Regions.
+     * Skip the first `n` Dns.
      */
     skip?: number
-    distinct?: RegionScalarFieldEnum | RegionScalarFieldEnum[]
+    distinct?: DnsScalarFieldEnum | DnsScalarFieldEnum[]
   }
 
   /**
-   * Region create
+   * Dns create
    */
-  export type RegionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelect<ExtArgs> | null
+    select?: DnsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RegionInclude<ExtArgs> | null
+    include?: DnsInclude<ExtArgs> | null
     /**
-     * The data needed to create a Region.
+     * The data needed to create a Dns.
      */
-    data: XOR<RegionCreateInput, RegionUncheckedCreateInput>
+    data: XOR<DnsCreateInput, DnsUncheckedCreateInput>
   }
 
   /**
-   * Region createMany
+   * Dns createMany
    */
-  export type RegionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Regions.
+     * The data used to create many Dns.
      */
-    data: RegionCreateManyInput | RegionCreateManyInput[]
+    data: DnsCreateManyInput | DnsCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Region createManyAndReturn
+   * Dns createManyAndReturn
    */
-  export type RegionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelectCreateManyAndReturn<ExtArgs> | null
+    select?: DnsSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
-     * The data used to create many Regions.
+     * The data used to create many Dns.
      */
-    data: RegionCreateManyInput | RegionCreateManyInput[]
+    data: DnsCreateManyInput | DnsCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Region update
+   * Dns update
    */
-  export type RegionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelect<ExtArgs> | null
+    select?: DnsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RegionInclude<ExtArgs> | null
+    include?: DnsInclude<ExtArgs> | null
     /**
-     * The data needed to update a Region.
+     * The data needed to update a Dns.
      */
-    data: XOR<RegionUpdateInput, RegionUncheckedUpdateInput>
+    data: XOR<DnsUpdateInput, DnsUncheckedUpdateInput>
     /**
-     * Choose, which Region to update.
+     * Choose, which Dns to update.
      */
-    where: RegionWhereUniqueInput
+    where: DnsWhereUniqueInput
   }
 
   /**
-   * Region updateMany
+   * Dns updateMany
    */
-  export type RegionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Regions.
+     * The data used to update Dns.
      */
-    data: XOR<RegionUpdateManyMutationInput, RegionUncheckedUpdateManyInput>
+    data: XOR<DnsUpdateManyMutationInput, DnsUncheckedUpdateManyInput>
     /**
-     * Filter which Regions to update
+     * Filter which Dns to update
      */
-    where?: RegionWhereInput
+    where?: DnsWhereInput
     /**
-     * Limit how many Regions to update.
+     * Limit how many Dns to update.
      */
     limit?: number
   }
 
   /**
-   * Region updateManyAndReturn
+   * Dns updateManyAndReturn
    */
-  export type RegionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: DnsSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
-     * The data used to update Regions.
+     * The data used to update Dns.
      */
-    data: XOR<RegionUpdateManyMutationInput, RegionUncheckedUpdateManyInput>
+    data: XOR<DnsUpdateManyMutationInput, DnsUncheckedUpdateManyInput>
     /**
-     * Filter which Regions to update
+     * Filter which Dns to update
      */
-    where?: RegionWhereInput
+    where?: DnsWhereInput
     /**
-     * Limit how many Regions to update.
+     * Limit how many Dns to update.
      */
     limit?: number
   }
 
   /**
-   * Region upsert
+   * Dns upsert
    */
-  export type RegionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelect<ExtArgs> | null
+    select?: DnsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RegionInclude<ExtArgs> | null
+    include?: DnsInclude<ExtArgs> | null
     /**
-     * The filter to search for the Region to update in case it exists.
+     * The filter to search for the Dns to update in case it exists.
      */
-    where: RegionWhereUniqueInput
+    where: DnsWhereUniqueInput
     /**
-     * In case the Region found by the `where` argument doesn't exist, create a new Region with this data.
+     * In case the Dns found by the `where` argument doesn't exist, create a new Dns with this data.
      */
-    create: XOR<RegionCreateInput, RegionUncheckedCreateInput>
+    create: XOR<DnsCreateInput, DnsUncheckedCreateInput>
     /**
-     * In case the Region was found with the provided `where` argument, update it with this data.
+     * In case the Dns was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<RegionUpdateInput, RegionUncheckedUpdateInput>
+    update: XOR<DnsUpdateInput, DnsUncheckedUpdateInput>
   }
 
   /**
-   * Region delete
+   * Dns delete
    */
-  export type RegionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelect<ExtArgs> | null
+    select?: DnsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RegionInclude<ExtArgs> | null
+    include?: DnsInclude<ExtArgs> | null
     /**
-     * Filter which Region to delete.
+     * Filter which Dns to delete.
      */
-    where: RegionWhereUniqueInput
+    where: DnsWhereUniqueInput
   }
 
   /**
-   * Region deleteMany
+   * Dns deleteMany
    */
-  export type RegionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Regions to delete
+     * Filter which Dns to delete
      */
-    where?: RegionWhereInput
+    where?: DnsWhereInput
     /**
-     * Limit how many Regions to delete.
+     * Limit how many Dns to delete.
      */
     limit?: number
   }
 
   /**
-   * Region.tickes
+   * Dns.ticks
    */
-  export type Region$tickesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Dns$ticksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteTick
+     * Select specific fields to fetch from the DnsTick
      */
-    select?: WebsiteTickSelect<ExtArgs> | null
+    select?: DnsTickSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the WebsiteTick
+     * Omit specific fields from the DnsTick
      */
-    omit?: WebsiteTickOmit<ExtArgs> | null
+    omit?: DnsTickOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WebsiteTickInclude<ExtArgs> | null
-    where?: WebsiteTickWhereInput
-    orderBy?: WebsiteTickOrderByWithRelationInput | WebsiteTickOrderByWithRelationInput[]
-    cursor?: WebsiteTickWhereUniqueInput
+    include?: DnsTickInclude<ExtArgs> | null
+    where?: DnsTickWhereInput
+    orderBy?: DnsTickOrderByWithRelationInput | DnsTickOrderByWithRelationInput[]
+    cursor?: DnsTickWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: WebsiteTickScalarFieldEnum | WebsiteTickScalarFieldEnum[]
+    distinct?: DnsTickScalarFieldEnum | DnsTickScalarFieldEnum[]
   }
 
   /**
-   * Region without action
+   * Dns without action
    */
-  export type RegionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DnsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Region
+     * Select specific fields to fetch from the Dns
      */
-    select?: RegionSelect<ExtArgs> | null
+    select?: DnsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Region
+     * Omit specific fields from the Dns
      */
-    omit?: RegionOmit<ExtArgs> | null
+    omit?: DnsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RegionInclude<ExtArgs> | null
+    include?: DnsInclude<ExtArgs> | null
   }
 
 
@@ -3473,8 +3977,8 @@ export namespace Prisma {
     id: string | null
     response_time_ms: number | null
     status: $Enums.WebsiteStatus | null
+    region: string | null
     userId: string | null
-    region_id: string | null
     website_id: string | null
     CreatedAt: Date | null
   }
@@ -3483,8 +3987,8 @@ export namespace Prisma {
     id: string | null
     response_time_ms: number | null
     status: $Enums.WebsiteStatus | null
+    region: string | null
     userId: string | null
-    region_id: string | null
     website_id: string | null
     CreatedAt: Date | null
   }
@@ -3493,8 +3997,8 @@ export namespace Prisma {
     id: number
     response_time_ms: number
     status: number
+    region: number
     userId: number
-    region_id: number
     website_id: number
     CreatedAt: number
     _all: number
@@ -3513,8 +4017,8 @@ export namespace Prisma {
     id?: true
     response_time_ms?: true
     status?: true
+    region?: true
     userId?: true
-    region_id?: true
     website_id?: true
     CreatedAt?: true
   }
@@ -3523,8 +4027,8 @@ export namespace Prisma {
     id?: true
     response_time_ms?: true
     status?: true
+    region?: true
     userId?: true
-    region_id?: true
     website_id?: true
     CreatedAt?: true
   }
@@ -3533,8 +4037,8 @@ export namespace Prisma {
     id?: true
     response_time_ms?: true
     status?: true
+    region?: true
     userId?: true
-    region_id?: true
     website_id?: true
     CreatedAt?: true
     _all?: true
@@ -3630,8 +4134,8 @@ export namespace Prisma {
     id: string
     response_time_ms: number
     status: $Enums.WebsiteStatus
+    region: string
     userId: string
-    region_id: string
     website_id: string
     CreatedAt: Date
     _count: WebsiteTickCountAggregateOutputType | null
@@ -3659,11 +4163,10 @@ export namespace Prisma {
     id?: boolean
     response_time_ms?: boolean
     status?: boolean
+    region?: boolean
     userId?: boolean
-    region_id?: boolean
     website_id?: boolean
     CreatedAt?: boolean
-    region?: boolean | RegionDefaultArgs<ExtArgs>
     website?: boolean | WebsiteDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["websiteTick"]>
 
@@ -3671,11 +4174,10 @@ export namespace Prisma {
     id?: boolean
     response_time_ms?: boolean
     status?: boolean
+    region?: boolean
     userId?: boolean
-    region_id?: boolean
     website_id?: boolean
     CreatedAt?: boolean
-    region?: boolean | RegionDefaultArgs<ExtArgs>
     website?: boolean | WebsiteDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["websiteTick"]>
 
@@ -3683,11 +4185,10 @@ export namespace Prisma {
     id?: boolean
     response_time_ms?: boolean
     status?: boolean
+    region?: boolean
     userId?: boolean
-    region_id?: boolean
     website_id?: boolean
     CreatedAt?: boolean
-    region?: boolean | RegionDefaultArgs<ExtArgs>
     website?: boolean | WebsiteDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["websiteTick"]>
 
@@ -3695,38 +4196,34 @@ export namespace Prisma {
     id?: boolean
     response_time_ms?: boolean
     status?: boolean
+    region?: boolean
     userId?: boolean
-    region_id?: boolean
     website_id?: boolean
     CreatedAt?: boolean
   }
 
-  export type WebsiteTickOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "response_time_ms" | "status" | "userId" | "region_id" | "website_id" | "CreatedAt", ExtArgs["result"]["websiteTick"]>
+  export type WebsiteTickOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "response_time_ms" | "status" | "region" | "userId" | "website_id" | "CreatedAt", ExtArgs["result"]["websiteTick"]>
   export type WebsiteTickInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    region?: boolean | RegionDefaultArgs<ExtArgs>
     website?: boolean | WebsiteDefaultArgs<ExtArgs>
   }
   export type WebsiteTickIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    region?: boolean | RegionDefaultArgs<ExtArgs>
     website?: boolean | WebsiteDefaultArgs<ExtArgs>
   }
   export type WebsiteTickIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    region?: boolean | RegionDefaultArgs<ExtArgs>
     website?: boolean | WebsiteDefaultArgs<ExtArgs>
   }
 
   export type $WebsiteTickPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "WebsiteTick"
     objects: {
-      region: Prisma.$RegionPayload<ExtArgs>
       website: Prisma.$WebsitePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       response_time_ms: number
       status: $Enums.WebsiteStatus
+      region: string
       userId: string
-      region_id: string
       website_id: string
       CreatedAt: Date
     }, ExtArgs["result"]["websiteTick"]>
@@ -4123,7 +4620,6 @@ export namespace Prisma {
    */
   export interface Prisma__WebsiteTickClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    region<T extends RegionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RegionDefaultArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     website<T extends WebsiteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WebsiteDefaultArgs<ExtArgs>>): Prisma__WebsiteClient<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4157,8 +4653,8 @@ export namespace Prisma {
     readonly id: FieldRef<"WebsiteTick", 'String'>
     readonly response_time_ms: FieldRef<"WebsiteTick", 'Int'>
     readonly status: FieldRef<"WebsiteTick", 'WebsiteStatus'>
+    readonly region: FieldRef<"WebsiteTick", 'String'>
     readonly userId: FieldRef<"WebsiteTick", 'String'>
-    readonly region_id: FieldRef<"WebsiteTick", 'String'>
     readonly website_id: FieldRef<"WebsiteTick", 'String'>
     readonly CreatedAt: FieldRef<"WebsiteTick", 'DateTime'>
   }
@@ -4576,6 +5072,2158 @@ export namespace Prisma {
 
 
   /**
+   * Model DnsTick
+   */
+
+  export type AggregateDnsTick = {
+    _count: DnsTickCountAggregateOutputType | null
+    _avg: DnsTickAvgAggregateOutputType | null
+    _sum: DnsTickSumAggregateOutputType | null
+    _min: DnsTickMinAggregateOutputType | null
+    _max: DnsTickMaxAggregateOutputType | null
+  }
+
+  export type DnsTickAvgAggregateOutputType = {
+    latency_ms: number | null
+  }
+
+  export type DnsTickSumAggregateOutputType = {
+    latency_ms: number | null
+  }
+
+  export type DnsTickMinAggregateOutputType = {
+    id: string | null
+    latency_ms: number | null
+    status: $Enums.DnsStatus | null
+    region: string | null
+    userId: string | null
+    dns_id: string | null
+    check_id: string | null
+    resolver_ip: string | null
+    CreatedAt: Date | null
+  }
+
+  export type DnsTickMaxAggregateOutputType = {
+    id: string | null
+    latency_ms: number | null
+    status: $Enums.DnsStatus | null
+    region: string | null
+    userId: string | null
+    dns_id: string | null
+    check_id: string | null
+    resolver_ip: string | null
+    CreatedAt: Date | null
+  }
+
+  export type DnsTickCountAggregateOutputType = {
+    id: number
+    latency_ms: number
+    status: number
+    region: number
+    userId: number
+    dns_id: number
+    check_id: number
+    resolver_ip: number
+    CreatedAt: number
+    _all: number
+  }
+
+
+  export type DnsTickAvgAggregateInputType = {
+    latency_ms?: true
+  }
+
+  export type DnsTickSumAggregateInputType = {
+    latency_ms?: true
+  }
+
+  export type DnsTickMinAggregateInputType = {
+    id?: true
+    latency_ms?: true
+    status?: true
+    region?: true
+    userId?: true
+    dns_id?: true
+    check_id?: true
+    resolver_ip?: true
+    CreatedAt?: true
+  }
+
+  export type DnsTickMaxAggregateInputType = {
+    id?: true
+    latency_ms?: true
+    status?: true
+    region?: true
+    userId?: true
+    dns_id?: true
+    check_id?: true
+    resolver_ip?: true
+    CreatedAt?: true
+  }
+
+  export type DnsTickCountAggregateInputType = {
+    id?: true
+    latency_ms?: true
+    status?: true
+    region?: true
+    userId?: true
+    dns_id?: true
+    check_id?: true
+    resolver_ip?: true
+    CreatedAt?: true
+    _all?: true
+  }
+
+  export type DnsTickAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DnsTick to aggregate.
+     */
+    where?: DnsTickWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DnsTicks to fetch.
+     */
+    orderBy?: DnsTickOrderByWithRelationInput | DnsTickOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DnsTickWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DnsTicks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DnsTicks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DnsTicks
+    **/
+    _count?: true | DnsTickCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DnsTickAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DnsTickSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DnsTickMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DnsTickMaxAggregateInputType
+  }
+
+  export type GetDnsTickAggregateType<T extends DnsTickAggregateArgs> = {
+        [P in keyof T & keyof AggregateDnsTick]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDnsTick[P]>
+      : GetScalarType<T[P], AggregateDnsTick[P]>
+  }
+
+
+
+
+  export type DnsTickGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DnsTickWhereInput
+    orderBy?: DnsTickOrderByWithAggregationInput | DnsTickOrderByWithAggregationInput[]
+    by: DnsTickScalarFieldEnum[] | DnsTickScalarFieldEnum
+    having?: DnsTickScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DnsTickCountAggregateInputType | true
+    _avg?: DnsTickAvgAggregateInputType
+    _sum?: DnsTickSumAggregateInputType
+    _min?: DnsTickMinAggregateInputType
+    _max?: DnsTickMaxAggregateInputType
+  }
+
+  export type DnsTickGroupByOutputType = {
+    id: string
+    latency_ms: number
+    status: $Enums.DnsStatus
+    region: string
+    userId: string
+    dns_id: string
+    check_id: string | null
+    resolver_ip: string
+    CreatedAt: Date
+    _count: DnsTickCountAggregateOutputType | null
+    _avg: DnsTickAvgAggregateOutputType | null
+    _sum: DnsTickSumAggregateOutputType | null
+    _min: DnsTickMinAggregateOutputType | null
+    _max: DnsTickMaxAggregateOutputType | null
+  }
+
+  type GetDnsTickGroupByPayload<T extends DnsTickGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DnsTickGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DnsTickGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DnsTickGroupByOutputType[P]>
+            : GetScalarType<T[P], DnsTickGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DnsTickSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    latency_ms?: boolean
+    status?: boolean
+    region?: boolean
+    userId?: boolean
+    dns_id?: boolean
+    check_id?: boolean
+    resolver_ip?: boolean
+    CreatedAt?: boolean
+    dns?: boolean | DnsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dnsTick"]>
+
+  export type DnsTickSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    latency_ms?: boolean
+    status?: boolean
+    region?: boolean
+    userId?: boolean
+    dns_id?: boolean
+    check_id?: boolean
+    resolver_ip?: boolean
+    CreatedAt?: boolean
+    dns?: boolean | DnsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dnsTick"]>
+
+  export type DnsTickSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    latency_ms?: boolean
+    status?: boolean
+    region?: boolean
+    userId?: boolean
+    dns_id?: boolean
+    check_id?: boolean
+    resolver_ip?: boolean
+    CreatedAt?: boolean
+    dns?: boolean | DnsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dnsTick"]>
+
+  export type DnsTickSelectScalar = {
+    id?: boolean
+    latency_ms?: boolean
+    status?: boolean
+    region?: boolean
+    userId?: boolean
+    dns_id?: boolean
+    check_id?: boolean
+    resolver_ip?: boolean
+    CreatedAt?: boolean
+  }
+
+  export type DnsTickOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "latency_ms" | "status" | "region" | "userId" | "dns_id" | "check_id" | "resolver_ip" | "CreatedAt", ExtArgs["result"]["dnsTick"]>
+  export type DnsTickInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dns?: boolean | DnsDefaultArgs<ExtArgs>
+  }
+  export type DnsTickIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dns?: boolean | DnsDefaultArgs<ExtArgs>
+  }
+  export type DnsTickIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dns?: boolean | DnsDefaultArgs<ExtArgs>
+  }
+
+  export type $DnsTickPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DnsTick"
+    objects: {
+      dns: Prisma.$DnsPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      latency_ms: number
+      status: $Enums.DnsStatus
+      region: string
+      userId: string
+      dns_id: string
+      check_id: string | null
+      resolver_ip: string
+      CreatedAt: Date
+    }, ExtArgs["result"]["dnsTick"]>
+    composites: {}
+  }
+
+  type DnsTickGetPayload<S extends boolean | null | undefined | DnsTickDefaultArgs> = $Result.GetResult<Prisma.$DnsTickPayload, S>
+
+  type DnsTickCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DnsTickFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DnsTickCountAggregateInputType | true
+    }
+
+  export interface DnsTickDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DnsTick'], meta: { name: 'DnsTick' } }
+    /**
+     * Find zero or one DnsTick that matches the filter.
+     * @param {DnsTickFindUniqueArgs} args - Arguments to find a DnsTick
+     * @example
+     * // Get one DnsTick
+     * const dnsTick = await prisma.dnsTick.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DnsTickFindUniqueArgs>(args: SelectSubset<T, DnsTickFindUniqueArgs<ExtArgs>>): Prisma__DnsTickClient<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DnsTick that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DnsTickFindUniqueOrThrowArgs} args - Arguments to find a DnsTick
+     * @example
+     * // Get one DnsTick
+     * const dnsTick = await prisma.dnsTick.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DnsTickFindUniqueOrThrowArgs>(args: SelectSubset<T, DnsTickFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DnsTickClient<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DnsTick that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsTickFindFirstArgs} args - Arguments to find a DnsTick
+     * @example
+     * // Get one DnsTick
+     * const dnsTick = await prisma.dnsTick.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DnsTickFindFirstArgs>(args?: SelectSubset<T, DnsTickFindFirstArgs<ExtArgs>>): Prisma__DnsTickClient<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DnsTick that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsTickFindFirstOrThrowArgs} args - Arguments to find a DnsTick
+     * @example
+     * // Get one DnsTick
+     * const dnsTick = await prisma.dnsTick.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DnsTickFindFirstOrThrowArgs>(args?: SelectSubset<T, DnsTickFindFirstOrThrowArgs<ExtArgs>>): Prisma__DnsTickClient<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DnsTicks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsTickFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DnsTicks
+     * const dnsTicks = await prisma.dnsTick.findMany()
+     * 
+     * // Get first 10 DnsTicks
+     * const dnsTicks = await prisma.dnsTick.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dnsTickWithIdOnly = await prisma.dnsTick.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DnsTickFindManyArgs>(args?: SelectSubset<T, DnsTickFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DnsTick.
+     * @param {DnsTickCreateArgs} args - Arguments to create a DnsTick.
+     * @example
+     * // Create one DnsTick
+     * const DnsTick = await prisma.dnsTick.create({
+     *   data: {
+     *     // ... data to create a DnsTick
+     *   }
+     * })
+     * 
+     */
+    create<T extends DnsTickCreateArgs>(args: SelectSubset<T, DnsTickCreateArgs<ExtArgs>>): Prisma__DnsTickClient<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DnsTicks.
+     * @param {DnsTickCreateManyArgs} args - Arguments to create many DnsTicks.
+     * @example
+     * // Create many DnsTicks
+     * const dnsTick = await prisma.dnsTick.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DnsTickCreateManyArgs>(args?: SelectSubset<T, DnsTickCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DnsTicks and returns the data saved in the database.
+     * @param {DnsTickCreateManyAndReturnArgs} args - Arguments to create many DnsTicks.
+     * @example
+     * // Create many DnsTicks
+     * const dnsTick = await prisma.dnsTick.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DnsTicks and only return the `id`
+     * const dnsTickWithIdOnly = await prisma.dnsTick.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DnsTickCreateManyAndReturnArgs>(args?: SelectSubset<T, DnsTickCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DnsTick.
+     * @param {DnsTickDeleteArgs} args - Arguments to delete one DnsTick.
+     * @example
+     * // Delete one DnsTick
+     * const DnsTick = await prisma.dnsTick.delete({
+     *   where: {
+     *     // ... filter to delete one DnsTick
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DnsTickDeleteArgs>(args: SelectSubset<T, DnsTickDeleteArgs<ExtArgs>>): Prisma__DnsTickClient<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DnsTick.
+     * @param {DnsTickUpdateArgs} args - Arguments to update one DnsTick.
+     * @example
+     * // Update one DnsTick
+     * const dnsTick = await prisma.dnsTick.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DnsTickUpdateArgs>(args: SelectSubset<T, DnsTickUpdateArgs<ExtArgs>>): Prisma__DnsTickClient<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DnsTicks.
+     * @param {DnsTickDeleteManyArgs} args - Arguments to filter DnsTicks to delete.
+     * @example
+     * // Delete a few DnsTicks
+     * const { count } = await prisma.dnsTick.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DnsTickDeleteManyArgs>(args?: SelectSubset<T, DnsTickDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DnsTicks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsTickUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DnsTicks
+     * const dnsTick = await prisma.dnsTick.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DnsTickUpdateManyArgs>(args: SelectSubset<T, DnsTickUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DnsTicks and returns the data updated in the database.
+     * @param {DnsTickUpdateManyAndReturnArgs} args - Arguments to update many DnsTicks.
+     * @example
+     * // Update many DnsTicks
+     * const dnsTick = await prisma.dnsTick.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DnsTicks and only return the `id`
+     * const dnsTickWithIdOnly = await prisma.dnsTick.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DnsTickUpdateManyAndReturnArgs>(args: SelectSubset<T, DnsTickUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DnsTick.
+     * @param {DnsTickUpsertArgs} args - Arguments to update or create a DnsTick.
+     * @example
+     * // Update or create a DnsTick
+     * const dnsTick = await prisma.dnsTick.upsert({
+     *   create: {
+     *     // ... data to create a DnsTick
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DnsTick we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DnsTickUpsertArgs>(args: SelectSubset<T, DnsTickUpsertArgs<ExtArgs>>): Prisma__DnsTickClient<$Result.GetResult<Prisma.$DnsTickPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DnsTicks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsTickCountArgs} args - Arguments to filter DnsTicks to count.
+     * @example
+     * // Count the number of DnsTicks
+     * const count = await prisma.dnsTick.count({
+     *   where: {
+     *     // ... the filter for the DnsTicks we want to count
+     *   }
+     * })
+    **/
+    count<T extends DnsTickCountArgs>(
+      args?: Subset<T, DnsTickCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DnsTickCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DnsTick.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsTickAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DnsTickAggregateArgs>(args: Subset<T, DnsTickAggregateArgs>): Prisma.PrismaPromise<GetDnsTickAggregateType<T>>
+
+    /**
+     * Group by DnsTick.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsTickGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DnsTickGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DnsTickGroupByArgs['orderBy'] }
+        : { orderBy?: DnsTickGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DnsTickGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDnsTickGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DnsTick model
+   */
+  readonly fields: DnsTickFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DnsTick.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DnsTickClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    dns<T extends DnsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DnsDefaultArgs<ExtArgs>>): Prisma__DnsClient<$Result.GetResult<Prisma.$DnsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DnsTick model
+   */
+  interface DnsTickFieldRefs {
+    readonly id: FieldRef<"DnsTick", 'String'>
+    readonly latency_ms: FieldRef<"DnsTick", 'Int'>
+    readonly status: FieldRef<"DnsTick", 'DnsStatus'>
+    readonly region: FieldRef<"DnsTick", 'String'>
+    readonly userId: FieldRef<"DnsTick", 'String'>
+    readonly dns_id: FieldRef<"DnsTick", 'String'>
+    readonly check_id: FieldRef<"DnsTick", 'String'>
+    readonly resolver_ip: FieldRef<"DnsTick", 'String'>
+    readonly CreatedAt: FieldRef<"DnsTick", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DnsTick findUnique
+   */
+  export type DnsTickFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickInclude<ExtArgs> | null
+    /**
+     * Filter, which DnsTick to fetch.
+     */
+    where: DnsTickWhereUniqueInput
+  }
+
+  /**
+   * DnsTick findUniqueOrThrow
+   */
+  export type DnsTickFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickInclude<ExtArgs> | null
+    /**
+     * Filter, which DnsTick to fetch.
+     */
+    where: DnsTickWhereUniqueInput
+  }
+
+  /**
+   * DnsTick findFirst
+   */
+  export type DnsTickFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickInclude<ExtArgs> | null
+    /**
+     * Filter, which DnsTick to fetch.
+     */
+    where?: DnsTickWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DnsTicks to fetch.
+     */
+    orderBy?: DnsTickOrderByWithRelationInput | DnsTickOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DnsTicks.
+     */
+    cursor?: DnsTickWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DnsTicks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DnsTicks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DnsTicks.
+     */
+    distinct?: DnsTickScalarFieldEnum | DnsTickScalarFieldEnum[]
+  }
+
+  /**
+   * DnsTick findFirstOrThrow
+   */
+  export type DnsTickFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickInclude<ExtArgs> | null
+    /**
+     * Filter, which DnsTick to fetch.
+     */
+    where?: DnsTickWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DnsTicks to fetch.
+     */
+    orderBy?: DnsTickOrderByWithRelationInput | DnsTickOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DnsTicks.
+     */
+    cursor?: DnsTickWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DnsTicks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DnsTicks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DnsTicks.
+     */
+    distinct?: DnsTickScalarFieldEnum | DnsTickScalarFieldEnum[]
+  }
+
+  /**
+   * DnsTick findMany
+   */
+  export type DnsTickFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickInclude<ExtArgs> | null
+    /**
+     * Filter, which DnsTicks to fetch.
+     */
+    where?: DnsTickWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DnsTicks to fetch.
+     */
+    orderBy?: DnsTickOrderByWithRelationInput | DnsTickOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DnsTicks.
+     */
+    cursor?: DnsTickWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DnsTicks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DnsTicks.
+     */
+    skip?: number
+    distinct?: DnsTickScalarFieldEnum | DnsTickScalarFieldEnum[]
+  }
+
+  /**
+   * DnsTick create
+   */
+  export type DnsTickCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DnsTick.
+     */
+    data: XOR<DnsTickCreateInput, DnsTickUncheckedCreateInput>
+  }
+
+  /**
+   * DnsTick createMany
+   */
+  export type DnsTickCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DnsTicks.
+     */
+    data: DnsTickCreateManyInput | DnsTickCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DnsTick createManyAndReturn
+   */
+  export type DnsTickCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * The data used to create many DnsTicks.
+     */
+    data: DnsTickCreateManyInput | DnsTickCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DnsTick update
+   */
+  export type DnsTickUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DnsTick.
+     */
+    data: XOR<DnsTickUpdateInput, DnsTickUncheckedUpdateInput>
+    /**
+     * Choose, which DnsTick to update.
+     */
+    where: DnsTickWhereUniqueInput
+  }
+
+  /**
+   * DnsTick updateMany
+   */
+  export type DnsTickUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DnsTicks.
+     */
+    data: XOR<DnsTickUpdateManyMutationInput, DnsTickUncheckedUpdateManyInput>
+    /**
+     * Filter which DnsTicks to update
+     */
+    where?: DnsTickWhereInput
+    /**
+     * Limit how many DnsTicks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DnsTick updateManyAndReturn
+   */
+  export type DnsTickUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * The data used to update DnsTicks.
+     */
+    data: XOR<DnsTickUpdateManyMutationInput, DnsTickUncheckedUpdateManyInput>
+    /**
+     * Filter which DnsTicks to update
+     */
+    where?: DnsTickWhereInput
+    /**
+     * Limit how many DnsTicks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DnsTick upsert
+   */
+  export type DnsTickUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DnsTick to update in case it exists.
+     */
+    where: DnsTickWhereUniqueInput
+    /**
+     * In case the DnsTick found by the `where` argument doesn't exist, create a new DnsTick with this data.
+     */
+    create: XOR<DnsTickCreateInput, DnsTickUncheckedCreateInput>
+    /**
+     * In case the DnsTick was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DnsTickUpdateInput, DnsTickUncheckedUpdateInput>
+  }
+
+  /**
+   * DnsTick delete
+   */
+  export type DnsTickDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickInclude<ExtArgs> | null
+    /**
+     * Filter which DnsTick to delete.
+     */
+    where: DnsTickWhereUniqueInput
+  }
+
+  /**
+   * DnsTick deleteMany
+   */
+  export type DnsTickDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DnsTicks to delete
+     */
+    where?: DnsTickWhereInput
+    /**
+     * Limit how many DnsTicks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DnsTick without action
+   */
+  export type DnsTickDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsTick
+     */
+    select?: DnsTickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsTick
+     */
+    omit?: DnsTickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DnsTickInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DnsRecord
+   */
+
+  export type AggregateDnsRecord = {
+    _count: DnsRecordCountAggregateOutputType | null
+    _min: DnsRecordMinAggregateOutputType | null
+    _max: DnsRecordMaxAggregateOutputType | null
+  }
+
+  export type DnsRecordMinAggregateOutputType = {
+    id: string | null
+    type: $Enums.Record | null
+    response: string | null
+    region: string | null
+    user_id: string | null
+    dns_id: string | null
+  }
+
+  export type DnsRecordMaxAggregateOutputType = {
+    id: string | null
+    type: $Enums.Record | null
+    response: string | null
+    region: string | null
+    user_id: string | null
+    dns_id: string | null
+  }
+
+  export type DnsRecordCountAggregateOutputType = {
+    id: number
+    type: number
+    response: number
+    region: number
+    user_id: number
+    dns_id: number
+    _all: number
+  }
+
+
+  export type DnsRecordMinAggregateInputType = {
+    id?: true
+    type?: true
+    response?: true
+    region?: true
+    user_id?: true
+    dns_id?: true
+  }
+
+  export type DnsRecordMaxAggregateInputType = {
+    id?: true
+    type?: true
+    response?: true
+    region?: true
+    user_id?: true
+    dns_id?: true
+  }
+
+  export type DnsRecordCountAggregateInputType = {
+    id?: true
+    type?: true
+    response?: true
+    region?: true
+    user_id?: true
+    dns_id?: true
+    _all?: true
+  }
+
+  export type DnsRecordAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DnsRecord to aggregate.
+     */
+    where?: DnsRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DnsRecords to fetch.
+     */
+    orderBy?: DnsRecordOrderByWithRelationInput | DnsRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DnsRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DnsRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DnsRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DnsRecords
+    **/
+    _count?: true | DnsRecordCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DnsRecordMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DnsRecordMaxAggregateInputType
+  }
+
+  export type GetDnsRecordAggregateType<T extends DnsRecordAggregateArgs> = {
+        [P in keyof T & keyof AggregateDnsRecord]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDnsRecord[P]>
+      : GetScalarType<T[P], AggregateDnsRecord[P]>
+  }
+
+
+
+
+  export type DnsRecordGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DnsRecordWhereInput
+    orderBy?: DnsRecordOrderByWithAggregationInput | DnsRecordOrderByWithAggregationInput[]
+    by: DnsRecordScalarFieldEnum[] | DnsRecordScalarFieldEnum
+    having?: DnsRecordScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DnsRecordCountAggregateInputType | true
+    _min?: DnsRecordMinAggregateInputType
+    _max?: DnsRecordMaxAggregateInputType
+  }
+
+  export type DnsRecordGroupByOutputType = {
+    id: string
+    type: $Enums.Record
+    response: string | null
+    region: string
+    user_id: string
+    dns_id: string
+    _count: DnsRecordCountAggregateOutputType | null
+    _min: DnsRecordMinAggregateOutputType | null
+    _max: DnsRecordMaxAggregateOutputType | null
+  }
+
+  type GetDnsRecordGroupByPayload<T extends DnsRecordGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DnsRecordGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DnsRecordGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DnsRecordGroupByOutputType[P]>
+            : GetScalarType<T[P], DnsRecordGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DnsRecordSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    response?: boolean
+    region?: boolean
+    user_id?: boolean
+    dns_id?: boolean
+  }, ExtArgs["result"]["dnsRecord"]>
+
+  export type DnsRecordSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    response?: boolean
+    region?: boolean
+    user_id?: boolean
+    dns_id?: boolean
+  }, ExtArgs["result"]["dnsRecord"]>
+
+  export type DnsRecordSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    response?: boolean
+    region?: boolean
+    user_id?: boolean
+    dns_id?: boolean
+  }, ExtArgs["result"]["dnsRecord"]>
+
+  export type DnsRecordSelectScalar = {
+    id?: boolean
+    type?: boolean
+    response?: boolean
+    region?: boolean
+    user_id?: boolean
+    dns_id?: boolean
+  }
+
+  export type DnsRecordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "response" | "region" | "user_id" | "dns_id", ExtArgs["result"]["dnsRecord"]>
+
+  export type $DnsRecordPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DnsRecord"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      type: $Enums.Record
+      response: string | null
+      region: string
+      user_id: string
+      dns_id: string
+    }, ExtArgs["result"]["dnsRecord"]>
+    composites: {}
+  }
+
+  type DnsRecordGetPayload<S extends boolean | null | undefined | DnsRecordDefaultArgs> = $Result.GetResult<Prisma.$DnsRecordPayload, S>
+
+  type DnsRecordCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DnsRecordFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DnsRecordCountAggregateInputType | true
+    }
+
+  export interface DnsRecordDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DnsRecord'], meta: { name: 'DnsRecord' } }
+    /**
+     * Find zero or one DnsRecord that matches the filter.
+     * @param {DnsRecordFindUniqueArgs} args - Arguments to find a DnsRecord
+     * @example
+     * // Get one DnsRecord
+     * const dnsRecord = await prisma.dnsRecord.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DnsRecordFindUniqueArgs>(args: SelectSubset<T, DnsRecordFindUniqueArgs<ExtArgs>>): Prisma__DnsRecordClient<$Result.GetResult<Prisma.$DnsRecordPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DnsRecord that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DnsRecordFindUniqueOrThrowArgs} args - Arguments to find a DnsRecord
+     * @example
+     * // Get one DnsRecord
+     * const dnsRecord = await prisma.dnsRecord.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DnsRecordFindUniqueOrThrowArgs>(args: SelectSubset<T, DnsRecordFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DnsRecordClient<$Result.GetResult<Prisma.$DnsRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DnsRecord that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsRecordFindFirstArgs} args - Arguments to find a DnsRecord
+     * @example
+     * // Get one DnsRecord
+     * const dnsRecord = await prisma.dnsRecord.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DnsRecordFindFirstArgs>(args?: SelectSubset<T, DnsRecordFindFirstArgs<ExtArgs>>): Prisma__DnsRecordClient<$Result.GetResult<Prisma.$DnsRecordPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DnsRecord that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsRecordFindFirstOrThrowArgs} args - Arguments to find a DnsRecord
+     * @example
+     * // Get one DnsRecord
+     * const dnsRecord = await prisma.dnsRecord.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DnsRecordFindFirstOrThrowArgs>(args?: SelectSubset<T, DnsRecordFindFirstOrThrowArgs<ExtArgs>>): Prisma__DnsRecordClient<$Result.GetResult<Prisma.$DnsRecordPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DnsRecords that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsRecordFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DnsRecords
+     * const dnsRecords = await prisma.dnsRecord.findMany()
+     * 
+     * // Get first 10 DnsRecords
+     * const dnsRecords = await prisma.dnsRecord.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dnsRecordWithIdOnly = await prisma.dnsRecord.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DnsRecordFindManyArgs>(args?: SelectSubset<T, DnsRecordFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DnsRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DnsRecord.
+     * @param {DnsRecordCreateArgs} args - Arguments to create a DnsRecord.
+     * @example
+     * // Create one DnsRecord
+     * const DnsRecord = await prisma.dnsRecord.create({
+     *   data: {
+     *     // ... data to create a DnsRecord
+     *   }
+     * })
+     * 
+     */
+    create<T extends DnsRecordCreateArgs>(args: SelectSubset<T, DnsRecordCreateArgs<ExtArgs>>): Prisma__DnsRecordClient<$Result.GetResult<Prisma.$DnsRecordPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DnsRecords.
+     * @param {DnsRecordCreateManyArgs} args - Arguments to create many DnsRecords.
+     * @example
+     * // Create many DnsRecords
+     * const dnsRecord = await prisma.dnsRecord.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DnsRecordCreateManyArgs>(args?: SelectSubset<T, DnsRecordCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DnsRecords and returns the data saved in the database.
+     * @param {DnsRecordCreateManyAndReturnArgs} args - Arguments to create many DnsRecords.
+     * @example
+     * // Create many DnsRecords
+     * const dnsRecord = await prisma.dnsRecord.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DnsRecords and only return the `id`
+     * const dnsRecordWithIdOnly = await prisma.dnsRecord.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DnsRecordCreateManyAndReturnArgs>(args?: SelectSubset<T, DnsRecordCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DnsRecordPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DnsRecord.
+     * @param {DnsRecordDeleteArgs} args - Arguments to delete one DnsRecord.
+     * @example
+     * // Delete one DnsRecord
+     * const DnsRecord = await prisma.dnsRecord.delete({
+     *   where: {
+     *     // ... filter to delete one DnsRecord
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DnsRecordDeleteArgs>(args: SelectSubset<T, DnsRecordDeleteArgs<ExtArgs>>): Prisma__DnsRecordClient<$Result.GetResult<Prisma.$DnsRecordPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DnsRecord.
+     * @param {DnsRecordUpdateArgs} args - Arguments to update one DnsRecord.
+     * @example
+     * // Update one DnsRecord
+     * const dnsRecord = await prisma.dnsRecord.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DnsRecordUpdateArgs>(args: SelectSubset<T, DnsRecordUpdateArgs<ExtArgs>>): Prisma__DnsRecordClient<$Result.GetResult<Prisma.$DnsRecordPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DnsRecords.
+     * @param {DnsRecordDeleteManyArgs} args - Arguments to filter DnsRecords to delete.
+     * @example
+     * // Delete a few DnsRecords
+     * const { count } = await prisma.dnsRecord.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DnsRecordDeleteManyArgs>(args?: SelectSubset<T, DnsRecordDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DnsRecords.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsRecordUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DnsRecords
+     * const dnsRecord = await prisma.dnsRecord.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DnsRecordUpdateManyArgs>(args: SelectSubset<T, DnsRecordUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DnsRecords and returns the data updated in the database.
+     * @param {DnsRecordUpdateManyAndReturnArgs} args - Arguments to update many DnsRecords.
+     * @example
+     * // Update many DnsRecords
+     * const dnsRecord = await prisma.dnsRecord.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DnsRecords and only return the `id`
+     * const dnsRecordWithIdOnly = await prisma.dnsRecord.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DnsRecordUpdateManyAndReturnArgs>(args: SelectSubset<T, DnsRecordUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DnsRecordPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DnsRecord.
+     * @param {DnsRecordUpsertArgs} args - Arguments to update or create a DnsRecord.
+     * @example
+     * // Update or create a DnsRecord
+     * const dnsRecord = await prisma.dnsRecord.upsert({
+     *   create: {
+     *     // ... data to create a DnsRecord
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DnsRecord we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DnsRecordUpsertArgs>(args: SelectSubset<T, DnsRecordUpsertArgs<ExtArgs>>): Prisma__DnsRecordClient<$Result.GetResult<Prisma.$DnsRecordPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DnsRecords.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsRecordCountArgs} args - Arguments to filter DnsRecords to count.
+     * @example
+     * // Count the number of DnsRecords
+     * const count = await prisma.dnsRecord.count({
+     *   where: {
+     *     // ... the filter for the DnsRecords we want to count
+     *   }
+     * })
+    **/
+    count<T extends DnsRecordCountArgs>(
+      args?: Subset<T, DnsRecordCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DnsRecordCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DnsRecord.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsRecordAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DnsRecordAggregateArgs>(args: Subset<T, DnsRecordAggregateArgs>): Prisma.PrismaPromise<GetDnsRecordAggregateType<T>>
+
+    /**
+     * Group by DnsRecord.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DnsRecordGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DnsRecordGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DnsRecordGroupByArgs['orderBy'] }
+        : { orderBy?: DnsRecordGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DnsRecordGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDnsRecordGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DnsRecord model
+   */
+  readonly fields: DnsRecordFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DnsRecord.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DnsRecordClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DnsRecord model
+   */
+  interface DnsRecordFieldRefs {
+    readonly id: FieldRef<"DnsRecord", 'String'>
+    readonly type: FieldRef<"DnsRecord", 'Record'>
+    readonly response: FieldRef<"DnsRecord", 'String'>
+    readonly region: FieldRef<"DnsRecord", 'String'>
+    readonly user_id: FieldRef<"DnsRecord", 'String'>
+    readonly dns_id: FieldRef<"DnsRecord", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DnsRecord findUnique
+   */
+  export type DnsRecordFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which DnsRecord to fetch.
+     */
+    where: DnsRecordWhereUniqueInput
+  }
+
+  /**
+   * DnsRecord findUniqueOrThrow
+   */
+  export type DnsRecordFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which DnsRecord to fetch.
+     */
+    where: DnsRecordWhereUniqueInput
+  }
+
+  /**
+   * DnsRecord findFirst
+   */
+  export type DnsRecordFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which DnsRecord to fetch.
+     */
+    where?: DnsRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DnsRecords to fetch.
+     */
+    orderBy?: DnsRecordOrderByWithRelationInput | DnsRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DnsRecords.
+     */
+    cursor?: DnsRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DnsRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DnsRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DnsRecords.
+     */
+    distinct?: DnsRecordScalarFieldEnum | DnsRecordScalarFieldEnum[]
+  }
+
+  /**
+   * DnsRecord findFirstOrThrow
+   */
+  export type DnsRecordFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which DnsRecord to fetch.
+     */
+    where?: DnsRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DnsRecords to fetch.
+     */
+    orderBy?: DnsRecordOrderByWithRelationInput | DnsRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DnsRecords.
+     */
+    cursor?: DnsRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DnsRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DnsRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DnsRecords.
+     */
+    distinct?: DnsRecordScalarFieldEnum | DnsRecordScalarFieldEnum[]
+  }
+
+  /**
+   * DnsRecord findMany
+   */
+  export type DnsRecordFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which DnsRecords to fetch.
+     */
+    where?: DnsRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DnsRecords to fetch.
+     */
+    orderBy?: DnsRecordOrderByWithRelationInput | DnsRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DnsRecords.
+     */
+    cursor?: DnsRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DnsRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DnsRecords.
+     */
+    skip?: number
+    distinct?: DnsRecordScalarFieldEnum | DnsRecordScalarFieldEnum[]
+  }
+
+  /**
+   * DnsRecord create
+   */
+  export type DnsRecordCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+    /**
+     * The data needed to create a DnsRecord.
+     */
+    data: XOR<DnsRecordCreateInput, DnsRecordUncheckedCreateInput>
+  }
+
+  /**
+   * DnsRecord createMany
+   */
+  export type DnsRecordCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DnsRecords.
+     */
+    data: DnsRecordCreateManyInput | DnsRecordCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DnsRecord createManyAndReturn
+   */
+  export type DnsRecordCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+    /**
+     * The data used to create many DnsRecords.
+     */
+    data: DnsRecordCreateManyInput | DnsRecordCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DnsRecord update
+   */
+  export type DnsRecordUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+    /**
+     * The data needed to update a DnsRecord.
+     */
+    data: XOR<DnsRecordUpdateInput, DnsRecordUncheckedUpdateInput>
+    /**
+     * Choose, which DnsRecord to update.
+     */
+    where: DnsRecordWhereUniqueInput
+  }
+
+  /**
+   * DnsRecord updateMany
+   */
+  export type DnsRecordUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DnsRecords.
+     */
+    data: XOR<DnsRecordUpdateManyMutationInput, DnsRecordUncheckedUpdateManyInput>
+    /**
+     * Filter which DnsRecords to update
+     */
+    where?: DnsRecordWhereInput
+    /**
+     * Limit how many DnsRecords to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DnsRecord updateManyAndReturn
+   */
+  export type DnsRecordUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+    /**
+     * The data used to update DnsRecords.
+     */
+    data: XOR<DnsRecordUpdateManyMutationInput, DnsRecordUncheckedUpdateManyInput>
+    /**
+     * Filter which DnsRecords to update
+     */
+    where?: DnsRecordWhereInput
+    /**
+     * Limit how many DnsRecords to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DnsRecord upsert
+   */
+  export type DnsRecordUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+    /**
+     * The filter to search for the DnsRecord to update in case it exists.
+     */
+    where: DnsRecordWhereUniqueInput
+    /**
+     * In case the DnsRecord found by the `where` argument doesn't exist, create a new DnsRecord with this data.
+     */
+    create: XOR<DnsRecordCreateInput, DnsRecordUncheckedCreateInput>
+    /**
+     * In case the DnsRecord was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DnsRecordUpdateInput, DnsRecordUncheckedUpdateInput>
+  }
+
+  /**
+   * DnsRecord delete
+   */
+  export type DnsRecordDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+    /**
+     * Filter which DnsRecord to delete.
+     */
+    where: DnsRecordWhereUniqueInput
+  }
+
+  /**
+   * DnsRecord deleteMany
+   */
+  export type DnsRecordDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DnsRecords to delete
+     */
+    where?: DnsRecordWhereInput
+    /**
+     * Limit how many DnsRecords to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DnsRecord without action
+   */
+  export type DnsRecordDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DnsRecord
+     */
+    select?: DnsRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DnsRecord
+     */
+    omit?: DnsRecordOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model User
    */
 
@@ -4732,7 +7380,7 @@ export namespace Prisma {
     password?: boolean
     email?: boolean
     Websites?: boolean | User$WebsitesArgs<ExtArgs>
-    incidents?: boolean | User$incidentsArgs<ExtArgs>
+    alert?: boolean | User$alertArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4760,7 +7408,7 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "password" | "email", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Websites?: boolean | User$WebsitesArgs<ExtArgs>
-    incidents?: boolean | User$incidentsArgs<ExtArgs>
+    alert?: boolean | User$alertArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4770,7 +7418,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       Websites: Prisma.$WebsitePayload<ExtArgs>[]
-      incidents: Prisma.$IncidentPayload<ExtArgs>[]
+      alert: Prisma.$AlertsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5172,7 +7820,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     Websites<T extends User$WebsitesArgs<ExtArgs> = {}>(args?: Subset<T, User$WebsitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    incidents<T extends User$incidentsArgs<ExtArgs> = {}>(args?: Subset<T, User$incidentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    alert<T extends User$alertArgs<ExtArgs> = {}>(args?: Subset<T, User$alertArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5618,27 +8266,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.incidents
+   * User.alert
    */
-  export type User$incidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$alertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelect<ExtArgs> | null
+    select?: AlertsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentInclude<ExtArgs> | null
-    where?: IncidentWhereInput
-    orderBy?: IncidentOrderByWithRelationInput | IncidentOrderByWithRelationInput[]
-    cursor?: IncidentWhereUniqueInput
+    include?: AlertsInclude<ExtArgs> | null
+    where?: AlertsWhereInput
+    orderBy?: AlertsOrderByWithRelationInput | AlertsOrderByWithRelationInput[]
+    cursor?: AlertsWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: IncidentScalarFieldEnum | IncidentScalarFieldEnum[]
+    distinct?: AlertsScalarFieldEnum | AlertsScalarFieldEnum[]
   }
 
   /**
@@ -5661,338 +8309,398 @@ export namespace Prisma {
 
 
   /**
-   * Model Incident
+   * Model Alerts
    */
 
-  export type AggregateIncident = {
-    _count: IncidentCountAggregateOutputType | null
-    _min: IncidentMinAggregateOutputType | null
-    _max: IncidentMaxAggregateOutputType | null
+  export type AggregateAlerts = {
+    _count: AlertsCountAggregateOutputType | null
+    _min: AlertsMinAggregateOutputType | null
+    _max: AlertsMaxAggregateOutputType | null
   }
 
-  export type IncidentMinAggregateOutputType = {
+  export type AlertsMinAggregateOutputType = {
     id: string | null
     website_id: string | null
     userId: string | null
+    alert_type: $Enums.Alert | null
+    type: $Enums.MsgType | null
+    verified: boolean | null
+    status: $Enums.AlertStatus | null
+    msg: string | null
     created_at: Date | null
   }
 
-  export type IncidentMaxAggregateOutputType = {
+  export type AlertsMaxAggregateOutputType = {
     id: string | null
     website_id: string | null
     userId: string | null
+    alert_type: $Enums.Alert | null
+    type: $Enums.MsgType | null
+    verified: boolean | null
+    status: $Enums.AlertStatus | null
+    msg: string | null
     created_at: Date | null
   }
 
-  export type IncidentCountAggregateOutputType = {
+  export type AlertsCountAggregateOutputType = {
     id: number
     website_id: number
     userId: number
+    alert_type: number
+    type: number
+    verified: number
+    status: number
+    msg: number
     created_at: number
     _all: number
   }
 
 
-  export type IncidentMinAggregateInputType = {
+  export type AlertsMinAggregateInputType = {
     id?: true
     website_id?: true
     userId?: true
+    alert_type?: true
+    type?: true
+    verified?: true
+    status?: true
+    msg?: true
     created_at?: true
   }
 
-  export type IncidentMaxAggregateInputType = {
+  export type AlertsMaxAggregateInputType = {
     id?: true
     website_id?: true
     userId?: true
+    alert_type?: true
+    type?: true
+    verified?: true
+    status?: true
+    msg?: true
     created_at?: true
   }
 
-  export type IncidentCountAggregateInputType = {
+  export type AlertsCountAggregateInputType = {
     id?: true
     website_id?: true
     userId?: true
+    alert_type?: true
+    type?: true
+    verified?: true
+    status?: true
+    msg?: true
     created_at?: true
     _all?: true
   }
 
-  export type IncidentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Incident to aggregate.
+     * Filter which Alerts to aggregate.
      */
-    where?: IncidentWhereInput
+    where?: AlertsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Incidents to fetch.
+     * Determine the order of Alerts to fetch.
      */
-    orderBy?: IncidentOrderByWithRelationInput | IncidentOrderByWithRelationInput[]
+    orderBy?: AlertsOrderByWithRelationInput | AlertsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: IncidentWhereUniqueInput
+    cursor?: AlertsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Incidents from the position of the cursor.
+     * Take `±n` Alerts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Incidents.
+     * Skip the first `n` Alerts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Incidents
+     * Count returned Alerts
     **/
-    _count?: true | IncidentCountAggregateInputType
+    _count?: true | AlertsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: IncidentMinAggregateInputType
+    _min?: AlertsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: IncidentMaxAggregateInputType
+    _max?: AlertsMaxAggregateInputType
   }
 
-  export type GetIncidentAggregateType<T extends IncidentAggregateArgs> = {
-        [P in keyof T & keyof AggregateIncident]: P extends '_count' | 'count'
+  export type GetAlertsAggregateType<T extends AlertsAggregateArgs> = {
+        [P in keyof T & keyof AggregateAlerts]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateIncident[P]>
-      : GetScalarType<T[P], AggregateIncident[P]>
+        : GetScalarType<T[P], AggregateAlerts[P]>
+      : GetScalarType<T[P], AggregateAlerts[P]>
   }
 
 
 
 
-  export type IncidentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: IncidentWhereInput
-    orderBy?: IncidentOrderByWithAggregationInput | IncidentOrderByWithAggregationInput[]
-    by: IncidentScalarFieldEnum[] | IncidentScalarFieldEnum
-    having?: IncidentScalarWhereWithAggregatesInput
+  export type AlertsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlertsWhereInput
+    orderBy?: AlertsOrderByWithAggregationInput | AlertsOrderByWithAggregationInput[]
+    by: AlertsScalarFieldEnum[] | AlertsScalarFieldEnum
+    having?: AlertsScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: IncidentCountAggregateInputType | true
-    _min?: IncidentMinAggregateInputType
-    _max?: IncidentMaxAggregateInputType
+    _count?: AlertsCountAggregateInputType | true
+    _min?: AlertsMinAggregateInputType
+    _max?: AlertsMaxAggregateInputType
   }
 
-  export type IncidentGroupByOutputType = {
+  export type AlertsGroupByOutputType = {
     id: string
     website_id: string
     userId: string
+    alert_type: $Enums.Alert
+    type: $Enums.MsgType
+    verified: boolean | null
+    status: $Enums.AlertStatus
+    msg: string
     created_at: Date
-    _count: IncidentCountAggregateOutputType | null
-    _min: IncidentMinAggregateOutputType | null
-    _max: IncidentMaxAggregateOutputType | null
+    _count: AlertsCountAggregateOutputType | null
+    _min: AlertsMinAggregateOutputType | null
+    _max: AlertsMaxAggregateOutputType | null
   }
 
-  type GetIncidentGroupByPayload<T extends IncidentGroupByArgs> = Prisma.PrismaPromise<
+  type GetAlertsGroupByPayload<T extends AlertsGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<IncidentGroupByOutputType, T['by']> &
+      PickEnumerable<AlertsGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof IncidentGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof AlertsGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], IncidentGroupByOutputType[P]>
-            : GetScalarType<T[P], IncidentGroupByOutputType[P]>
+              : GetScalarType<T[P], AlertsGroupByOutputType[P]>
+            : GetScalarType<T[P], AlertsGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type IncidentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type AlertsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     website_id?: boolean
     userId?: boolean
+    alert_type?: boolean
+    type?: boolean
+    verified?: boolean
+    status?: boolean
+    msg?: boolean
     created_at?: boolean
-    website?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["incident"]>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["alerts"]>
 
-  export type IncidentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type AlertsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     website_id?: boolean
     userId?: boolean
+    alert_type?: boolean
+    type?: boolean
+    verified?: boolean
+    status?: boolean
+    msg?: boolean
     created_at?: boolean
-    website?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["incident"]>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["alerts"]>
 
-  export type IncidentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type AlertsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     website_id?: boolean
     userId?: boolean
+    alert_type?: boolean
+    type?: boolean
+    verified?: boolean
+    status?: boolean
+    msg?: boolean
     created_at?: boolean
-    website?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["incident"]>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["alerts"]>
 
-  export type IncidentSelectScalar = {
+  export type AlertsSelectScalar = {
     id?: boolean
     website_id?: boolean
     userId?: boolean
+    alert_type?: boolean
+    type?: boolean
+    verified?: boolean
+    status?: boolean
+    msg?: boolean
     created_at?: boolean
   }
 
-  export type IncidentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "website_id" | "userId" | "created_at", ExtArgs["result"]["incident"]>
-  export type IncidentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    website?: boolean | UserDefaultArgs<ExtArgs>
+  export type AlertsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "website_id" | "userId" | "alert_type" | "type" | "verified" | "status" | "msg" | "created_at", ExtArgs["result"]["alerts"]>
+  export type AlertsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
-  export type IncidentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    website?: boolean | UserDefaultArgs<ExtArgs>
+  export type AlertsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
-  export type IncidentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    website?: boolean | UserDefaultArgs<ExtArgs>
+  export type AlertsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
-  export type $IncidentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Incident"
+  export type $AlertsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Alerts"
     objects: {
-      website: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       website_id: string
       userId: string
+      alert_type: $Enums.Alert
+      type: $Enums.MsgType
+      verified: boolean | null
+      status: $Enums.AlertStatus
+      msg: string
       created_at: Date
-    }, ExtArgs["result"]["incident"]>
+    }, ExtArgs["result"]["alerts"]>
     composites: {}
   }
 
-  type IncidentGetPayload<S extends boolean | null | undefined | IncidentDefaultArgs> = $Result.GetResult<Prisma.$IncidentPayload, S>
+  type AlertsGetPayload<S extends boolean | null | undefined | AlertsDefaultArgs> = $Result.GetResult<Prisma.$AlertsPayload, S>
 
-  type IncidentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<IncidentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: IncidentCountAggregateInputType | true
+  type AlertsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AlertsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AlertsCountAggregateInputType | true
     }
 
-  export interface IncidentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Incident'], meta: { name: 'Incident' } }
+  export interface AlertsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Alerts'], meta: { name: 'Alerts' } }
     /**
-     * Find zero or one Incident that matches the filter.
-     * @param {IncidentFindUniqueArgs} args - Arguments to find a Incident
+     * Find zero or one Alerts that matches the filter.
+     * @param {AlertsFindUniqueArgs} args - Arguments to find a Alerts
      * @example
-     * // Get one Incident
-     * const incident = await prisma.incident.findUnique({
+     * // Get one Alerts
+     * const alerts = await prisma.alerts.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends IncidentFindUniqueArgs>(args: SelectSubset<T, IncidentFindUniqueArgs<ExtArgs>>): Prisma__IncidentClient<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends AlertsFindUniqueArgs>(args: SelectSubset<T, AlertsFindUniqueArgs<ExtArgs>>): Prisma__AlertsClient<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Incident that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Alerts that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {IncidentFindUniqueOrThrowArgs} args - Arguments to find a Incident
+     * @param {AlertsFindUniqueOrThrowArgs} args - Arguments to find a Alerts
      * @example
-     * // Get one Incident
-     * const incident = await prisma.incident.findUniqueOrThrow({
+     * // Get one Alerts
+     * const alerts = await prisma.alerts.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends IncidentFindUniqueOrThrowArgs>(args: SelectSubset<T, IncidentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IncidentClient<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends AlertsFindUniqueOrThrowArgs>(args: SelectSubset<T, AlertsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AlertsClient<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Incident that matches the filter.
+     * Find the first Alerts that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {IncidentFindFirstArgs} args - Arguments to find a Incident
+     * @param {AlertsFindFirstArgs} args - Arguments to find a Alerts
      * @example
-     * // Get one Incident
-     * const incident = await prisma.incident.findFirst({
+     * // Get one Alerts
+     * const alerts = await prisma.alerts.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends IncidentFindFirstArgs>(args?: SelectSubset<T, IncidentFindFirstArgs<ExtArgs>>): Prisma__IncidentClient<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends AlertsFindFirstArgs>(args?: SelectSubset<T, AlertsFindFirstArgs<ExtArgs>>): Prisma__AlertsClient<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Incident that matches the filter or
+     * Find the first Alerts that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {IncidentFindFirstOrThrowArgs} args - Arguments to find a Incident
+     * @param {AlertsFindFirstOrThrowArgs} args - Arguments to find a Alerts
      * @example
-     * // Get one Incident
-     * const incident = await prisma.incident.findFirstOrThrow({
+     * // Get one Alerts
+     * const alerts = await prisma.alerts.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends IncidentFindFirstOrThrowArgs>(args?: SelectSubset<T, IncidentFindFirstOrThrowArgs<ExtArgs>>): Prisma__IncidentClient<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends AlertsFindFirstOrThrowArgs>(args?: SelectSubset<T, AlertsFindFirstOrThrowArgs<ExtArgs>>): Prisma__AlertsClient<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Incidents that matches the filter.
+     * Find zero or more Alerts that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {IncidentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {AlertsFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Incidents
-     * const incidents = await prisma.incident.findMany()
+     * // Get all Alerts
+     * const alerts = await prisma.alerts.findMany()
      * 
-     * // Get first 10 Incidents
-     * const incidents = await prisma.incident.findMany({ take: 10 })
+     * // Get first 10 Alerts
+     * const alerts = await prisma.alerts.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const incidentWithIdOnly = await prisma.incident.findMany({ select: { id: true } })
+     * const alertsWithIdOnly = await prisma.alerts.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends IncidentFindManyArgs>(args?: SelectSubset<T, IncidentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends AlertsFindManyArgs>(args?: SelectSubset<T, AlertsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Incident.
-     * @param {IncidentCreateArgs} args - Arguments to create a Incident.
+     * Create a Alerts.
+     * @param {AlertsCreateArgs} args - Arguments to create a Alerts.
      * @example
-     * // Create one Incident
-     * const Incident = await prisma.incident.create({
+     * // Create one Alerts
+     * const Alerts = await prisma.alerts.create({
      *   data: {
-     *     // ... data to create a Incident
+     *     // ... data to create a Alerts
      *   }
      * })
      * 
      */
-    create<T extends IncidentCreateArgs>(args: SelectSubset<T, IncidentCreateArgs<ExtArgs>>): Prisma__IncidentClient<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends AlertsCreateArgs>(args: SelectSubset<T, AlertsCreateArgs<ExtArgs>>): Prisma__AlertsClient<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Incidents.
-     * @param {IncidentCreateManyArgs} args - Arguments to create many Incidents.
+     * Create many Alerts.
+     * @param {AlertsCreateManyArgs} args - Arguments to create many Alerts.
      * @example
-     * // Create many Incidents
-     * const incident = await prisma.incident.createMany({
+     * // Create many Alerts
+     * const alerts = await prisma.alerts.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends IncidentCreateManyArgs>(args?: SelectSubset<T, IncidentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends AlertsCreateManyArgs>(args?: SelectSubset<T, AlertsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Incidents and returns the data saved in the database.
-     * @param {IncidentCreateManyAndReturnArgs} args - Arguments to create many Incidents.
+     * Create many Alerts and returns the data saved in the database.
+     * @param {AlertsCreateManyAndReturnArgs} args - Arguments to create many Alerts.
      * @example
-     * // Create many Incidents
-     * const incident = await prisma.incident.createManyAndReturn({
+     * // Create many Alerts
+     * const alerts = await prisma.alerts.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Incidents and only return the `id`
-     * const incidentWithIdOnly = await prisma.incident.createManyAndReturn({
+     * // Create many Alerts and only return the `id`
+     * const alertsWithIdOnly = await prisma.alerts.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -6002,28 +8710,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends IncidentCreateManyAndReturnArgs>(args?: SelectSubset<T, IncidentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends AlertsCreateManyAndReturnArgs>(args?: SelectSubset<T, AlertsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Incident.
-     * @param {IncidentDeleteArgs} args - Arguments to delete one Incident.
+     * Delete a Alerts.
+     * @param {AlertsDeleteArgs} args - Arguments to delete one Alerts.
      * @example
-     * // Delete one Incident
-     * const Incident = await prisma.incident.delete({
+     * // Delete one Alerts
+     * const Alerts = await prisma.alerts.delete({
      *   where: {
-     *     // ... filter to delete one Incident
+     *     // ... filter to delete one Alerts
      *   }
      * })
      * 
      */
-    delete<T extends IncidentDeleteArgs>(args: SelectSubset<T, IncidentDeleteArgs<ExtArgs>>): Prisma__IncidentClient<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends AlertsDeleteArgs>(args: SelectSubset<T, AlertsDeleteArgs<ExtArgs>>): Prisma__AlertsClient<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Incident.
-     * @param {IncidentUpdateArgs} args - Arguments to update one Incident.
+     * Update one Alerts.
+     * @param {AlertsUpdateArgs} args - Arguments to update one Alerts.
      * @example
-     * // Update one Incident
-     * const incident = await prisma.incident.update({
+     * // Update one Alerts
+     * const alerts = await prisma.alerts.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -6033,30 +8741,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends IncidentUpdateArgs>(args: SelectSubset<T, IncidentUpdateArgs<ExtArgs>>): Prisma__IncidentClient<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends AlertsUpdateArgs>(args: SelectSubset<T, AlertsUpdateArgs<ExtArgs>>): Prisma__AlertsClient<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Incidents.
-     * @param {IncidentDeleteManyArgs} args - Arguments to filter Incidents to delete.
+     * Delete zero or more Alerts.
+     * @param {AlertsDeleteManyArgs} args - Arguments to filter Alerts to delete.
      * @example
-     * // Delete a few Incidents
-     * const { count } = await prisma.incident.deleteMany({
+     * // Delete a few Alerts
+     * const { count } = await prisma.alerts.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends IncidentDeleteManyArgs>(args?: SelectSubset<T, IncidentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends AlertsDeleteManyArgs>(args?: SelectSubset<T, AlertsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Incidents.
+     * Update zero or more Alerts.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {IncidentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {AlertsUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Incidents
-     * const incident = await prisma.incident.updateMany({
+     * // Update many Alerts
+     * const alerts = await prisma.alerts.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -6066,14 +8774,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends IncidentUpdateManyArgs>(args: SelectSubset<T, IncidentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends AlertsUpdateManyArgs>(args: SelectSubset<T, AlertsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Incidents and returns the data updated in the database.
-     * @param {IncidentUpdateManyAndReturnArgs} args - Arguments to update many Incidents.
+     * Update zero or more Alerts and returns the data updated in the database.
+     * @param {AlertsUpdateManyAndReturnArgs} args - Arguments to update many Alerts.
      * @example
-     * // Update many Incidents
-     * const incident = await prisma.incident.updateManyAndReturn({
+     * // Update many Alerts
+     * const alerts = await prisma.alerts.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -6082,8 +8790,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Incidents and only return the `id`
-     * const incidentWithIdOnly = await prisma.incident.updateManyAndReturn({
+     * // Update zero or more Alerts and only return the `id`
+     * const alertsWithIdOnly = await prisma.alerts.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -6096,56 +8804,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends IncidentUpdateManyAndReturnArgs>(args: SelectSubset<T, IncidentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends AlertsUpdateManyAndReturnArgs>(args: SelectSubset<T, AlertsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Incident.
-     * @param {IncidentUpsertArgs} args - Arguments to update or create a Incident.
+     * Create or update one Alerts.
+     * @param {AlertsUpsertArgs} args - Arguments to update or create a Alerts.
      * @example
-     * // Update or create a Incident
-     * const incident = await prisma.incident.upsert({
+     * // Update or create a Alerts
+     * const alerts = await prisma.alerts.upsert({
      *   create: {
-     *     // ... data to create a Incident
+     *     // ... data to create a Alerts
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Incident we want to update
+     *     // ... the filter for the Alerts we want to update
      *   }
      * })
      */
-    upsert<T extends IncidentUpsertArgs>(args: SelectSubset<T, IncidentUpsertArgs<ExtArgs>>): Prisma__IncidentClient<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends AlertsUpsertArgs>(args: SelectSubset<T, AlertsUpsertArgs<ExtArgs>>): Prisma__AlertsClient<$Result.GetResult<Prisma.$AlertsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Incidents.
+     * Count the number of Alerts.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {IncidentCountArgs} args - Arguments to filter Incidents to count.
+     * @param {AlertsCountArgs} args - Arguments to filter Alerts to count.
      * @example
-     * // Count the number of Incidents
-     * const count = await prisma.incident.count({
+     * // Count the number of Alerts
+     * const count = await prisma.alerts.count({
      *   where: {
-     *     // ... the filter for the Incidents we want to count
+     *     // ... the filter for the Alerts we want to count
      *   }
      * })
     **/
-    count<T extends IncidentCountArgs>(
-      args?: Subset<T, IncidentCountArgs>,
+    count<T extends AlertsCountArgs>(
+      args?: Subset<T, AlertsCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], IncidentCountAggregateOutputType>
+          : GetScalarType<T['select'], AlertsCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Incident.
+     * Allows you to perform aggregations operations on a Alerts.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {IncidentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {AlertsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -6165,13 +8873,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends IncidentAggregateArgs>(args: Subset<T, IncidentAggregateArgs>): Prisma.PrismaPromise<GetIncidentAggregateType<T>>
+    aggregate<T extends AlertsAggregateArgs>(args: Subset<T, AlertsAggregateArgs>): Prisma.PrismaPromise<GetAlertsAggregateType<T>>
 
     /**
-     * Group by Incident.
+     * Group by Alerts.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {IncidentGroupByArgs} args - Group by arguments.
+     * @param {AlertsGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -6186,14 +8894,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends IncidentGroupByArgs,
+      T extends AlertsGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: IncidentGroupByArgs['orderBy'] }
-        : { orderBy?: IncidentGroupByArgs['orderBy'] },
+        ? { orderBy: AlertsGroupByArgs['orderBy'] }
+        : { orderBy?: AlertsGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -6242,22 +8950,22 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, IncidentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIncidentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, AlertsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAlertsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Incident model
+   * Fields of the Alerts model
    */
-  readonly fields: IncidentFieldRefs;
+  readonly fields: AlertsFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Incident.
+   * The delegate class that acts as a "Promise-like" for Alerts.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__IncidentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__AlertsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    website<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6284,424 +8992,1385 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Incident model
+   * Fields of the Alerts model
    */
-  interface IncidentFieldRefs {
-    readonly id: FieldRef<"Incident", 'String'>
-    readonly website_id: FieldRef<"Incident", 'String'>
-    readonly userId: FieldRef<"Incident", 'String'>
-    readonly created_at: FieldRef<"Incident", 'DateTime'>
+  interface AlertsFieldRefs {
+    readonly id: FieldRef<"Alerts", 'String'>
+    readonly website_id: FieldRef<"Alerts", 'String'>
+    readonly userId: FieldRef<"Alerts", 'String'>
+    readonly alert_type: FieldRef<"Alerts", 'Alert'>
+    readonly type: FieldRef<"Alerts", 'MsgType'>
+    readonly verified: FieldRef<"Alerts", 'Boolean'>
+    readonly status: FieldRef<"Alerts", 'AlertStatus'>
+    readonly msg: FieldRef<"Alerts", 'String'>
+    readonly created_at: FieldRef<"Alerts", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Incident findUnique
+   * Alerts findUnique
    */
-  export type IncidentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelect<ExtArgs> | null
+    select?: AlertsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentInclude<ExtArgs> | null
+    include?: AlertsInclude<ExtArgs> | null
     /**
-     * Filter, which Incident to fetch.
+     * Filter, which Alerts to fetch.
      */
-    where: IncidentWhereUniqueInput
+    where: AlertsWhereUniqueInput
   }
 
   /**
-   * Incident findUniqueOrThrow
+   * Alerts findUniqueOrThrow
    */
-  export type IncidentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelect<ExtArgs> | null
+    select?: AlertsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentInclude<ExtArgs> | null
+    include?: AlertsInclude<ExtArgs> | null
     /**
-     * Filter, which Incident to fetch.
+     * Filter, which Alerts to fetch.
      */
-    where: IncidentWhereUniqueInput
+    where: AlertsWhereUniqueInput
   }
 
   /**
-   * Incident findFirst
+   * Alerts findFirst
    */
-  export type IncidentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelect<ExtArgs> | null
+    select?: AlertsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentInclude<ExtArgs> | null
+    include?: AlertsInclude<ExtArgs> | null
     /**
-     * Filter, which Incident to fetch.
+     * Filter, which Alerts to fetch.
      */
-    where?: IncidentWhereInput
+    where?: AlertsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Incidents to fetch.
+     * Determine the order of Alerts to fetch.
      */
-    orderBy?: IncidentOrderByWithRelationInput | IncidentOrderByWithRelationInput[]
+    orderBy?: AlertsOrderByWithRelationInput | AlertsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Incidents.
+     * Sets the position for searching for Alerts.
      */
-    cursor?: IncidentWhereUniqueInput
+    cursor?: AlertsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Incidents from the position of the cursor.
+     * Take `±n` Alerts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Incidents.
+     * Skip the first `n` Alerts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Incidents.
+     * Filter by unique combinations of Alerts.
      */
-    distinct?: IncidentScalarFieldEnum | IncidentScalarFieldEnum[]
+    distinct?: AlertsScalarFieldEnum | AlertsScalarFieldEnum[]
   }
 
   /**
-   * Incident findFirstOrThrow
+   * Alerts findFirstOrThrow
    */
-  export type IncidentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelect<ExtArgs> | null
+    select?: AlertsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentInclude<ExtArgs> | null
+    include?: AlertsInclude<ExtArgs> | null
     /**
-     * Filter, which Incident to fetch.
+     * Filter, which Alerts to fetch.
      */
-    where?: IncidentWhereInput
+    where?: AlertsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Incidents to fetch.
+     * Determine the order of Alerts to fetch.
      */
-    orderBy?: IncidentOrderByWithRelationInput | IncidentOrderByWithRelationInput[]
+    orderBy?: AlertsOrderByWithRelationInput | AlertsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Incidents.
+     * Sets the position for searching for Alerts.
      */
-    cursor?: IncidentWhereUniqueInput
+    cursor?: AlertsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Incidents from the position of the cursor.
+     * Take `±n` Alerts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Incidents.
+     * Skip the first `n` Alerts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Incidents.
+     * Filter by unique combinations of Alerts.
      */
-    distinct?: IncidentScalarFieldEnum | IncidentScalarFieldEnum[]
+    distinct?: AlertsScalarFieldEnum | AlertsScalarFieldEnum[]
   }
 
   /**
-   * Incident findMany
+   * Alerts findMany
    */
-  export type IncidentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelect<ExtArgs> | null
+    select?: AlertsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentInclude<ExtArgs> | null
+    include?: AlertsInclude<ExtArgs> | null
     /**
-     * Filter, which Incidents to fetch.
+     * Filter, which Alerts to fetch.
      */
-    where?: IncidentWhereInput
+    where?: AlertsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Incidents to fetch.
+     * Determine the order of Alerts to fetch.
      */
-    orderBy?: IncidentOrderByWithRelationInput | IncidentOrderByWithRelationInput[]
+    orderBy?: AlertsOrderByWithRelationInput | AlertsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Incidents.
+     * Sets the position for listing Alerts.
      */
-    cursor?: IncidentWhereUniqueInput
+    cursor?: AlertsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Incidents from the position of the cursor.
+     * Take `±n` Alerts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Incidents.
+     * Skip the first `n` Alerts.
      */
     skip?: number
-    distinct?: IncidentScalarFieldEnum | IncidentScalarFieldEnum[]
+    distinct?: AlertsScalarFieldEnum | AlertsScalarFieldEnum[]
   }
 
   /**
-   * Incident create
+   * Alerts create
    */
-  export type IncidentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelect<ExtArgs> | null
+    select?: AlertsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentInclude<ExtArgs> | null
+    include?: AlertsInclude<ExtArgs> | null
     /**
-     * The data needed to create a Incident.
+     * The data needed to create a Alerts.
      */
-    data: XOR<IncidentCreateInput, IncidentUncheckedCreateInput>
+    data: XOR<AlertsCreateInput, AlertsUncheckedCreateInput>
   }
 
   /**
-   * Incident createMany
+   * Alerts createMany
    */
-  export type IncidentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Incidents.
+     * The data used to create many Alerts.
      */
-    data: IncidentCreateManyInput | IncidentCreateManyInput[]
+    data: AlertsCreateManyInput | AlertsCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Incident createManyAndReturn
+   * Alerts createManyAndReturn
    */
-  export type IncidentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelectCreateManyAndReturn<ExtArgs> | null
+    select?: AlertsSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
-     * The data used to create many Incidents.
+     * The data used to create many Alerts.
      */
-    data: IncidentCreateManyInput | IncidentCreateManyInput[]
+    data: AlertsCreateManyInput | AlertsCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: AlertsIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Incident update
+   * Alerts update
    */
-  export type IncidentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelect<ExtArgs> | null
+    select?: AlertsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentInclude<ExtArgs> | null
+    include?: AlertsInclude<ExtArgs> | null
     /**
-     * The data needed to update a Incident.
+     * The data needed to update a Alerts.
      */
-    data: XOR<IncidentUpdateInput, IncidentUncheckedUpdateInput>
+    data: XOR<AlertsUpdateInput, AlertsUncheckedUpdateInput>
     /**
-     * Choose, which Incident to update.
+     * Choose, which Alerts to update.
      */
-    where: IncidentWhereUniqueInput
+    where: AlertsWhereUniqueInput
   }
 
   /**
-   * Incident updateMany
+   * Alerts updateMany
    */
-  export type IncidentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Incidents.
+     * The data used to update Alerts.
      */
-    data: XOR<IncidentUpdateManyMutationInput, IncidentUncheckedUpdateManyInput>
+    data: XOR<AlertsUpdateManyMutationInput, AlertsUncheckedUpdateManyInput>
     /**
-     * Filter which Incidents to update
+     * Filter which Alerts to update
      */
-    where?: IncidentWhereInput
+    where?: AlertsWhereInput
     /**
-     * Limit how many Incidents to update.
+     * Limit how many Alerts to update.
      */
     limit?: number
   }
 
   /**
-   * Incident updateManyAndReturn
+   * Alerts updateManyAndReturn
    */
-  export type IncidentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: AlertsSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
-     * The data used to update Incidents.
+     * The data used to update Alerts.
      */
-    data: XOR<IncidentUpdateManyMutationInput, IncidentUncheckedUpdateManyInput>
+    data: XOR<AlertsUpdateManyMutationInput, AlertsUncheckedUpdateManyInput>
     /**
-     * Filter which Incidents to update
+     * Filter which Alerts to update
      */
-    where?: IncidentWhereInput
+    where?: AlertsWhereInput
     /**
-     * Limit how many Incidents to update.
+     * Limit how many Alerts to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: AlertsIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Incident upsert
+   * Alerts upsert
    */
-  export type IncidentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelect<ExtArgs> | null
+    select?: AlertsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentInclude<ExtArgs> | null
+    include?: AlertsInclude<ExtArgs> | null
     /**
-     * The filter to search for the Incident to update in case it exists.
+     * The filter to search for the Alerts to update in case it exists.
      */
-    where: IncidentWhereUniqueInput
+    where: AlertsWhereUniqueInput
     /**
-     * In case the Incident found by the `where` argument doesn't exist, create a new Incident with this data.
+     * In case the Alerts found by the `where` argument doesn't exist, create a new Alerts with this data.
      */
-    create: XOR<IncidentCreateInput, IncidentUncheckedCreateInput>
+    create: XOR<AlertsCreateInput, AlertsUncheckedCreateInput>
     /**
-     * In case the Incident was found with the provided `where` argument, update it with this data.
+     * In case the Alerts was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<IncidentUpdateInput, IncidentUncheckedUpdateInput>
+    update: XOR<AlertsUpdateInput, AlertsUncheckedUpdateInput>
   }
 
   /**
-   * Incident delete
+   * Alerts delete
    */
-  export type IncidentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelect<ExtArgs> | null
+    select?: AlertsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentInclude<ExtArgs> | null
+    include?: AlertsInclude<ExtArgs> | null
     /**
-     * Filter which Incident to delete.
+     * Filter which Alerts to delete.
      */
-    where: IncidentWhereUniqueInput
+    where: AlertsWhereUniqueInput
   }
 
   /**
-   * Incident deleteMany
+   * Alerts deleteMany
    */
-  export type IncidentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Incidents to delete
+     * Filter which Alerts to delete
      */
-    where?: IncidentWhereInput
+    where?: AlertsWhereInput
     /**
-     * Limit how many Incidents to delete.
+     * Limit how many Alerts to delete.
      */
     limit?: number
   }
 
   /**
-   * Incident without action
+   * Alerts without action
    */
-  export type IncidentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AlertsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Incident
+     * Select specific fields to fetch from the Alerts
      */
-    select?: IncidentSelect<ExtArgs> | null
+    select?: AlertsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Incident
+     * Omit specific fields from the Alerts
      */
-    omit?: IncidentOmit<ExtArgs> | null
+    omit?: AlertsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: IncidentInclude<ExtArgs> | null
+    include?: AlertsInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Region
+   */
+
+  export type AggregateRegion = {
+    _count: RegionCountAggregateOutputType | null
+    _min: RegionMinAggregateOutputType | null
+    _max: RegionMaxAggregateOutputType | null
+  }
+
+  export type RegionMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+  }
+
+  export type RegionMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+  }
+
+  export type RegionCountAggregateOutputType = {
+    id: number
+    name: number
+    _all: number
+  }
+
+
+  export type RegionMinAggregateInputType = {
+    id?: true
+    name?: true
+  }
+
+  export type RegionMaxAggregateInputType = {
+    id?: true
+    name?: true
+  }
+
+  export type RegionCountAggregateInputType = {
+    id?: true
+    name?: true
+    _all?: true
+  }
+
+  export type RegionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Region to aggregate.
+     */
+    where?: RegionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Regions to fetch.
+     */
+    orderBy?: RegionOrderByWithRelationInput | RegionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RegionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Regions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Regions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Regions
+    **/
+    _count?: true | RegionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RegionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RegionMaxAggregateInputType
+  }
+
+  export type GetRegionAggregateType<T extends RegionAggregateArgs> = {
+        [P in keyof T & keyof AggregateRegion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRegion[P]>
+      : GetScalarType<T[P], AggregateRegion[P]>
+  }
+
+
+
+
+  export type RegionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegionWhereInput
+    orderBy?: RegionOrderByWithAggregationInput | RegionOrderByWithAggregationInput[]
+    by: RegionScalarFieldEnum[] | RegionScalarFieldEnum
+    having?: RegionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RegionCountAggregateInputType | true
+    _min?: RegionMinAggregateInputType
+    _max?: RegionMaxAggregateInputType
+  }
+
+  export type RegionGroupByOutputType = {
+    id: string
+    name: string
+    _count: RegionCountAggregateOutputType | null
+    _min: RegionMinAggregateOutputType | null
+    _max: RegionMaxAggregateOutputType | null
+  }
+
+  type GetRegionGroupByPayload<T extends RegionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RegionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RegionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RegionGroupByOutputType[P]>
+            : GetScalarType<T[P], RegionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RegionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+  }, ExtArgs["result"]["region"]>
+
+  export type RegionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+  }, ExtArgs["result"]["region"]>
+
+  export type RegionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+  }, ExtArgs["result"]["region"]>
+
+  export type RegionSelectScalar = {
+    id?: boolean
+    name?: boolean
+  }
+
+  export type RegionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["region"]>
+
+  export type $RegionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Region"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+    }, ExtArgs["result"]["region"]>
+    composites: {}
+  }
+
+  type RegionGetPayload<S extends boolean | null | undefined | RegionDefaultArgs> = $Result.GetResult<Prisma.$RegionPayload, S>
+
+  type RegionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RegionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RegionCountAggregateInputType | true
+    }
+
+  export interface RegionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Region'], meta: { name: 'Region' } }
+    /**
+     * Find zero or one Region that matches the filter.
+     * @param {RegionFindUniqueArgs} args - Arguments to find a Region
+     * @example
+     * // Get one Region
+     * const region = await prisma.region.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RegionFindUniqueArgs>(args: SelectSubset<T, RegionFindUniqueArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Region that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RegionFindUniqueOrThrowArgs} args - Arguments to find a Region
+     * @example
+     * // Get one Region
+     * const region = await prisma.region.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RegionFindUniqueOrThrowArgs>(args: SelectSubset<T, RegionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Region that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionFindFirstArgs} args - Arguments to find a Region
+     * @example
+     * // Get one Region
+     * const region = await prisma.region.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RegionFindFirstArgs>(args?: SelectSubset<T, RegionFindFirstArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Region that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionFindFirstOrThrowArgs} args - Arguments to find a Region
+     * @example
+     * // Get one Region
+     * const region = await prisma.region.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RegionFindFirstOrThrowArgs>(args?: SelectSubset<T, RegionFindFirstOrThrowArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Regions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Regions
+     * const regions = await prisma.region.findMany()
+     * 
+     * // Get first 10 Regions
+     * const regions = await prisma.region.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const regionWithIdOnly = await prisma.region.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RegionFindManyArgs>(args?: SelectSubset<T, RegionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Region.
+     * @param {RegionCreateArgs} args - Arguments to create a Region.
+     * @example
+     * // Create one Region
+     * const Region = await prisma.region.create({
+     *   data: {
+     *     // ... data to create a Region
+     *   }
+     * })
+     * 
+     */
+    create<T extends RegionCreateArgs>(args: SelectSubset<T, RegionCreateArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Regions.
+     * @param {RegionCreateManyArgs} args - Arguments to create many Regions.
+     * @example
+     * // Create many Regions
+     * const region = await prisma.region.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RegionCreateManyArgs>(args?: SelectSubset<T, RegionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Regions and returns the data saved in the database.
+     * @param {RegionCreateManyAndReturnArgs} args - Arguments to create many Regions.
+     * @example
+     * // Create many Regions
+     * const region = await prisma.region.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Regions and only return the `id`
+     * const regionWithIdOnly = await prisma.region.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RegionCreateManyAndReturnArgs>(args?: SelectSubset<T, RegionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Region.
+     * @param {RegionDeleteArgs} args - Arguments to delete one Region.
+     * @example
+     * // Delete one Region
+     * const Region = await prisma.region.delete({
+     *   where: {
+     *     // ... filter to delete one Region
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RegionDeleteArgs>(args: SelectSubset<T, RegionDeleteArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Region.
+     * @param {RegionUpdateArgs} args - Arguments to update one Region.
+     * @example
+     * // Update one Region
+     * const region = await prisma.region.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RegionUpdateArgs>(args: SelectSubset<T, RegionUpdateArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Regions.
+     * @param {RegionDeleteManyArgs} args - Arguments to filter Regions to delete.
+     * @example
+     * // Delete a few Regions
+     * const { count } = await prisma.region.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RegionDeleteManyArgs>(args?: SelectSubset<T, RegionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Regions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Regions
+     * const region = await prisma.region.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RegionUpdateManyArgs>(args: SelectSubset<T, RegionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Regions and returns the data updated in the database.
+     * @param {RegionUpdateManyAndReturnArgs} args - Arguments to update many Regions.
+     * @example
+     * // Update many Regions
+     * const region = await prisma.region.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Regions and only return the `id`
+     * const regionWithIdOnly = await prisma.region.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RegionUpdateManyAndReturnArgs>(args: SelectSubset<T, RegionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Region.
+     * @param {RegionUpsertArgs} args - Arguments to update or create a Region.
+     * @example
+     * // Update or create a Region
+     * const region = await prisma.region.upsert({
+     *   create: {
+     *     // ... data to create a Region
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Region we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RegionUpsertArgs>(args: SelectSubset<T, RegionUpsertArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Regions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionCountArgs} args - Arguments to filter Regions to count.
+     * @example
+     * // Count the number of Regions
+     * const count = await prisma.region.count({
+     *   where: {
+     *     // ... the filter for the Regions we want to count
+     *   }
+     * })
+    **/
+    count<T extends RegionCountArgs>(
+      args?: Subset<T, RegionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RegionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Region.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RegionAggregateArgs>(args: Subset<T, RegionAggregateArgs>): Prisma.PrismaPromise<GetRegionAggregateType<T>>
+
+    /**
+     * Group by Region.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RegionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RegionGroupByArgs['orderBy'] }
+        : { orderBy?: RegionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RegionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRegionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Region model
+   */
+  readonly fields: RegionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Region.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RegionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Region model
+   */
+  interface RegionFieldRefs {
+    readonly id: FieldRef<"Region", 'String'>
+    readonly name: FieldRef<"Region", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Region findUnique
+   */
+  export type RegionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
+    /**
+     * Filter, which Region to fetch.
+     */
+    where: RegionWhereUniqueInput
+  }
+
+  /**
+   * Region findUniqueOrThrow
+   */
+  export type RegionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
+    /**
+     * Filter, which Region to fetch.
+     */
+    where: RegionWhereUniqueInput
+  }
+
+  /**
+   * Region findFirst
+   */
+  export type RegionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
+    /**
+     * Filter, which Region to fetch.
+     */
+    where?: RegionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Regions to fetch.
+     */
+    orderBy?: RegionOrderByWithRelationInput | RegionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Regions.
+     */
+    cursor?: RegionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Regions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Regions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Regions.
+     */
+    distinct?: RegionScalarFieldEnum | RegionScalarFieldEnum[]
+  }
+
+  /**
+   * Region findFirstOrThrow
+   */
+  export type RegionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
+    /**
+     * Filter, which Region to fetch.
+     */
+    where?: RegionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Regions to fetch.
+     */
+    orderBy?: RegionOrderByWithRelationInput | RegionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Regions.
+     */
+    cursor?: RegionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Regions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Regions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Regions.
+     */
+    distinct?: RegionScalarFieldEnum | RegionScalarFieldEnum[]
+  }
+
+  /**
+   * Region findMany
+   */
+  export type RegionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
+    /**
+     * Filter, which Regions to fetch.
+     */
+    where?: RegionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Regions to fetch.
+     */
+    orderBy?: RegionOrderByWithRelationInput | RegionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Regions.
+     */
+    cursor?: RegionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Regions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Regions.
+     */
+    skip?: number
+    distinct?: RegionScalarFieldEnum | RegionScalarFieldEnum[]
+  }
+
+  /**
+   * Region create
+   */
+  export type RegionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Region.
+     */
+    data: XOR<RegionCreateInput, RegionUncheckedCreateInput>
+  }
+
+  /**
+   * Region createMany
+   */
+  export type RegionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Regions.
+     */
+    data: RegionCreateManyInput | RegionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Region createManyAndReturn
+   */
+  export type RegionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Regions.
+     */
+    data: RegionCreateManyInput | RegionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Region update
+   */
+  export type RegionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Region.
+     */
+    data: XOR<RegionUpdateInput, RegionUncheckedUpdateInput>
+    /**
+     * Choose, which Region to update.
+     */
+    where: RegionWhereUniqueInput
+  }
+
+  /**
+   * Region updateMany
+   */
+  export type RegionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Regions.
+     */
+    data: XOR<RegionUpdateManyMutationInput, RegionUncheckedUpdateManyInput>
+    /**
+     * Filter which Regions to update
+     */
+    where?: RegionWhereInput
+    /**
+     * Limit how many Regions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Region updateManyAndReturn
+   */
+  export type RegionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
+    /**
+     * The data used to update Regions.
+     */
+    data: XOR<RegionUpdateManyMutationInput, RegionUncheckedUpdateManyInput>
+    /**
+     * Filter which Regions to update
+     */
+    where?: RegionWhereInput
+    /**
+     * Limit how many Regions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Region upsert
+   */
+  export type RegionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Region to update in case it exists.
+     */
+    where: RegionWhereUniqueInput
+    /**
+     * In case the Region found by the `where` argument doesn't exist, create a new Region with this data.
+     */
+    create: XOR<RegionCreateInput, RegionUncheckedCreateInput>
+    /**
+     * In case the Region was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RegionUpdateInput, RegionUncheckedUpdateInput>
+  }
+
+  /**
+   * Region delete
+   */
+  export type RegionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
+    /**
+     * Filter which Region to delete.
+     */
+    where: RegionWhereUniqueInput
+  }
+
+  /**
+   * Region deleteMany
+   */
+  export type RegionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Regions to delete
+     */
+    where?: RegionWhereInput
+    /**
+     * Limit how many Regions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Region without action
+   */
+  export type RegionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Region
+     */
+    select?: RegionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Region
+     */
+    omit?: RegionOmit<ExtArgs> | null
   }
 
 
@@ -6722,32 +10391,69 @@ export namespace Prisma {
   export const WebsiteScalarFieldEnum: {
     id: 'id',
     url: 'url',
-    timeAdded: 'timeAdded',
-    userId: 'userId'
+    userId: 'userId',
+    active: 'active',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type WebsiteScalarFieldEnum = (typeof WebsiteScalarFieldEnum)[keyof typeof WebsiteScalarFieldEnum]
 
 
-  export const RegionScalarFieldEnum: {
+  export const DnsScalarFieldEnum: {
     id: 'id',
-    name: 'name'
+    userId: 'userId',
+    domain: 'domain',
+    ip_addr: 'ip_addr',
+    resolver: 'resolver',
+    interval: 'interval',
+    active: 'active',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    authoritative: 'authoritative'
   };
 
-  export type RegionScalarFieldEnum = (typeof RegionScalarFieldEnum)[keyof typeof RegionScalarFieldEnum]
+  export type DnsScalarFieldEnum = (typeof DnsScalarFieldEnum)[keyof typeof DnsScalarFieldEnum]
 
 
   export const WebsiteTickScalarFieldEnum: {
     id: 'id',
     response_time_ms: 'response_time_ms',
     status: 'status',
+    region: 'region',
     userId: 'userId',
-    region_id: 'region_id',
     website_id: 'website_id',
     CreatedAt: 'CreatedAt'
   };
 
   export type WebsiteTickScalarFieldEnum = (typeof WebsiteTickScalarFieldEnum)[keyof typeof WebsiteTickScalarFieldEnum]
+
+
+  export const DnsTickScalarFieldEnum: {
+    id: 'id',
+    latency_ms: 'latency_ms',
+    status: 'status',
+    region: 'region',
+    userId: 'userId',
+    dns_id: 'dns_id',
+    check_id: 'check_id',
+    resolver_ip: 'resolver_ip',
+    CreatedAt: 'CreatedAt'
+  };
+
+  export type DnsTickScalarFieldEnum = (typeof DnsTickScalarFieldEnum)[keyof typeof DnsTickScalarFieldEnum]
+
+
+  export const DnsRecordScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    response: 'response',
+    region: 'region',
+    user_id: 'user_id',
+    dns_id: 'dns_id'
+  };
+
+  export type DnsRecordScalarFieldEnum = (typeof DnsRecordScalarFieldEnum)[keyof typeof DnsRecordScalarFieldEnum]
 
 
   export const UserScalarFieldEnum: {
@@ -6760,14 +10466,27 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const IncidentScalarFieldEnum: {
+  export const AlertsScalarFieldEnum: {
     id: 'id',
     website_id: 'website_id',
     userId: 'userId',
+    alert_type: 'alert_type',
+    type: 'type',
+    verified: 'verified',
+    status: 'status',
+    msg: 'msg',
     created_at: 'created_at'
   };
 
-  export type IncidentScalarFieldEnum = (typeof IncidentScalarFieldEnum)[keyof typeof IncidentScalarFieldEnum]
+  export type AlertsScalarFieldEnum = (typeof AlertsScalarFieldEnum)[keyof typeof AlertsScalarFieldEnum]
+
+
+  export const RegionScalarFieldEnum: {
+    id: 'id',
+    name: 'name'
+  };
+
+  export type RegionScalarFieldEnum = (typeof RegionScalarFieldEnum)[keyof typeof RegionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6786,6 +10505,14 @@ export namespace Prisma {
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
   /**
    * Field references
    */
@@ -6802,6 +10529,13 @@ export namespace Prisma {
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -6848,6 +10582,76 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DnsStatus'
+   */
+  export type EnumDnsStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DnsStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DnsStatus[]'
+   */
+  export type ListEnumDnsStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DnsStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Record'
+   */
+  export type EnumRecordFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Record'>
+    
+
+
+  /**
+   * Reference to a field of type 'Record[]'
+   */
+  export type ListEnumRecordFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Record[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Alert'
+   */
+  export type EnumAlertFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Alert'>
+    
+
+
+  /**
+   * Reference to a field of type 'Alert[]'
+   */
+  export type ListEnumAlertFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Alert[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'MsgType'
+   */
+  export type EnumMsgTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MsgType'>
+    
+
+
+  /**
+   * Reference to a field of type 'MsgType[]'
+   */
+  export type ListEnumMsgTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MsgType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AlertStatus'
+   */
+  export type EnumAlertStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AlertStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AlertStatus[]'
+   */
+  export type ListEnumAlertStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AlertStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -6870,19 +10674,23 @@ export namespace Prisma {
     NOT?: WebsiteWhereInput | WebsiteWhereInput[]
     id?: StringFilter<"Website"> | string
     url?: StringFilter<"Website"> | string
-    timeAdded?: DateTimeFilter<"Website"> | Date | string
     userId?: StringFilter<"Website"> | string
-    ticks?: WebsiteTickListRelationFilter
+    active?: BoolFilter<"Website"> | boolean
+    createdAt?: DateTimeFilter<"Website"> | Date | string
+    updatedAt?: DateTimeFilter<"Website"> | Date | string
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
+    ticks?: WebsiteTickListRelationFilter
   }
 
   export type WebsiteOrderByWithRelationInput = {
     id?: SortOrder
     url?: SortOrder
-    timeAdded?: SortOrder
     userId?: SortOrder
-    ticks?: WebsiteTickOrderByRelationAggregateInput
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     User?: UserOrderByWithRelationInput
+    ticks?: WebsiteTickOrderByRelationAggregateInput
   }
 
   export type WebsiteWhereUniqueInput = Prisma.AtLeast<{
@@ -6891,17 +10699,21 @@ export namespace Prisma {
     OR?: WebsiteWhereInput[]
     NOT?: WebsiteWhereInput | WebsiteWhereInput[]
     url?: StringFilter<"Website"> | string
-    timeAdded?: DateTimeFilter<"Website"> | Date | string
     userId?: StringFilter<"Website"> | string
-    ticks?: WebsiteTickListRelationFilter
+    active?: BoolFilter<"Website"> | boolean
+    createdAt?: DateTimeFilter<"Website"> | Date | string
+    updatedAt?: DateTimeFilter<"Website"> | Date | string
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
+    ticks?: WebsiteTickListRelationFilter
   }, "id">
 
   export type WebsiteOrderByWithAggregationInput = {
     id?: SortOrder
     url?: SortOrder
-    timeAdded?: SortOrder
     userId?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: WebsiteCountOrderByAggregateInput
     _max?: WebsiteMaxOrderByAggregateInput
     _min?: WebsiteMinOrderByAggregateInput
@@ -6913,48 +10725,92 @@ export namespace Prisma {
     NOT?: WebsiteScalarWhereWithAggregatesInput | WebsiteScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Website"> | string
     url?: StringWithAggregatesFilter<"Website"> | string
-    timeAdded?: DateTimeWithAggregatesFilter<"Website"> | Date | string
     userId?: StringWithAggregatesFilter<"Website"> | string
+    active?: BoolWithAggregatesFilter<"Website"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Website"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Website"> | Date | string
   }
 
-  export type RegionWhereInput = {
-    AND?: RegionWhereInput | RegionWhereInput[]
-    OR?: RegionWhereInput[]
-    NOT?: RegionWhereInput | RegionWhereInput[]
-    id?: StringFilter<"Region"> | string
-    name?: StringFilter<"Region"> | string
-    tickes?: WebsiteTickListRelationFilter
+  export type DnsWhereInput = {
+    AND?: DnsWhereInput | DnsWhereInput[]
+    OR?: DnsWhereInput[]
+    NOT?: DnsWhereInput | DnsWhereInput[]
+    id?: StringFilter<"Dns"> | string
+    userId?: StringFilter<"Dns"> | string
+    domain?: StringFilter<"Dns"> | string
+    ip_addr?: StringFilter<"Dns"> | string
+    resolver?: StringNullableFilter<"Dns"> | string | null
+    interval?: IntFilter<"Dns"> | number
+    active?: BoolFilter<"Dns"> | boolean
+    createdAt?: DateTimeFilter<"Dns"> | Date | string
+    updatedAt?: DateTimeFilter<"Dns"> | Date | string
+    authoritative?: BoolFilter<"Dns"> | boolean
+    ticks?: DnsTickListRelationFilter
   }
 
-  export type RegionOrderByWithRelationInput = {
+  export type DnsOrderByWithRelationInput = {
     id?: SortOrder
-    name?: SortOrder
-    tickes?: WebsiteTickOrderByRelationAggregateInput
+    userId?: SortOrder
+    domain?: SortOrder
+    ip_addr?: SortOrder
+    resolver?: SortOrderInput | SortOrder
+    interval?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authoritative?: SortOrder
+    ticks?: DnsTickOrderByRelationAggregateInput
   }
 
-  export type RegionWhereUniqueInput = Prisma.AtLeast<{
+  export type DnsWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    name?: string
-    AND?: RegionWhereInput | RegionWhereInput[]
-    OR?: RegionWhereInput[]
-    NOT?: RegionWhereInput | RegionWhereInput[]
-    tickes?: WebsiteTickListRelationFilter
-  }, "id" | "name">
+    AND?: DnsWhereInput | DnsWhereInput[]
+    OR?: DnsWhereInput[]
+    NOT?: DnsWhereInput | DnsWhereInput[]
+    userId?: StringFilter<"Dns"> | string
+    domain?: StringFilter<"Dns"> | string
+    ip_addr?: StringFilter<"Dns"> | string
+    resolver?: StringNullableFilter<"Dns"> | string | null
+    interval?: IntFilter<"Dns"> | number
+    active?: BoolFilter<"Dns"> | boolean
+    createdAt?: DateTimeFilter<"Dns"> | Date | string
+    updatedAt?: DateTimeFilter<"Dns"> | Date | string
+    authoritative?: BoolFilter<"Dns"> | boolean
+    ticks?: DnsTickListRelationFilter
+  }, "id">
 
-  export type RegionOrderByWithAggregationInput = {
+  export type DnsOrderByWithAggregationInput = {
     id?: SortOrder
-    name?: SortOrder
-    _count?: RegionCountOrderByAggregateInput
-    _max?: RegionMaxOrderByAggregateInput
-    _min?: RegionMinOrderByAggregateInput
+    userId?: SortOrder
+    domain?: SortOrder
+    ip_addr?: SortOrder
+    resolver?: SortOrderInput | SortOrder
+    interval?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authoritative?: SortOrder
+    _count?: DnsCountOrderByAggregateInput
+    _avg?: DnsAvgOrderByAggregateInput
+    _max?: DnsMaxOrderByAggregateInput
+    _min?: DnsMinOrderByAggregateInput
+    _sum?: DnsSumOrderByAggregateInput
   }
 
-  export type RegionScalarWhereWithAggregatesInput = {
-    AND?: RegionScalarWhereWithAggregatesInput | RegionScalarWhereWithAggregatesInput[]
-    OR?: RegionScalarWhereWithAggregatesInput[]
-    NOT?: RegionScalarWhereWithAggregatesInput | RegionScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Region"> | string
-    name?: StringWithAggregatesFilter<"Region"> | string
+  export type DnsScalarWhereWithAggregatesInput = {
+    AND?: DnsScalarWhereWithAggregatesInput | DnsScalarWhereWithAggregatesInput[]
+    OR?: DnsScalarWhereWithAggregatesInput[]
+    NOT?: DnsScalarWhereWithAggregatesInput | DnsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Dns"> | string
+    userId?: StringWithAggregatesFilter<"Dns"> | string
+    domain?: StringWithAggregatesFilter<"Dns"> | string
+    ip_addr?: StringWithAggregatesFilter<"Dns"> | string
+    resolver?: StringNullableWithAggregatesFilter<"Dns"> | string | null
+    interval?: IntWithAggregatesFilter<"Dns"> | number
+    active?: BoolWithAggregatesFilter<"Dns"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Dns"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Dns"> | Date | string
+    authoritative?: BoolWithAggregatesFilter<"Dns"> | boolean
   }
 
   export type WebsiteTickWhereInput = {
@@ -6964,11 +10820,10 @@ export namespace Prisma {
     id?: StringFilter<"WebsiteTick"> | string
     response_time_ms?: IntFilter<"WebsiteTick"> | number
     status?: EnumWebsiteStatusFilter<"WebsiteTick"> | $Enums.WebsiteStatus
+    region?: StringFilter<"WebsiteTick"> | string
     userId?: StringFilter<"WebsiteTick"> | string
-    region_id?: StringFilter<"WebsiteTick"> | string
     website_id?: StringFilter<"WebsiteTick"> | string
     CreatedAt?: DateTimeFilter<"WebsiteTick"> | Date | string
-    region?: XOR<RegionScalarRelationFilter, RegionWhereInput>
     website?: XOR<WebsiteScalarRelationFilter, WebsiteWhereInput>
   }
 
@@ -6976,11 +10831,10 @@ export namespace Prisma {
     id?: SortOrder
     response_time_ms?: SortOrder
     status?: SortOrder
+    region?: SortOrder
     userId?: SortOrder
-    region_id?: SortOrder
     website_id?: SortOrder
     CreatedAt?: SortOrder
-    region?: RegionOrderByWithRelationInput
     website?: WebsiteOrderByWithRelationInput
   }
 
@@ -6991,11 +10845,10 @@ export namespace Prisma {
     NOT?: WebsiteTickWhereInput | WebsiteTickWhereInput[]
     response_time_ms?: IntFilter<"WebsiteTick"> | number
     status?: EnumWebsiteStatusFilter<"WebsiteTick"> | $Enums.WebsiteStatus
+    region?: StringFilter<"WebsiteTick"> | string
     userId?: StringFilter<"WebsiteTick"> | string
-    region_id?: StringFilter<"WebsiteTick"> | string
     website_id?: StringFilter<"WebsiteTick"> | string
     CreatedAt?: DateTimeFilter<"WebsiteTick"> | Date | string
-    region?: XOR<RegionScalarRelationFilter, RegionWhereInput>
     website?: XOR<WebsiteScalarRelationFilter, WebsiteWhereInput>
   }, "id">
 
@@ -7003,8 +10856,8 @@ export namespace Prisma {
     id?: SortOrder
     response_time_ms?: SortOrder
     status?: SortOrder
+    region?: SortOrder
     userId?: SortOrder
-    region_id?: SortOrder
     website_id?: SortOrder
     CreatedAt?: SortOrder
     _count?: WebsiteTickCountOrderByAggregateInput
@@ -7021,10 +10874,144 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"WebsiteTick"> | string
     response_time_ms?: IntWithAggregatesFilter<"WebsiteTick"> | number
     status?: EnumWebsiteStatusWithAggregatesFilter<"WebsiteTick"> | $Enums.WebsiteStatus
+    region?: StringWithAggregatesFilter<"WebsiteTick"> | string
     userId?: StringWithAggregatesFilter<"WebsiteTick"> | string
-    region_id?: StringWithAggregatesFilter<"WebsiteTick"> | string
     website_id?: StringWithAggregatesFilter<"WebsiteTick"> | string
     CreatedAt?: DateTimeWithAggregatesFilter<"WebsiteTick"> | Date | string
+  }
+
+  export type DnsTickWhereInput = {
+    AND?: DnsTickWhereInput | DnsTickWhereInput[]
+    OR?: DnsTickWhereInput[]
+    NOT?: DnsTickWhereInput | DnsTickWhereInput[]
+    id?: StringFilter<"DnsTick"> | string
+    latency_ms?: IntFilter<"DnsTick"> | number
+    status?: EnumDnsStatusFilter<"DnsTick"> | $Enums.DnsStatus
+    region?: StringFilter<"DnsTick"> | string
+    userId?: StringFilter<"DnsTick"> | string
+    dns_id?: StringFilter<"DnsTick"> | string
+    check_id?: StringNullableFilter<"DnsTick"> | string | null
+    resolver_ip?: StringFilter<"DnsTick"> | string
+    CreatedAt?: DateTimeFilter<"DnsTick"> | Date | string
+    dns?: XOR<DnsScalarRelationFilter, DnsWhereInput>
+  }
+
+  export type DnsTickOrderByWithRelationInput = {
+    id?: SortOrder
+    latency_ms?: SortOrder
+    status?: SortOrder
+    region?: SortOrder
+    userId?: SortOrder
+    dns_id?: SortOrder
+    check_id?: SortOrderInput | SortOrder
+    resolver_ip?: SortOrder
+    CreatedAt?: SortOrder
+    dns?: DnsOrderByWithRelationInput
+  }
+
+  export type DnsTickWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DnsTickWhereInput | DnsTickWhereInput[]
+    OR?: DnsTickWhereInput[]
+    NOT?: DnsTickWhereInput | DnsTickWhereInput[]
+    latency_ms?: IntFilter<"DnsTick"> | number
+    status?: EnumDnsStatusFilter<"DnsTick"> | $Enums.DnsStatus
+    region?: StringFilter<"DnsTick"> | string
+    userId?: StringFilter<"DnsTick"> | string
+    dns_id?: StringFilter<"DnsTick"> | string
+    check_id?: StringNullableFilter<"DnsTick"> | string | null
+    resolver_ip?: StringFilter<"DnsTick"> | string
+    CreatedAt?: DateTimeFilter<"DnsTick"> | Date | string
+    dns?: XOR<DnsScalarRelationFilter, DnsWhereInput>
+  }, "id">
+
+  export type DnsTickOrderByWithAggregationInput = {
+    id?: SortOrder
+    latency_ms?: SortOrder
+    status?: SortOrder
+    region?: SortOrder
+    userId?: SortOrder
+    dns_id?: SortOrder
+    check_id?: SortOrderInput | SortOrder
+    resolver_ip?: SortOrder
+    CreatedAt?: SortOrder
+    _count?: DnsTickCountOrderByAggregateInput
+    _avg?: DnsTickAvgOrderByAggregateInput
+    _max?: DnsTickMaxOrderByAggregateInput
+    _min?: DnsTickMinOrderByAggregateInput
+    _sum?: DnsTickSumOrderByAggregateInput
+  }
+
+  export type DnsTickScalarWhereWithAggregatesInput = {
+    AND?: DnsTickScalarWhereWithAggregatesInput | DnsTickScalarWhereWithAggregatesInput[]
+    OR?: DnsTickScalarWhereWithAggregatesInput[]
+    NOT?: DnsTickScalarWhereWithAggregatesInput | DnsTickScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DnsTick"> | string
+    latency_ms?: IntWithAggregatesFilter<"DnsTick"> | number
+    status?: EnumDnsStatusWithAggregatesFilter<"DnsTick"> | $Enums.DnsStatus
+    region?: StringWithAggregatesFilter<"DnsTick"> | string
+    userId?: StringWithAggregatesFilter<"DnsTick"> | string
+    dns_id?: StringWithAggregatesFilter<"DnsTick"> | string
+    check_id?: StringNullableWithAggregatesFilter<"DnsTick"> | string | null
+    resolver_ip?: StringWithAggregatesFilter<"DnsTick"> | string
+    CreatedAt?: DateTimeWithAggregatesFilter<"DnsTick"> | Date | string
+  }
+
+  export type DnsRecordWhereInput = {
+    AND?: DnsRecordWhereInput | DnsRecordWhereInput[]
+    OR?: DnsRecordWhereInput[]
+    NOT?: DnsRecordWhereInput | DnsRecordWhereInput[]
+    id?: StringFilter<"DnsRecord"> | string
+    type?: EnumRecordFilter<"DnsRecord"> | $Enums.Record
+    response?: StringNullableFilter<"DnsRecord"> | string | null
+    region?: StringFilter<"DnsRecord"> | string
+    user_id?: StringFilter<"DnsRecord"> | string
+    dns_id?: StringFilter<"DnsRecord"> | string
+  }
+
+  export type DnsRecordOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    response?: SortOrderInput | SortOrder
+    region?: SortOrder
+    user_id?: SortOrder
+    dns_id?: SortOrder
+  }
+
+  export type DnsRecordWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DnsRecordWhereInput | DnsRecordWhereInput[]
+    OR?: DnsRecordWhereInput[]
+    NOT?: DnsRecordWhereInput | DnsRecordWhereInput[]
+    type?: EnumRecordFilter<"DnsRecord"> | $Enums.Record
+    response?: StringNullableFilter<"DnsRecord"> | string | null
+    region?: StringFilter<"DnsRecord"> | string
+    user_id?: StringFilter<"DnsRecord"> | string
+    dns_id?: StringFilter<"DnsRecord"> | string
+  }, "id">
+
+  export type DnsRecordOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    response?: SortOrderInput | SortOrder
+    region?: SortOrder
+    user_id?: SortOrder
+    dns_id?: SortOrder
+    _count?: DnsRecordCountOrderByAggregateInput
+    _max?: DnsRecordMaxOrderByAggregateInput
+    _min?: DnsRecordMinOrderByAggregateInput
+  }
+
+  export type DnsRecordScalarWhereWithAggregatesInput = {
+    AND?: DnsRecordScalarWhereWithAggregatesInput | DnsRecordScalarWhereWithAggregatesInput[]
+    OR?: DnsRecordScalarWhereWithAggregatesInput[]
+    NOT?: DnsRecordScalarWhereWithAggregatesInput | DnsRecordScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DnsRecord"> | string
+    type?: EnumRecordWithAggregatesFilter<"DnsRecord"> | $Enums.Record
+    response?: StringNullableWithAggregatesFilter<"DnsRecord"> | string | null
+    region?: StringWithAggregatesFilter<"DnsRecord"> | string
+    user_id?: StringWithAggregatesFilter<"DnsRecord"> | string
+    dns_id?: StringWithAggregatesFilter<"DnsRecord"> | string
   }
 
   export type UserWhereInput = {
@@ -7036,7 +11023,7 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     Websites?: WebsiteListRelationFilter
-    incidents?: IncidentListRelationFilter
+    alert?: AlertsListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -7045,7 +11032,7 @@ export namespace Prisma {
     password?: SortOrder
     email?: SortOrder
     Websites?: WebsiteOrderByRelationAggregateInput
-    incidents?: IncidentOrderByRelationAggregateInput
+    alert?: AlertsOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -7057,7 +11044,7 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     Websites?: WebsiteListRelationFilter
-    incidents?: IncidentListRelationFilter
+    alert?: AlertsListRelationFilter
   }, "id">
 
   export type UserOrderByWithAggregationInput = {
@@ -7080,154 +11067,286 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"User"> | string
   }
 
-  export type IncidentWhereInput = {
-    AND?: IncidentWhereInput | IncidentWhereInput[]
-    OR?: IncidentWhereInput[]
-    NOT?: IncidentWhereInput | IncidentWhereInput[]
-    id?: StringFilter<"Incident"> | string
-    website_id?: StringFilter<"Incident"> | string
-    userId?: StringFilter<"Incident"> | string
-    created_at?: DateTimeFilter<"Incident"> | Date | string
-    website?: XOR<UserScalarRelationFilter, UserWhereInput>
+  export type AlertsWhereInput = {
+    AND?: AlertsWhereInput | AlertsWhereInput[]
+    OR?: AlertsWhereInput[]
+    NOT?: AlertsWhereInput | AlertsWhereInput[]
+    id?: StringFilter<"Alerts"> | string
+    website_id?: StringFilter<"Alerts"> | string
+    userId?: StringFilter<"Alerts"> | string
+    alert_type?: EnumAlertFilter<"Alerts"> | $Enums.Alert
+    type?: EnumMsgTypeFilter<"Alerts"> | $Enums.MsgType
+    verified?: BoolNullableFilter<"Alerts"> | boolean | null
+    status?: EnumAlertStatusFilter<"Alerts"> | $Enums.AlertStatus
+    msg?: StringFilter<"Alerts"> | string
+    created_at?: DateTimeFilter<"Alerts"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
-  export type IncidentOrderByWithRelationInput = {
+  export type AlertsOrderByWithRelationInput = {
     id?: SortOrder
     website_id?: SortOrder
     userId?: SortOrder
+    alert_type?: SortOrder
+    type?: SortOrder
+    verified?: SortOrderInput | SortOrder
+    status?: SortOrder
+    msg?: SortOrder
     created_at?: SortOrder
-    website?: UserOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
-  export type IncidentWhereUniqueInput = Prisma.AtLeast<{
+  export type AlertsWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: IncidentWhereInput | IncidentWhereInput[]
-    OR?: IncidentWhereInput[]
-    NOT?: IncidentWhereInput | IncidentWhereInput[]
-    website_id?: StringFilter<"Incident"> | string
-    userId?: StringFilter<"Incident"> | string
-    created_at?: DateTimeFilter<"Incident"> | Date | string
-    website?: XOR<UserScalarRelationFilter, UserWhereInput>
+    AND?: AlertsWhereInput | AlertsWhereInput[]
+    OR?: AlertsWhereInput[]
+    NOT?: AlertsWhereInput | AlertsWhereInput[]
+    website_id?: StringFilter<"Alerts"> | string
+    userId?: StringFilter<"Alerts"> | string
+    alert_type?: EnumAlertFilter<"Alerts"> | $Enums.Alert
+    type?: EnumMsgTypeFilter<"Alerts"> | $Enums.MsgType
+    verified?: BoolNullableFilter<"Alerts"> | boolean | null
+    status?: EnumAlertStatusFilter<"Alerts"> | $Enums.AlertStatus
+    msg?: StringFilter<"Alerts"> | string
+    created_at?: DateTimeFilter<"Alerts"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
-  export type IncidentOrderByWithAggregationInput = {
+  export type AlertsOrderByWithAggregationInput = {
     id?: SortOrder
     website_id?: SortOrder
     userId?: SortOrder
+    alert_type?: SortOrder
+    type?: SortOrder
+    verified?: SortOrderInput | SortOrder
+    status?: SortOrder
+    msg?: SortOrder
     created_at?: SortOrder
-    _count?: IncidentCountOrderByAggregateInput
-    _max?: IncidentMaxOrderByAggregateInput
-    _min?: IncidentMinOrderByAggregateInput
+    _count?: AlertsCountOrderByAggregateInput
+    _max?: AlertsMaxOrderByAggregateInput
+    _min?: AlertsMinOrderByAggregateInput
   }
 
-  export type IncidentScalarWhereWithAggregatesInput = {
-    AND?: IncidentScalarWhereWithAggregatesInput | IncidentScalarWhereWithAggregatesInput[]
-    OR?: IncidentScalarWhereWithAggregatesInput[]
-    NOT?: IncidentScalarWhereWithAggregatesInput | IncidentScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Incident"> | string
-    website_id?: StringWithAggregatesFilter<"Incident"> | string
-    userId?: StringWithAggregatesFilter<"Incident"> | string
-    created_at?: DateTimeWithAggregatesFilter<"Incident"> | Date | string
+  export type AlertsScalarWhereWithAggregatesInput = {
+    AND?: AlertsScalarWhereWithAggregatesInput | AlertsScalarWhereWithAggregatesInput[]
+    OR?: AlertsScalarWhereWithAggregatesInput[]
+    NOT?: AlertsScalarWhereWithAggregatesInput | AlertsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Alerts"> | string
+    website_id?: StringWithAggregatesFilter<"Alerts"> | string
+    userId?: StringWithAggregatesFilter<"Alerts"> | string
+    alert_type?: EnumAlertWithAggregatesFilter<"Alerts"> | $Enums.Alert
+    type?: EnumMsgTypeWithAggregatesFilter<"Alerts"> | $Enums.MsgType
+    verified?: BoolNullableWithAggregatesFilter<"Alerts"> | boolean | null
+    status?: EnumAlertStatusWithAggregatesFilter<"Alerts"> | $Enums.AlertStatus
+    msg?: StringWithAggregatesFilter<"Alerts"> | string
+    created_at?: DateTimeWithAggregatesFilter<"Alerts"> | Date | string
+  }
+
+  export type RegionWhereInput = {
+    AND?: RegionWhereInput | RegionWhereInput[]
+    OR?: RegionWhereInput[]
+    NOT?: RegionWhereInput | RegionWhereInput[]
+    id?: StringFilter<"Region"> | string
+    name?: StringFilter<"Region"> | string
+  }
+
+  export type RegionOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type RegionWhereUniqueInput = Prisma.AtLeast<{
+    name?: string
+    AND?: RegionWhereInput | RegionWhereInput[]
+    OR?: RegionWhereInput[]
+    NOT?: RegionWhereInput | RegionWhereInput[]
+    id?: StringFilter<"Region"> | string
+  }, "name">
+
+  export type RegionOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    _count?: RegionCountOrderByAggregateInput
+    _max?: RegionMaxOrderByAggregateInput
+    _min?: RegionMinOrderByAggregateInput
+  }
+
+  export type RegionScalarWhereWithAggregatesInput = {
+    AND?: RegionScalarWhereWithAggregatesInput | RegionScalarWhereWithAggregatesInput[]
+    OR?: RegionScalarWhereWithAggregatesInput[]
+    NOT?: RegionScalarWhereWithAggregatesInput | RegionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Region"> | string
+    name?: StringWithAggregatesFilter<"Region"> | string
   }
 
   export type WebsiteCreateInput = {
     id?: string
     url: string
-    timeAdded?: Date | string
-    ticks?: WebsiteTickCreateNestedManyWithoutWebsiteInput
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     User: UserCreateNestedOneWithoutWebsitesInput
+    ticks?: WebsiteTickCreateNestedManyWithoutWebsiteInput
   }
 
   export type WebsiteUncheckedCreateInput = {
     id?: string
     url: string
-    timeAdded?: Date | string
     userId: string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     ticks?: WebsiteTickUncheckedCreateNestedManyWithoutWebsiteInput
   }
 
   export type WebsiteUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
-    timeAdded?: DateTimeFieldUpdateOperationsInput | Date | string
-    ticks?: WebsiteTickUpdateManyWithoutWebsiteNestedInput
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneRequiredWithoutWebsitesNestedInput
+    ticks?: WebsiteTickUpdateManyWithoutWebsiteNestedInput
   }
 
   export type WebsiteUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
-    timeAdded?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ticks?: WebsiteTickUncheckedUpdateManyWithoutWebsiteNestedInput
   }
 
   export type WebsiteCreateManyInput = {
     id?: string
     url: string
-    timeAdded?: Date | string
     userId: string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type WebsiteUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
-    timeAdded?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WebsiteUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
-    timeAdded?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type RegionCreateInput = {
+  export type DnsCreateInput = {
     id?: string
-    name: string
-    tickes?: WebsiteTickCreateNestedManyWithoutRegionInput
+    userId: string
+    domain: string
+    ip_addr: string
+    resolver?: string | null
+    interval: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authoritative?: boolean
+    ticks?: DnsTickCreateNestedManyWithoutDnsInput
   }
 
-  export type RegionUncheckedCreateInput = {
+  export type DnsUncheckedCreateInput = {
     id?: string
-    name: string
-    tickes?: WebsiteTickUncheckedCreateNestedManyWithoutRegionInput
+    userId: string
+    domain: string
+    ip_addr: string
+    resolver?: string | null
+    interval: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authoritative?: boolean
+    ticks?: DnsTickUncheckedCreateNestedManyWithoutDnsInput
   }
 
-  export type RegionUpdateInput = {
+  export type DnsUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    tickes?: WebsiteTickUpdateManyWithoutRegionNestedInput
+    userId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    ip_addr?: StringFieldUpdateOperationsInput | string
+    resolver?: NullableStringFieldUpdateOperationsInput | string | null
+    interval?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authoritative?: BoolFieldUpdateOperationsInput | boolean
+    ticks?: DnsTickUpdateManyWithoutDnsNestedInput
   }
 
-  export type RegionUncheckedUpdateInput = {
+  export type DnsUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    tickes?: WebsiteTickUncheckedUpdateManyWithoutRegionNestedInput
+    userId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    ip_addr?: StringFieldUpdateOperationsInput | string
+    resolver?: NullableStringFieldUpdateOperationsInput | string | null
+    interval?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authoritative?: BoolFieldUpdateOperationsInput | boolean
+    ticks?: DnsTickUncheckedUpdateManyWithoutDnsNestedInput
   }
 
-  export type RegionCreateManyInput = {
+  export type DnsCreateManyInput = {
     id?: string
-    name: string
+    userId: string
+    domain: string
+    ip_addr: string
+    resolver?: string | null
+    interval: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authoritative?: boolean
   }
 
-  export type RegionUpdateManyMutationInput = {
+  export type DnsUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    ip_addr?: StringFieldUpdateOperationsInput | string
+    resolver?: NullableStringFieldUpdateOperationsInput | string | null
+    interval?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authoritative?: BoolFieldUpdateOperationsInput | boolean
   }
 
-  export type RegionUncheckedUpdateManyInput = {
+  export type DnsUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    ip_addr?: StringFieldUpdateOperationsInput | string
+    resolver?: NullableStringFieldUpdateOperationsInput | string | null
+    interval?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authoritative?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type WebsiteTickCreateInput = {
     id?: string
     response_time_ms: number
     status: $Enums.WebsiteStatus
+    region: string
     userId: string
     CreatedAt?: Date | string
-    region: RegionCreateNestedOneWithoutTickesInput
     website: WebsiteCreateNestedOneWithoutTicksInput
   }
 
@@ -7235,8 +11354,8 @@ export namespace Prisma {
     id?: string
     response_time_ms: number
     status: $Enums.WebsiteStatus
+    region: string
     userId: string
-    region_id: string
     website_id: string
     CreatedAt?: Date | string
   }
@@ -7245,9 +11364,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     response_time_ms?: IntFieldUpdateOperationsInput | number
     status?: EnumWebsiteStatusFieldUpdateOperationsInput | $Enums.WebsiteStatus
+    region?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneRequiredWithoutTickesNestedInput
     website?: WebsiteUpdateOneRequiredWithoutTicksNestedInput
   }
 
@@ -7255,8 +11374,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     response_time_ms?: IntFieldUpdateOperationsInput | number
     status?: EnumWebsiteStatusFieldUpdateOperationsInput | $Enums.WebsiteStatus
+    region?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    region_id?: StringFieldUpdateOperationsInput | string
     website_id?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7265,8 +11384,8 @@ export namespace Prisma {
     id?: string
     response_time_ms: number
     status: $Enums.WebsiteStatus
+    region: string
     userId: string
-    region_id: string
     website_id: string
     CreatedAt?: Date | string
   }
@@ -7275,6 +11394,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     response_time_ms?: IntFieldUpdateOperationsInput | number
     status?: EnumWebsiteStatusFieldUpdateOperationsInput | $Enums.WebsiteStatus
+    region?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7283,10 +11403,156 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     response_time_ms?: IntFieldUpdateOperationsInput | number
     status?: EnumWebsiteStatusFieldUpdateOperationsInput | $Enums.WebsiteStatus
+    region?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    region_id?: StringFieldUpdateOperationsInput | string
     website_id?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DnsTickCreateInput = {
+    id?: string
+    latency_ms: number
+    status: $Enums.DnsStatus
+    region: string
+    userId: string
+    check_id?: string | null
+    resolver_ip: string
+    CreatedAt?: Date | string
+    dns: DnsCreateNestedOneWithoutTicksInput
+  }
+
+  export type DnsTickUncheckedCreateInput = {
+    id?: string
+    latency_ms: number
+    status: $Enums.DnsStatus
+    region: string
+    userId: string
+    dns_id: string
+    check_id?: string | null
+    resolver_ip: string
+    CreatedAt?: Date | string
+  }
+
+  export type DnsTickUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    latency_ms?: IntFieldUpdateOperationsInput | number
+    status?: EnumDnsStatusFieldUpdateOperationsInput | $Enums.DnsStatus
+    region?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    check_id?: NullableStringFieldUpdateOperationsInput | string | null
+    resolver_ip?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dns?: DnsUpdateOneRequiredWithoutTicksNestedInput
+  }
+
+  export type DnsTickUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    latency_ms?: IntFieldUpdateOperationsInput | number
+    status?: EnumDnsStatusFieldUpdateOperationsInput | $Enums.DnsStatus
+    region?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dns_id?: StringFieldUpdateOperationsInput | string
+    check_id?: NullableStringFieldUpdateOperationsInput | string | null
+    resolver_ip?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DnsTickCreateManyInput = {
+    id?: string
+    latency_ms: number
+    status: $Enums.DnsStatus
+    region: string
+    userId: string
+    dns_id: string
+    check_id?: string | null
+    resolver_ip: string
+    CreatedAt?: Date | string
+  }
+
+  export type DnsTickUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    latency_ms?: IntFieldUpdateOperationsInput | number
+    status?: EnumDnsStatusFieldUpdateOperationsInput | $Enums.DnsStatus
+    region?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    check_id?: NullableStringFieldUpdateOperationsInput | string | null
+    resolver_ip?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DnsTickUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    latency_ms?: IntFieldUpdateOperationsInput | number
+    status?: EnumDnsStatusFieldUpdateOperationsInput | $Enums.DnsStatus
+    region?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dns_id?: StringFieldUpdateOperationsInput | string
+    check_id?: NullableStringFieldUpdateOperationsInput | string | null
+    resolver_ip?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DnsRecordCreateInput = {
+    id?: string
+    type: $Enums.Record
+    response?: string | null
+    region: string
+    user_id: string
+    dns_id: string
+  }
+
+  export type DnsRecordUncheckedCreateInput = {
+    id?: string
+    type: $Enums.Record
+    response?: string | null
+    region: string
+    user_id: string
+    dns_id: string
+  }
+
+  export type DnsRecordUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumRecordFieldUpdateOperationsInput | $Enums.Record
+    response?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    dns_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type DnsRecordUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumRecordFieldUpdateOperationsInput | $Enums.Record
+    response?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    dns_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type DnsRecordCreateManyInput = {
+    id?: string
+    type: $Enums.Record
+    response?: string | null
+    region: string
+    user_id: string
+    dns_id: string
+  }
+
+  export type DnsRecordUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumRecordFieldUpdateOperationsInput | $Enums.Record
+    response?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    dns_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type DnsRecordUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumRecordFieldUpdateOperationsInput | $Enums.Record
+    response?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    dns_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserCreateInput = {
@@ -7295,7 +11561,7 @@ export namespace Prisma {
     password: string
     email: string
     Websites?: WebsiteCreateNestedManyWithoutUserInput
-    incidents?: IncidentCreateNestedManyWithoutWebsiteInput
+    alert?: AlertsCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -7304,7 +11570,7 @@ export namespace Prisma {
     password: string
     email: string
     Websites?: WebsiteUncheckedCreateNestedManyWithoutUserInput
-    incidents?: IncidentUncheckedCreateNestedManyWithoutWebsiteInput
+    alert?: AlertsUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -7313,7 +11579,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     Websites?: WebsiteUpdateManyWithoutUserNestedInput
-    incidents?: IncidentUpdateManyWithoutWebsiteNestedInput
+    alert?: AlertsUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7322,7 +11588,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     Websites?: WebsiteUncheckedUpdateManyWithoutUserNestedInput
-    incidents?: IncidentUncheckedUpdateManyWithoutWebsiteNestedInput
+    alert?: AlertsUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -7346,52 +11612,122 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
   }
 
-  export type IncidentCreateInput = {
+  export type AlertsCreateInput = {
     id?: string
     website_id: string
+    alert_type: $Enums.Alert
+    type: $Enums.MsgType
+    verified?: boolean | null
+    status?: $Enums.AlertStatus
+    msg: string
     created_at?: Date | string
-    website: UserCreateNestedOneWithoutIncidentsInput
+    user: UserCreateNestedOneWithoutAlertInput
   }
 
-  export type IncidentUncheckedCreateInput = {
-    id?: string
-    website_id: string
-    userId: string
-    created_at?: Date | string
-  }
-
-  export type IncidentUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    website_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    website?: UserUpdateOneRequiredWithoutIncidentsNestedInput
-  }
-
-  export type IncidentUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    website_id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type IncidentCreateManyInput = {
+  export type AlertsUncheckedCreateInput = {
     id?: string
     website_id: string
     userId: string
+    alert_type: $Enums.Alert
+    type: $Enums.MsgType
+    verified?: boolean | null
+    status?: $Enums.AlertStatus
+    msg: string
     created_at?: Date | string
   }
 
-  export type IncidentUpdateManyMutationInput = {
+  export type AlertsUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     website_id?: StringFieldUpdateOperationsInput | string
+    alert_type?: EnumAlertFieldUpdateOperationsInput | $Enums.Alert
+    type?: EnumMsgTypeFieldUpdateOperationsInput | $Enums.MsgType
+    verified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    status?: EnumAlertStatusFieldUpdateOperationsInput | $Enums.AlertStatus
+    msg?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAlertNestedInput
   }
 
-  export type IncidentUncheckedUpdateManyInput = {
+  export type AlertsUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     website_id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    alert_type?: EnumAlertFieldUpdateOperationsInput | $Enums.Alert
+    type?: EnumMsgTypeFieldUpdateOperationsInput | $Enums.MsgType
+    verified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    status?: EnumAlertStatusFieldUpdateOperationsInput | $Enums.AlertStatus
+    msg?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlertsCreateManyInput = {
+    id?: string
+    website_id: string
+    userId: string
+    alert_type: $Enums.Alert
+    type: $Enums.MsgType
+    verified?: boolean | null
+    status?: $Enums.AlertStatus
+    msg: string
+    created_at?: Date | string
+  }
+
+  export type AlertsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    website_id?: StringFieldUpdateOperationsInput | string
+    alert_type?: EnumAlertFieldUpdateOperationsInput | $Enums.Alert
+    type?: EnumMsgTypeFieldUpdateOperationsInput | $Enums.MsgType
+    verified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    status?: EnumAlertStatusFieldUpdateOperationsInput | $Enums.AlertStatus
+    msg?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlertsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    website_id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    alert_type?: EnumAlertFieldUpdateOperationsInput | $Enums.Alert
+    type?: EnumMsgTypeFieldUpdateOperationsInput | $Enums.MsgType
+    verified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    status?: EnumAlertStatusFieldUpdateOperationsInput | $Enums.AlertStatus
+    msg?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegionCreateInput = {
+    id?: string
+    name: string
+  }
+
+  export type RegionUncheckedCreateInput = {
+    id?: string
+    name: string
+  }
+
+  export type RegionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RegionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RegionCreateManyInput = {
+    id?: string
+    name: string
+  }
+
+  export type RegionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RegionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -7409,6 +11745,11 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -7420,15 +11761,15 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
   export type WebsiteTickListRelationFilter = {
     every?: WebsiteTickWhereInput
     some?: WebsiteTickWhereInput
     none?: WebsiteTickWhereInput
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type WebsiteTickOrderByRelationAggregateInput = {
@@ -7438,22 +11779,28 @@ export namespace Prisma {
   export type WebsiteCountOrderByAggregateInput = {
     id?: SortOrder
     url?: SortOrder
-    timeAdded?: SortOrder
     userId?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type WebsiteMaxOrderByAggregateInput = {
     id?: SortOrder
     url?: SortOrder
-    timeAdded?: SortOrder
     userId?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type WebsiteMinOrderByAggregateInput = {
     id?: SortOrder
     url?: SortOrder
-    timeAdded?: SortOrder
     userId?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -7474,6 +11821,14 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -7488,19 +11843,19 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type RegionCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-  }
-
-  export type RegionMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-  }
-
-  export type RegionMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -7514,59 +11869,84 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type EnumWebsiteStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.WebsiteStatus | EnumWebsiteStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.WebsiteStatus[] | ListEnumWebsiteStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.WebsiteStatus[] | ListEnumWebsiteStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumWebsiteStatusFilter<$PrismaModel> | $Enums.WebsiteStatus
+  export type DnsTickListRelationFilter = {
+    every?: DnsTickWhereInput
+    some?: DnsTickWhereInput
+    none?: DnsTickWhereInput
   }
 
-  export type RegionScalarRelationFilter = {
-    is?: RegionWhereInput
-    isNot?: RegionWhereInput
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
-  export type WebsiteScalarRelationFilter = {
-    is?: WebsiteWhereInput
-    isNot?: WebsiteWhereInput
+  export type DnsTickOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
-  export type WebsiteTickCountOrderByAggregateInput = {
+  export type DnsCountOrderByAggregateInput = {
     id?: SortOrder
-    response_time_ms?: SortOrder
-    status?: SortOrder
     userId?: SortOrder
-    region_id?: SortOrder
-    website_id?: SortOrder
-    CreatedAt?: SortOrder
+    domain?: SortOrder
+    ip_addr?: SortOrder
+    resolver?: SortOrder
+    interval?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authoritative?: SortOrder
   }
 
-  export type WebsiteTickAvgOrderByAggregateInput = {
-    response_time_ms?: SortOrder
+  export type DnsAvgOrderByAggregateInput = {
+    interval?: SortOrder
   }
 
-  export type WebsiteTickMaxOrderByAggregateInput = {
+  export type DnsMaxOrderByAggregateInput = {
     id?: SortOrder
-    response_time_ms?: SortOrder
-    status?: SortOrder
     userId?: SortOrder
-    region_id?: SortOrder
-    website_id?: SortOrder
-    CreatedAt?: SortOrder
+    domain?: SortOrder
+    ip_addr?: SortOrder
+    resolver?: SortOrder
+    interval?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authoritative?: SortOrder
   }
 
-  export type WebsiteTickMinOrderByAggregateInput = {
+  export type DnsMinOrderByAggregateInput = {
     id?: SortOrder
-    response_time_ms?: SortOrder
-    status?: SortOrder
     userId?: SortOrder
-    region_id?: SortOrder
-    website_id?: SortOrder
-    CreatedAt?: SortOrder
+    domain?: SortOrder
+    ip_addr?: SortOrder
+    resolver?: SortOrder
+    interval?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authoritative?: SortOrder
   }
 
-  export type WebsiteTickSumOrderByAggregateInput = {
-    response_time_ms?: SortOrder
+  export type DnsSumOrderByAggregateInput = {
+    interval?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -7585,6 +11965,56 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type EnumWebsiteStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.WebsiteStatus | EnumWebsiteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.WebsiteStatus[] | ListEnumWebsiteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WebsiteStatus[] | ListEnumWebsiteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumWebsiteStatusFilter<$PrismaModel> | $Enums.WebsiteStatus
+  }
+
+  export type WebsiteScalarRelationFilter = {
+    is?: WebsiteWhereInput
+    isNot?: WebsiteWhereInput
+  }
+
+  export type WebsiteTickCountOrderByAggregateInput = {
+    id?: SortOrder
+    response_time_ms?: SortOrder
+    status?: SortOrder
+    region?: SortOrder
+    userId?: SortOrder
+    website_id?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type WebsiteTickAvgOrderByAggregateInput = {
+    response_time_ms?: SortOrder
+  }
+
+  export type WebsiteTickMaxOrderByAggregateInput = {
+    id?: SortOrder
+    response_time_ms?: SortOrder
+    status?: SortOrder
+    region?: SortOrder
+    userId?: SortOrder
+    website_id?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type WebsiteTickMinOrderByAggregateInput = {
+    id?: SortOrder
+    response_time_ms?: SortOrder
+    status?: SortOrder
+    region?: SortOrder
+    userId?: SortOrder
+    website_id?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type WebsiteTickSumOrderByAggregateInput = {
+    response_time_ms?: SortOrder
+  }
+
   export type EnumWebsiteStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.WebsiteStatus | EnumWebsiteStatusFieldRefInput<$PrismaModel>
     in?: $Enums.WebsiteStatus[] | ListEnumWebsiteStatusFieldRefInput<$PrismaModel>
@@ -7595,23 +12025,133 @@ export namespace Prisma {
     _max?: NestedEnumWebsiteStatusFilter<$PrismaModel>
   }
 
+  export type EnumDnsStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DnsStatus | EnumDnsStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DnsStatus[] | ListEnumDnsStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DnsStatus[] | ListEnumDnsStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDnsStatusFilter<$PrismaModel> | $Enums.DnsStatus
+  }
+
+  export type DnsScalarRelationFilter = {
+    is?: DnsWhereInput
+    isNot?: DnsWhereInput
+  }
+
+  export type DnsTickCountOrderByAggregateInput = {
+    id?: SortOrder
+    latency_ms?: SortOrder
+    status?: SortOrder
+    region?: SortOrder
+    userId?: SortOrder
+    dns_id?: SortOrder
+    check_id?: SortOrder
+    resolver_ip?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type DnsTickAvgOrderByAggregateInput = {
+    latency_ms?: SortOrder
+  }
+
+  export type DnsTickMaxOrderByAggregateInput = {
+    id?: SortOrder
+    latency_ms?: SortOrder
+    status?: SortOrder
+    region?: SortOrder
+    userId?: SortOrder
+    dns_id?: SortOrder
+    check_id?: SortOrder
+    resolver_ip?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type DnsTickMinOrderByAggregateInput = {
+    id?: SortOrder
+    latency_ms?: SortOrder
+    status?: SortOrder
+    region?: SortOrder
+    userId?: SortOrder
+    dns_id?: SortOrder
+    check_id?: SortOrder
+    resolver_ip?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type DnsTickSumOrderByAggregateInput = {
+    latency_ms?: SortOrder
+  }
+
+  export type EnumDnsStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DnsStatus | EnumDnsStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DnsStatus[] | ListEnumDnsStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DnsStatus[] | ListEnumDnsStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDnsStatusWithAggregatesFilter<$PrismaModel> | $Enums.DnsStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDnsStatusFilter<$PrismaModel>
+    _max?: NestedEnumDnsStatusFilter<$PrismaModel>
+  }
+
+  export type EnumRecordFilter<$PrismaModel = never> = {
+    equals?: $Enums.Record | EnumRecordFieldRefInput<$PrismaModel>
+    in?: $Enums.Record[] | ListEnumRecordFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Record[] | ListEnumRecordFieldRefInput<$PrismaModel>
+    not?: NestedEnumRecordFilter<$PrismaModel> | $Enums.Record
+  }
+
+  export type DnsRecordCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    response?: SortOrder
+    region?: SortOrder
+    user_id?: SortOrder
+    dns_id?: SortOrder
+  }
+
+  export type DnsRecordMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    response?: SortOrder
+    region?: SortOrder
+    user_id?: SortOrder
+    dns_id?: SortOrder
+  }
+
+  export type DnsRecordMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    response?: SortOrder
+    region?: SortOrder
+    user_id?: SortOrder
+    dns_id?: SortOrder
+  }
+
+  export type EnumRecordWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Record | EnumRecordFieldRefInput<$PrismaModel>
+    in?: $Enums.Record[] | ListEnumRecordFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Record[] | ListEnumRecordFieldRefInput<$PrismaModel>
+    not?: NestedEnumRecordWithAggregatesFilter<$PrismaModel> | $Enums.Record
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRecordFilter<$PrismaModel>
+    _max?: NestedEnumRecordFilter<$PrismaModel>
+  }
+
   export type WebsiteListRelationFilter = {
     every?: WebsiteWhereInput
     some?: WebsiteWhereInput
     none?: WebsiteWhereInput
   }
 
-  export type IncidentListRelationFilter = {
-    every?: IncidentWhereInput
-    some?: IncidentWhereInput
-    none?: IncidentWhereInput
+  export type AlertsListRelationFilter = {
+    every?: AlertsWhereInput
+    some?: AlertsWhereInput
+    none?: AlertsWhereInput
   }
 
   export type WebsiteOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type IncidentOrderByRelationAggregateInput = {
+  export type AlertsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -7636,25 +12176,125 @@ export namespace Prisma {
     email?: SortOrder
   }
 
-  export type IncidentCountOrderByAggregateInput = {
+  export type EnumAlertFilter<$PrismaModel = never> = {
+    equals?: $Enums.Alert | EnumAlertFieldRefInput<$PrismaModel>
+    in?: $Enums.Alert[] | ListEnumAlertFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Alert[] | ListEnumAlertFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertFilter<$PrismaModel> | $Enums.Alert
+  }
+
+  export type EnumMsgTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MsgType | EnumMsgTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MsgType[] | ListEnumMsgTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MsgType[] | ListEnumMsgTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMsgTypeFilter<$PrismaModel> | $Enums.MsgType
+  }
+
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type EnumAlertStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AlertStatus | EnumAlertStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AlertStatus[] | ListEnumAlertStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AlertStatus[] | ListEnumAlertStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertStatusFilter<$PrismaModel> | $Enums.AlertStatus
+  }
+
+  export type AlertsCountOrderByAggregateInput = {
     id?: SortOrder
     website_id?: SortOrder
     userId?: SortOrder
+    alert_type?: SortOrder
+    type?: SortOrder
+    verified?: SortOrder
+    status?: SortOrder
+    msg?: SortOrder
     created_at?: SortOrder
   }
 
-  export type IncidentMaxOrderByAggregateInput = {
+  export type AlertsMaxOrderByAggregateInput = {
     id?: SortOrder
     website_id?: SortOrder
     userId?: SortOrder
+    alert_type?: SortOrder
+    type?: SortOrder
+    verified?: SortOrder
+    status?: SortOrder
+    msg?: SortOrder
     created_at?: SortOrder
   }
 
-  export type IncidentMinOrderByAggregateInput = {
+  export type AlertsMinOrderByAggregateInput = {
     id?: SortOrder
     website_id?: SortOrder
     userId?: SortOrder
+    alert_type?: SortOrder
+    type?: SortOrder
+    verified?: SortOrder
+    status?: SortOrder
+    msg?: SortOrder
     created_at?: SortOrder
+  }
+
+  export type EnumAlertWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Alert | EnumAlertFieldRefInput<$PrismaModel>
+    in?: $Enums.Alert[] | ListEnumAlertFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Alert[] | ListEnumAlertFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertWithAggregatesFilter<$PrismaModel> | $Enums.Alert
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAlertFilter<$PrismaModel>
+    _max?: NestedEnumAlertFilter<$PrismaModel>
+  }
+
+  export type EnumMsgTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MsgType | EnumMsgTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MsgType[] | ListEnumMsgTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MsgType[] | ListEnumMsgTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMsgTypeWithAggregatesFilter<$PrismaModel> | $Enums.MsgType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMsgTypeFilter<$PrismaModel>
+    _max?: NestedEnumMsgTypeFilter<$PrismaModel>
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
+  export type EnumAlertStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AlertStatus | EnumAlertStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AlertStatus[] | ListEnumAlertStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AlertStatus[] | ListEnumAlertStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertStatusWithAggregatesFilter<$PrismaModel> | $Enums.AlertStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAlertStatusFilter<$PrismaModel>
+    _max?: NestedEnumAlertStatusFilter<$PrismaModel>
+  }
+
+  export type RegionCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type RegionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type RegionMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type UserCreateNestedOneWithoutWebsitesInput = {
+    create?: XOR<UserCreateWithoutWebsitesInput, UserUncheckedCreateWithoutWebsitesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWebsitesInput
+    connect?: UserWhereUniqueInput
   }
 
   export type WebsiteTickCreateNestedManyWithoutWebsiteInput = {
@@ -7662,12 +12302,6 @@ export namespace Prisma {
     connectOrCreate?: WebsiteTickCreateOrConnectWithoutWebsiteInput | WebsiteTickCreateOrConnectWithoutWebsiteInput[]
     createMany?: WebsiteTickCreateManyWebsiteInputEnvelope
     connect?: WebsiteTickWhereUniqueInput | WebsiteTickWhereUniqueInput[]
-  }
-
-  export type UserCreateNestedOneWithoutWebsitesInput = {
-    create?: XOR<UserCreateWithoutWebsitesInput, UserUncheckedCreateWithoutWebsitesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutWebsitesInput
-    connect?: UserWhereUniqueInput
   }
 
   export type WebsiteTickUncheckedCreateNestedManyWithoutWebsiteInput = {
@@ -7681,8 +12315,20 @@ export namespace Prisma {
     set?: string
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type UserUpdateOneRequiredWithoutWebsitesNestedInput = {
+    create?: XOR<UserCreateWithoutWebsitesInput, UserUncheckedCreateWithoutWebsitesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWebsitesInput
+    upsert?: UserUpsertWithoutWebsitesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWebsitesInput, UserUpdateWithoutWebsitesInput>, UserUncheckedUpdateWithoutWebsitesInput>
   }
 
   export type WebsiteTickUpdateManyWithoutWebsiteNestedInput = {
@@ -7699,14 +12345,6 @@ export namespace Prisma {
     deleteMany?: WebsiteTickScalarWhereInput | WebsiteTickScalarWhereInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutWebsitesNestedInput = {
-    create?: XOR<UserCreateWithoutWebsitesInput, UserUncheckedCreateWithoutWebsitesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutWebsitesInput
-    upsert?: UserUpsertWithoutWebsitesInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWebsitesInput, UserUpdateWithoutWebsitesInput>, UserUncheckedUpdateWithoutWebsitesInput>
-  }
-
   export type WebsiteTickUncheckedUpdateManyWithoutWebsiteNestedInput = {
     create?: XOR<WebsiteTickCreateWithoutWebsiteInput, WebsiteTickUncheckedCreateWithoutWebsiteInput> | WebsiteTickCreateWithoutWebsiteInput[] | WebsiteTickUncheckedCreateWithoutWebsiteInput[]
     connectOrCreate?: WebsiteTickCreateOrConnectWithoutWebsiteInput | WebsiteTickCreateOrConnectWithoutWebsiteInput[]
@@ -7721,58 +12359,22 @@ export namespace Prisma {
     deleteMany?: WebsiteTickScalarWhereInput | WebsiteTickScalarWhereInput[]
   }
 
-  export type WebsiteTickCreateNestedManyWithoutRegionInput = {
-    create?: XOR<WebsiteTickCreateWithoutRegionInput, WebsiteTickUncheckedCreateWithoutRegionInput> | WebsiteTickCreateWithoutRegionInput[] | WebsiteTickUncheckedCreateWithoutRegionInput[]
-    connectOrCreate?: WebsiteTickCreateOrConnectWithoutRegionInput | WebsiteTickCreateOrConnectWithoutRegionInput[]
-    createMany?: WebsiteTickCreateManyRegionInputEnvelope
-    connect?: WebsiteTickWhereUniqueInput | WebsiteTickWhereUniqueInput[]
+  export type DnsTickCreateNestedManyWithoutDnsInput = {
+    create?: XOR<DnsTickCreateWithoutDnsInput, DnsTickUncheckedCreateWithoutDnsInput> | DnsTickCreateWithoutDnsInput[] | DnsTickUncheckedCreateWithoutDnsInput[]
+    connectOrCreate?: DnsTickCreateOrConnectWithoutDnsInput | DnsTickCreateOrConnectWithoutDnsInput[]
+    createMany?: DnsTickCreateManyDnsInputEnvelope
+    connect?: DnsTickWhereUniqueInput | DnsTickWhereUniqueInput[]
   }
 
-  export type WebsiteTickUncheckedCreateNestedManyWithoutRegionInput = {
-    create?: XOR<WebsiteTickCreateWithoutRegionInput, WebsiteTickUncheckedCreateWithoutRegionInput> | WebsiteTickCreateWithoutRegionInput[] | WebsiteTickUncheckedCreateWithoutRegionInput[]
-    connectOrCreate?: WebsiteTickCreateOrConnectWithoutRegionInput | WebsiteTickCreateOrConnectWithoutRegionInput[]
-    createMany?: WebsiteTickCreateManyRegionInputEnvelope
-    connect?: WebsiteTickWhereUniqueInput | WebsiteTickWhereUniqueInput[]
+  export type DnsTickUncheckedCreateNestedManyWithoutDnsInput = {
+    create?: XOR<DnsTickCreateWithoutDnsInput, DnsTickUncheckedCreateWithoutDnsInput> | DnsTickCreateWithoutDnsInput[] | DnsTickUncheckedCreateWithoutDnsInput[]
+    connectOrCreate?: DnsTickCreateOrConnectWithoutDnsInput | DnsTickCreateOrConnectWithoutDnsInput[]
+    createMany?: DnsTickCreateManyDnsInputEnvelope
+    connect?: DnsTickWhereUniqueInput | DnsTickWhereUniqueInput[]
   }
 
-  export type WebsiteTickUpdateManyWithoutRegionNestedInput = {
-    create?: XOR<WebsiteTickCreateWithoutRegionInput, WebsiteTickUncheckedCreateWithoutRegionInput> | WebsiteTickCreateWithoutRegionInput[] | WebsiteTickUncheckedCreateWithoutRegionInput[]
-    connectOrCreate?: WebsiteTickCreateOrConnectWithoutRegionInput | WebsiteTickCreateOrConnectWithoutRegionInput[]
-    upsert?: WebsiteTickUpsertWithWhereUniqueWithoutRegionInput | WebsiteTickUpsertWithWhereUniqueWithoutRegionInput[]
-    createMany?: WebsiteTickCreateManyRegionInputEnvelope
-    set?: WebsiteTickWhereUniqueInput | WebsiteTickWhereUniqueInput[]
-    disconnect?: WebsiteTickWhereUniqueInput | WebsiteTickWhereUniqueInput[]
-    delete?: WebsiteTickWhereUniqueInput | WebsiteTickWhereUniqueInput[]
-    connect?: WebsiteTickWhereUniqueInput | WebsiteTickWhereUniqueInput[]
-    update?: WebsiteTickUpdateWithWhereUniqueWithoutRegionInput | WebsiteTickUpdateWithWhereUniqueWithoutRegionInput[]
-    updateMany?: WebsiteTickUpdateManyWithWhereWithoutRegionInput | WebsiteTickUpdateManyWithWhereWithoutRegionInput[]
-    deleteMany?: WebsiteTickScalarWhereInput | WebsiteTickScalarWhereInput[]
-  }
-
-  export type WebsiteTickUncheckedUpdateManyWithoutRegionNestedInput = {
-    create?: XOR<WebsiteTickCreateWithoutRegionInput, WebsiteTickUncheckedCreateWithoutRegionInput> | WebsiteTickCreateWithoutRegionInput[] | WebsiteTickUncheckedCreateWithoutRegionInput[]
-    connectOrCreate?: WebsiteTickCreateOrConnectWithoutRegionInput | WebsiteTickCreateOrConnectWithoutRegionInput[]
-    upsert?: WebsiteTickUpsertWithWhereUniqueWithoutRegionInput | WebsiteTickUpsertWithWhereUniqueWithoutRegionInput[]
-    createMany?: WebsiteTickCreateManyRegionInputEnvelope
-    set?: WebsiteTickWhereUniqueInput | WebsiteTickWhereUniqueInput[]
-    disconnect?: WebsiteTickWhereUniqueInput | WebsiteTickWhereUniqueInput[]
-    delete?: WebsiteTickWhereUniqueInput | WebsiteTickWhereUniqueInput[]
-    connect?: WebsiteTickWhereUniqueInput | WebsiteTickWhereUniqueInput[]
-    update?: WebsiteTickUpdateWithWhereUniqueWithoutRegionInput | WebsiteTickUpdateWithWhereUniqueWithoutRegionInput[]
-    updateMany?: WebsiteTickUpdateManyWithWhereWithoutRegionInput | WebsiteTickUpdateManyWithWhereWithoutRegionInput[]
-    deleteMany?: WebsiteTickScalarWhereInput | WebsiteTickScalarWhereInput[]
-  }
-
-  export type RegionCreateNestedOneWithoutTickesInput = {
-    create?: XOR<RegionCreateWithoutTickesInput, RegionUncheckedCreateWithoutTickesInput>
-    connectOrCreate?: RegionCreateOrConnectWithoutTickesInput
-    connect?: RegionWhereUniqueInput
-  }
-
-  export type WebsiteCreateNestedOneWithoutTicksInput = {
-    create?: XOR<WebsiteCreateWithoutTicksInput, WebsiteUncheckedCreateWithoutTicksInput>
-    connectOrCreate?: WebsiteCreateOrConnectWithoutTicksInput
-    connect?: WebsiteWhereUniqueInput
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -7783,16 +12385,42 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type EnumWebsiteStatusFieldUpdateOperationsInput = {
-    set?: $Enums.WebsiteStatus
+  export type DnsTickUpdateManyWithoutDnsNestedInput = {
+    create?: XOR<DnsTickCreateWithoutDnsInput, DnsTickUncheckedCreateWithoutDnsInput> | DnsTickCreateWithoutDnsInput[] | DnsTickUncheckedCreateWithoutDnsInput[]
+    connectOrCreate?: DnsTickCreateOrConnectWithoutDnsInput | DnsTickCreateOrConnectWithoutDnsInput[]
+    upsert?: DnsTickUpsertWithWhereUniqueWithoutDnsInput | DnsTickUpsertWithWhereUniqueWithoutDnsInput[]
+    createMany?: DnsTickCreateManyDnsInputEnvelope
+    set?: DnsTickWhereUniqueInput | DnsTickWhereUniqueInput[]
+    disconnect?: DnsTickWhereUniqueInput | DnsTickWhereUniqueInput[]
+    delete?: DnsTickWhereUniqueInput | DnsTickWhereUniqueInput[]
+    connect?: DnsTickWhereUniqueInput | DnsTickWhereUniqueInput[]
+    update?: DnsTickUpdateWithWhereUniqueWithoutDnsInput | DnsTickUpdateWithWhereUniqueWithoutDnsInput[]
+    updateMany?: DnsTickUpdateManyWithWhereWithoutDnsInput | DnsTickUpdateManyWithWhereWithoutDnsInput[]
+    deleteMany?: DnsTickScalarWhereInput | DnsTickScalarWhereInput[]
   }
 
-  export type RegionUpdateOneRequiredWithoutTickesNestedInput = {
-    create?: XOR<RegionCreateWithoutTickesInput, RegionUncheckedCreateWithoutTickesInput>
-    connectOrCreate?: RegionCreateOrConnectWithoutTickesInput
-    upsert?: RegionUpsertWithoutTickesInput
-    connect?: RegionWhereUniqueInput
-    update?: XOR<XOR<RegionUpdateToOneWithWhereWithoutTickesInput, RegionUpdateWithoutTickesInput>, RegionUncheckedUpdateWithoutTickesInput>
+  export type DnsTickUncheckedUpdateManyWithoutDnsNestedInput = {
+    create?: XOR<DnsTickCreateWithoutDnsInput, DnsTickUncheckedCreateWithoutDnsInput> | DnsTickCreateWithoutDnsInput[] | DnsTickUncheckedCreateWithoutDnsInput[]
+    connectOrCreate?: DnsTickCreateOrConnectWithoutDnsInput | DnsTickCreateOrConnectWithoutDnsInput[]
+    upsert?: DnsTickUpsertWithWhereUniqueWithoutDnsInput | DnsTickUpsertWithWhereUniqueWithoutDnsInput[]
+    createMany?: DnsTickCreateManyDnsInputEnvelope
+    set?: DnsTickWhereUniqueInput | DnsTickWhereUniqueInput[]
+    disconnect?: DnsTickWhereUniqueInput | DnsTickWhereUniqueInput[]
+    delete?: DnsTickWhereUniqueInput | DnsTickWhereUniqueInput[]
+    connect?: DnsTickWhereUniqueInput | DnsTickWhereUniqueInput[]
+    update?: DnsTickUpdateWithWhereUniqueWithoutDnsInput | DnsTickUpdateWithWhereUniqueWithoutDnsInput[]
+    updateMany?: DnsTickUpdateManyWithWhereWithoutDnsInput | DnsTickUpdateManyWithWhereWithoutDnsInput[]
+    deleteMany?: DnsTickScalarWhereInput | DnsTickScalarWhereInput[]
+  }
+
+  export type WebsiteCreateNestedOneWithoutTicksInput = {
+    create?: XOR<WebsiteCreateWithoutTicksInput, WebsiteUncheckedCreateWithoutTicksInput>
+    connectOrCreate?: WebsiteCreateOrConnectWithoutTicksInput
+    connect?: WebsiteWhereUniqueInput
+  }
+
+  export type EnumWebsiteStatusFieldUpdateOperationsInput = {
+    set?: $Enums.WebsiteStatus
   }
 
   export type WebsiteUpdateOneRequiredWithoutTicksNestedInput = {
@@ -7803,6 +12431,28 @@ export namespace Prisma {
     update?: XOR<XOR<WebsiteUpdateToOneWithWhereWithoutTicksInput, WebsiteUpdateWithoutTicksInput>, WebsiteUncheckedUpdateWithoutTicksInput>
   }
 
+  export type DnsCreateNestedOneWithoutTicksInput = {
+    create?: XOR<DnsCreateWithoutTicksInput, DnsUncheckedCreateWithoutTicksInput>
+    connectOrCreate?: DnsCreateOrConnectWithoutTicksInput
+    connect?: DnsWhereUniqueInput
+  }
+
+  export type EnumDnsStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DnsStatus
+  }
+
+  export type DnsUpdateOneRequiredWithoutTicksNestedInput = {
+    create?: XOR<DnsCreateWithoutTicksInput, DnsUncheckedCreateWithoutTicksInput>
+    connectOrCreate?: DnsCreateOrConnectWithoutTicksInput
+    upsert?: DnsUpsertWithoutTicksInput
+    connect?: DnsWhereUniqueInput
+    update?: XOR<XOR<DnsUpdateToOneWithWhereWithoutTicksInput, DnsUpdateWithoutTicksInput>, DnsUncheckedUpdateWithoutTicksInput>
+  }
+
+  export type EnumRecordFieldUpdateOperationsInput = {
+    set?: $Enums.Record
+  }
+
   export type WebsiteCreateNestedManyWithoutUserInput = {
     create?: XOR<WebsiteCreateWithoutUserInput, WebsiteUncheckedCreateWithoutUserInput> | WebsiteCreateWithoutUserInput[] | WebsiteUncheckedCreateWithoutUserInput[]
     connectOrCreate?: WebsiteCreateOrConnectWithoutUserInput | WebsiteCreateOrConnectWithoutUserInput[]
@@ -7810,11 +12460,11 @@ export namespace Prisma {
     connect?: WebsiteWhereUniqueInput | WebsiteWhereUniqueInput[]
   }
 
-  export type IncidentCreateNestedManyWithoutWebsiteInput = {
-    create?: XOR<IncidentCreateWithoutWebsiteInput, IncidentUncheckedCreateWithoutWebsiteInput> | IncidentCreateWithoutWebsiteInput[] | IncidentUncheckedCreateWithoutWebsiteInput[]
-    connectOrCreate?: IncidentCreateOrConnectWithoutWebsiteInput | IncidentCreateOrConnectWithoutWebsiteInput[]
-    createMany?: IncidentCreateManyWebsiteInputEnvelope
-    connect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+  export type AlertsCreateNestedManyWithoutUserInput = {
+    create?: XOR<AlertsCreateWithoutUserInput, AlertsUncheckedCreateWithoutUserInput> | AlertsCreateWithoutUserInput[] | AlertsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AlertsCreateOrConnectWithoutUserInput | AlertsCreateOrConnectWithoutUserInput[]
+    createMany?: AlertsCreateManyUserInputEnvelope
+    connect?: AlertsWhereUniqueInput | AlertsWhereUniqueInput[]
   }
 
   export type WebsiteUncheckedCreateNestedManyWithoutUserInput = {
@@ -7824,11 +12474,11 @@ export namespace Prisma {
     connect?: WebsiteWhereUniqueInput | WebsiteWhereUniqueInput[]
   }
 
-  export type IncidentUncheckedCreateNestedManyWithoutWebsiteInput = {
-    create?: XOR<IncidentCreateWithoutWebsiteInput, IncidentUncheckedCreateWithoutWebsiteInput> | IncidentCreateWithoutWebsiteInput[] | IncidentUncheckedCreateWithoutWebsiteInput[]
-    connectOrCreate?: IncidentCreateOrConnectWithoutWebsiteInput | IncidentCreateOrConnectWithoutWebsiteInput[]
-    createMany?: IncidentCreateManyWebsiteInputEnvelope
-    connect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+  export type AlertsUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AlertsCreateWithoutUserInput, AlertsUncheckedCreateWithoutUserInput> | AlertsCreateWithoutUserInput[] | AlertsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AlertsCreateOrConnectWithoutUserInput | AlertsCreateOrConnectWithoutUserInput[]
+    createMany?: AlertsCreateManyUserInputEnvelope
+    connect?: AlertsWhereUniqueInput | AlertsWhereUniqueInput[]
   }
 
   export type WebsiteUpdateManyWithoutUserNestedInput = {
@@ -7845,18 +12495,18 @@ export namespace Prisma {
     deleteMany?: WebsiteScalarWhereInput | WebsiteScalarWhereInput[]
   }
 
-  export type IncidentUpdateManyWithoutWebsiteNestedInput = {
-    create?: XOR<IncidentCreateWithoutWebsiteInput, IncidentUncheckedCreateWithoutWebsiteInput> | IncidentCreateWithoutWebsiteInput[] | IncidentUncheckedCreateWithoutWebsiteInput[]
-    connectOrCreate?: IncidentCreateOrConnectWithoutWebsiteInput | IncidentCreateOrConnectWithoutWebsiteInput[]
-    upsert?: IncidentUpsertWithWhereUniqueWithoutWebsiteInput | IncidentUpsertWithWhereUniqueWithoutWebsiteInput[]
-    createMany?: IncidentCreateManyWebsiteInputEnvelope
-    set?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
-    disconnect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
-    delete?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
-    connect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
-    update?: IncidentUpdateWithWhereUniqueWithoutWebsiteInput | IncidentUpdateWithWhereUniqueWithoutWebsiteInput[]
-    updateMany?: IncidentUpdateManyWithWhereWithoutWebsiteInput | IncidentUpdateManyWithWhereWithoutWebsiteInput[]
-    deleteMany?: IncidentScalarWhereInput | IncidentScalarWhereInput[]
+  export type AlertsUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AlertsCreateWithoutUserInput, AlertsUncheckedCreateWithoutUserInput> | AlertsCreateWithoutUserInput[] | AlertsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AlertsCreateOrConnectWithoutUserInput | AlertsCreateOrConnectWithoutUserInput[]
+    upsert?: AlertsUpsertWithWhereUniqueWithoutUserInput | AlertsUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AlertsCreateManyUserInputEnvelope
+    set?: AlertsWhereUniqueInput | AlertsWhereUniqueInput[]
+    disconnect?: AlertsWhereUniqueInput | AlertsWhereUniqueInput[]
+    delete?: AlertsWhereUniqueInput | AlertsWhereUniqueInput[]
+    connect?: AlertsWhereUniqueInput | AlertsWhereUniqueInput[]
+    update?: AlertsUpdateWithWhereUniqueWithoutUserInput | AlertsUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AlertsUpdateManyWithWhereWithoutUserInput | AlertsUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AlertsScalarWhereInput | AlertsScalarWhereInput[]
   }
 
   export type WebsiteUncheckedUpdateManyWithoutUserNestedInput = {
@@ -7873,32 +12523,48 @@ export namespace Prisma {
     deleteMany?: WebsiteScalarWhereInput | WebsiteScalarWhereInput[]
   }
 
-  export type IncidentUncheckedUpdateManyWithoutWebsiteNestedInput = {
-    create?: XOR<IncidentCreateWithoutWebsiteInput, IncidentUncheckedCreateWithoutWebsiteInput> | IncidentCreateWithoutWebsiteInput[] | IncidentUncheckedCreateWithoutWebsiteInput[]
-    connectOrCreate?: IncidentCreateOrConnectWithoutWebsiteInput | IncidentCreateOrConnectWithoutWebsiteInput[]
-    upsert?: IncidentUpsertWithWhereUniqueWithoutWebsiteInput | IncidentUpsertWithWhereUniqueWithoutWebsiteInput[]
-    createMany?: IncidentCreateManyWebsiteInputEnvelope
-    set?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
-    disconnect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
-    delete?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
-    connect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
-    update?: IncidentUpdateWithWhereUniqueWithoutWebsiteInput | IncidentUpdateWithWhereUniqueWithoutWebsiteInput[]
-    updateMany?: IncidentUpdateManyWithWhereWithoutWebsiteInput | IncidentUpdateManyWithWhereWithoutWebsiteInput[]
-    deleteMany?: IncidentScalarWhereInput | IncidentScalarWhereInput[]
+  export type AlertsUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AlertsCreateWithoutUserInput, AlertsUncheckedCreateWithoutUserInput> | AlertsCreateWithoutUserInput[] | AlertsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AlertsCreateOrConnectWithoutUserInput | AlertsCreateOrConnectWithoutUserInput[]
+    upsert?: AlertsUpsertWithWhereUniqueWithoutUserInput | AlertsUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AlertsCreateManyUserInputEnvelope
+    set?: AlertsWhereUniqueInput | AlertsWhereUniqueInput[]
+    disconnect?: AlertsWhereUniqueInput | AlertsWhereUniqueInput[]
+    delete?: AlertsWhereUniqueInput | AlertsWhereUniqueInput[]
+    connect?: AlertsWhereUniqueInput | AlertsWhereUniqueInput[]
+    update?: AlertsUpdateWithWhereUniqueWithoutUserInput | AlertsUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AlertsUpdateManyWithWhereWithoutUserInput | AlertsUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AlertsScalarWhereInput | AlertsScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutIncidentsInput = {
-    create?: XOR<UserCreateWithoutIncidentsInput, UserUncheckedCreateWithoutIncidentsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutIncidentsInput
+  export type UserCreateNestedOneWithoutAlertInput = {
+    create?: XOR<UserCreateWithoutAlertInput, UserUncheckedCreateWithoutAlertInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAlertInput
     connect?: UserWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutIncidentsNestedInput = {
-    create?: XOR<UserCreateWithoutIncidentsInput, UserUncheckedCreateWithoutIncidentsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutIncidentsInput
-    upsert?: UserUpsertWithoutIncidentsInput
+  export type EnumAlertFieldUpdateOperationsInput = {
+    set?: $Enums.Alert
+  }
+
+  export type EnumMsgTypeFieldUpdateOperationsInput = {
+    set?: $Enums.MsgType
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
+  }
+
+  export type EnumAlertStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AlertStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutAlertNestedInput = {
+    create?: XOR<UserCreateWithoutAlertInput, UserUncheckedCreateWithoutAlertInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAlertInput
+    upsert?: UserUpsertWithoutAlertInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutIncidentsInput, UserUpdateWithoutIncidentsInput>, UserUncheckedUpdateWithoutIncidentsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAlertInput, UserUpdateWithoutAlertInput>, UserUncheckedUpdateWithoutAlertInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -7913,6 +12579,11 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -7954,6 +12625,14 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -7968,11 +12647,46 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedEnumWebsiteStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.WebsiteStatus | EnumWebsiteStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.WebsiteStatus[] | ListEnumWebsiteStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.WebsiteStatus[] | ListEnumWebsiteStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumWebsiteStatusFilter<$PrismaModel> | $Enums.WebsiteStatus
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -8002,6 +12716,13 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumWebsiteStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.WebsiteStatus | EnumWebsiteStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.WebsiteStatus[] | ListEnumWebsiteStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.WebsiteStatus[] | ListEnumWebsiteStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumWebsiteStatusFilter<$PrismaModel> | $Enums.WebsiteStatus
+  }
+
   export type NestedEnumWebsiteStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.WebsiteStatus | EnumWebsiteStatusFieldRefInput<$PrismaModel>
     in?: $Enums.WebsiteStatus[] | ListEnumWebsiteStatusFieldRefInput<$PrismaModel>
@@ -8012,21 +12733,140 @@ export namespace Prisma {
     _max?: NestedEnumWebsiteStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumDnsStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DnsStatus | EnumDnsStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DnsStatus[] | ListEnumDnsStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DnsStatus[] | ListEnumDnsStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDnsStatusFilter<$PrismaModel> | $Enums.DnsStatus
+  }
+
+  export type NestedEnumDnsStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DnsStatus | EnumDnsStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DnsStatus[] | ListEnumDnsStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DnsStatus[] | ListEnumDnsStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDnsStatusWithAggregatesFilter<$PrismaModel> | $Enums.DnsStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDnsStatusFilter<$PrismaModel>
+    _max?: NestedEnumDnsStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRecordFilter<$PrismaModel = never> = {
+    equals?: $Enums.Record | EnumRecordFieldRefInput<$PrismaModel>
+    in?: $Enums.Record[] | ListEnumRecordFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Record[] | ListEnumRecordFieldRefInput<$PrismaModel>
+    not?: NestedEnumRecordFilter<$PrismaModel> | $Enums.Record
+  }
+
+  export type NestedEnumRecordWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Record | EnumRecordFieldRefInput<$PrismaModel>
+    in?: $Enums.Record[] | ListEnumRecordFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Record[] | ListEnumRecordFieldRefInput<$PrismaModel>
+    not?: NestedEnumRecordWithAggregatesFilter<$PrismaModel> | $Enums.Record
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRecordFilter<$PrismaModel>
+    _max?: NestedEnumRecordFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAlertFilter<$PrismaModel = never> = {
+    equals?: $Enums.Alert | EnumAlertFieldRefInput<$PrismaModel>
+    in?: $Enums.Alert[] | ListEnumAlertFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Alert[] | ListEnumAlertFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertFilter<$PrismaModel> | $Enums.Alert
+  }
+
+  export type NestedEnumMsgTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MsgType | EnumMsgTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MsgType[] | ListEnumMsgTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MsgType[] | ListEnumMsgTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMsgTypeFilter<$PrismaModel> | $Enums.MsgType
+  }
+
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type NestedEnumAlertStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AlertStatus | EnumAlertStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AlertStatus[] | ListEnumAlertStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AlertStatus[] | ListEnumAlertStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertStatusFilter<$PrismaModel> | $Enums.AlertStatus
+  }
+
+  export type NestedEnumAlertWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Alert | EnumAlertFieldRefInput<$PrismaModel>
+    in?: $Enums.Alert[] | ListEnumAlertFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Alert[] | ListEnumAlertFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertWithAggregatesFilter<$PrismaModel> | $Enums.Alert
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAlertFilter<$PrismaModel>
+    _max?: NestedEnumAlertFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMsgTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MsgType | EnumMsgTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MsgType[] | ListEnumMsgTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MsgType[] | ListEnumMsgTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMsgTypeWithAggregatesFilter<$PrismaModel> | $Enums.MsgType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMsgTypeFilter<$PrismaModel>
+    _max?: NestedEnumMsgTypeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAlertStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AlertStatus | EnumAlertStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AlertStatus[] | ListEnumAlertStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AlertStatus[] | ListEnumAlertStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAlertStatusWithAggregatesFilter<$PrismaModel> | $Enums.AlertStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAlertStatusFilter<$PrismaModel>
+    _max?: NestedEnumAlertStatusFilter<$PrismaModel>
+  }
+
+  export type UserCreateWithoutWebsitesInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    alert?: AlertsCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutWebsitesInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    alert?: AlertsUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutWebsitesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutWebsitesInput, UserUncheckedCreateWithoutWebsitesInput>
+  }
+
   export type WebsiteTickCreateWithoutWebsiteInput = {
     id?: string
     response_time_ms: number
     status: $Enums.WebsiteStatus
+    region: string
     userId: string
     CreatedAt?: Date | string
-    region: RegionCreateNestedOneWithoutTickesInput
   }
 
   export type WebsiteTickUncheckedCreateWithoutWebsiteInput = {
     id?: string
     response_time_ms: number
     status: $Enums.WebsiteStatus
+    region: string
     userId: string
-    region_id: string
     CreatedAt?: Date | string
   }
 
@@ -8040,25 +12880,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserCreateWithoutWebsitesInput = {
-    id?: string
-    username: string
-    password: string
-    email: string
-    incidents?: IncidentCreateNestedManyWithoutWebsiteInput
-  }
-
-  export type UserUncheckedCreateWithoutWebsitesInput = {
-    id?: string
-    username: string
-    password: string
-    email: string
-    incidents?: IncidentUncheckedCreateNestedManyWithoutWebsiteInput
-  }
-
-  export type UserCreateOrConnectWithoutWebsitesInput = {
-    where: UserWhereUniqueInput
+  export type UserUpsertWithoutWebsitesInput = {
+    update: XOR<UserUpdateWithoutWebsitesInput, UserUncheckedUpdateWithoutWebsitesInput>
     create: XOR<UserCreateWithoutWebsitesInput, UserUncheckedCreateWithoutWebsitesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutWebsitesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutWebsitesInput, UserUncheckedUpdateWithoutWebsitesInput>
+  }
+
+  export type UserUpdateWithoutWebsitesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    alert?: AlertsUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutWebsitesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    alert?: AlertsUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WebsiteTickUpsertWithWhereUniqueWithoutWebsiteInput = {
@@ -8084,136 +12930,96 @@ export namespace Prisma {
     id?: StringFilter<"WebsiteTick"> | string
     response_time_ms?: IntFilter<"WebsiteTick"> | number
     status?: EnumWebsiteStatusFilter<"WebsiteTick"> | $Enums.WebsiteStatus
+    region?: StringFilter<"WebsiteTick"> | string
     userId?: StringFilter<"WebsiteTick"> | string
-    region_id?: StringFilter<"WebsiteTick"> | string
     website_id?: StringFilter<"WebsiteTick"> | string
     CreatedAt?: DateTimeFilter<"WebsiteTick"> | Date | string
   }
 
-  export type UserUpsertWithoutWebsitesInput = {
-    update: XOR<UserUpdateWithoutWebsitesInput, UserUncheckedUpdateWithoutWebsitesInput>
-    create: XOR<UserCreateWithoutWebsitesInput, UserUncheckedCreateWithoutWebsitesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutWebsitesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutWebsitesInput, UserUncheckedUpdateWithoutWebsitesInput>
-  }
-
-  export type UserUpdateWithoutWebsitesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    incidents?: IncidentUpdateManyWithoutWebsiteNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutWebsitesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    incidents?: IncidentUncheckedUpdateManyWithoutWebsiteNestedInput
-  }
-
-  export type WebsiteTickCreateWithoutRegionInput = {
+  export type DnsTickCreateWithoutDnsInput = {
     id?: string
-    response_time_ms: number
-    status: $Enums.WebsiteStatus
+    latency_ms: number
+    status: $Enums.DnsStatus
+    region: string
     userId: string
-    CreatedAt?: Date | string
-    website: WebsiteCreateNestedOneWithoutTicksInput
-  }
-
-  export type WebsiteTickUncheckedCreateWithoutRegionInput = {
-    id?: string
-    response_time_ms: number
-    status: $Enums.WebsiteStatus
-    userId: string
-    website_id: string
+    check_id?: string | null
+    resolver_ip: string
     CreatedAt?: Date | string
   }
 
-  export type WebsiteTickCreateOrConnectWithoutRegionInput = {
-    where: WebsiteTickWhereUniqueInput
-    create: XOR<WebsiteTickCreateWithoutRegionInput, WebsiteTickUncheckedCreateWithoutRegionInput>
+  export type DnsTickUncheckedCreateWithoutDnsInput = {
+    id?: string
+    latency_ms: number
+    status: $Enums.DnsStatus
+    region: string
+    userId: string
+    check_id?: string | null
+    resolver_ip: string
+    CreatedAt?: Date | string
   }
 
-  export type WebsiteTickCreateManyRegionInputEnvelope = {
-    data: WebsiteTickCreateManyRegionInput | WebsiteTickCreateManyRegionInput[]
+  export type DnsTickCreateOrConnectWithoutDnsInput = {
+    where: DnsTickWhereUniqueInput
+    create: XOR<DnsTickCreateWithoutDnsInput, DnsTickUncheckedCreateWithoutDnsInput>
+  }
+
+  export type DnsTickCreateManyDnsInputEnvelope = {
+    data: DnsTickCreateManyDnsInput | DnsTickCreateManyDnsInput[]
     skipDuplicates?: boolean
   }
 
-  export type WebsiteTickUpsertWithWhereUniqueWithoutRegionInput = {
-    where: WebsiteTickWhereUniqueInput
-    update: XOR<WebsiteTickUpdateWithoutRegionInput, WebsiteTickUncheckedUpdateWithoutRegionInput>
-    create: XOR<WebsiteTickCreateWithoutRegionInput, WebsiteTickUncheckedCreateWithoutRegionInput>
+  export type DnsTickUpsertWithWhereUniqueWithoutDnsInput = {
+    where: DnsTickWhereUniqueInput
+    update: XOR<DnsTickUpdateWithoutDnsInput, DnsTickUncheckedUpdateWithoutDnsInput>
+    create: XOR<DnsTickCreateWithoutDnsInput, DnsTickUncheckedCreateWithoutDnsInput>
   }
 
-  export type WebsiteTickUpdateWithWhereUniqueWithoutRegionInput = {
-    where: WebsiteTickWhereUniqueInput
-    data: XOR<WebsiteTickUpdateWithoutRegionInput, WebsiteTickUncheckedUpdateWithoutRegionInput>
+  export type DnsTickUpdateWithWhereUniqueWithoutDnsInput = {
+    where: DnsTickWhereUniqueInput
+    data: XOR<DnsTickUpdateWithoutDnsInput, DnsTickUncheckedUpdateWithoutDnsInput>
   }
 
-  export type WebsiteTickUpdateManyWithWhereWithoutRegionInput = {
-    where: WebsiteTickScalarWhereInput
-    data: XOR<WebsiteTickUpdateManyMutationInput, WebsiteTickUncheckedUpdateManyWithoutRegionInput>
+  export type DnsTickUpdateManyWithWhereWithoutDnsInput = {
+    where: DnsTickScalarWhereInput
+    data: XOR<DnsTickUpdateManyMutationInput, DnsTickUncheckedUpdateManyWithoutDnsInput>
   }
 
-  export type RegionCreateWithoutTickesInput = {
-    id?: string
-    name: string
-  }
-
-  export type RegionUncheckedCreateWithoutTickesInput = {
-    id?: string
-    name: string
-  }
-
-  export type RegionCreateOrConnectWithoutTickesInput = {
-    where: RegionWhereUniqueInput
-    create: XOR<RegionCreateWithoutTickesInput, RegionUncheckedCreateWithoutTickesInput>
+  export type DnsTickScalarWhereInput = {
+    AND?: DnsTickScalarWhereInput | DnsTickScalarWhereInput[]
+    OR?: DnsTickScalarWhereInput[]
+    NOT?: DnsTickScalarWhereInput | DnsTickScalarWhereInput[]
+    id?: StringFilter<"DnsTick"> | string
+    latency_ms?: IntFilter<"DnsTick"> | number
+    status?: EnumDnsStatusFilter<"DnsTick"> | $Enums.DnsStatus
+    region?: StringFilter<"DnsTick"> | string
+    userId?: StringFilter<"DnsTick"> | string
+    dns_id?: StringFilter<"DnsTick"> | string
+    check_id?: StringNullableFilter<"DnsTick"> | string | null
+    resolver_ip?: StringFilter<"DnsTick"> | string
+    CreatedAt?: DateTimeFilter<"DnsTick"> | Date | string
   }
 
   export type WebsiteCreateWithoutTicksInput = {
     id?: string
     url: string
-    timeAdded?: Date | string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     User: UserCreateNestedOneWithoutWebsitesInput
   }
 
   export type WebsiteUncheckedCreateWithoutTicksInput = {
     id?: string
     url: string
-    timeAdded?: Date | string
     userId: string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type WebsiteCreateOrConnectWithoutTicksInput = {
     where: WebsiteWhereUniqueInput
     create: XOR<WebsiteCreateWithoutTicksInput, WebsiteUncheckedCreateWithoutTicksInput>
-  }
-
-  export type RegionUpsertWithoutTickesInput = {
-    update: XOR<RegionUpdateWithoutTickesInput, RegionUncheckedUpdateWithoutTickesInput>
-    create: XOR<RegionCreateWithoutTickesInput, RegionUncheckedCreateWithoutTickesInput>
-    where?: RegionWhereInput
-  }
-
-  export type RegionUpdateToOneWithWhereWithoutTickesInput = {
-    where?: RegionWhereInput
-    data: XOR<RegionUpdateWithoutTickesInput, RegionUncheckedUpdateWithoutTickesInput>
-  }
-
-  export type RegionUpdateWithoutTickesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type RegionUncheckedUpdateWithoutTickesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
   }
 
   export type WebsiteUpsertWithoutTicksInput = {
@@ -8230,28 +13036,104 @@ export namespace Prisma {
   export type WebsiteUpdateWithoutTicksInput = {
     id?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
-    timeAdded?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneRequiredWithoutWebsitesNestedInput
   }
 
   export type WebsiteUncheckedUpdateWithoutTicksInput = {
     id?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
-    timeAdded?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DnsCreateWithoutTicksInput = {
+    id?: string
+    userId: string
+    domain: string
+    ip_addr: string
+    resolver?: string | null
+    interval: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authoritative?: boolean
+  }
+
+  export type DnsUncheckedCreateWithoutTicksInput = {
+    id?: string
+    userId: string
+    domain: string
+    ip_addr: string
+    resolver?: string | null
+    interval: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authoritative?: boolean
+  }
+
+  export type DnsCreateOrConnectWithoutTicksInput = {
+    where: DnsWhereUniqueInput
+    create: XOR<DnsCreateWithoutTicksInput, DnsUncheckedCreateWithoutTicksInput>
+  }
+
+  export type DnsUpsertWithoutTicksInput = {
+    update: XOR<DnsUpdateWithoutTicksInput, DnsUncheckedUpdateWithoutTicksInput>
+    create: XOR<DnsCreateWithoutTicksInput, DnsUncheckedCreateWithoutTicksInput>
+    where?: DnsWhereInput
+  }
+
+  export type DnsUpdateToOneWithWhereWithoutTicksInput = {
+    where?: DnsWhereInput
+    data: XOR<DnsUpdateWithoutTicksInput, DnsUncheckedUpdateWithoutTicksInput>
+  }
+
+  export type DnsUpdateWithoutTicksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    ip_addr?: StringFieldUpdateOperationsInput | string
+    resolver?: NullableStringFieldUpdateOperationsInput | string | null
+    interval?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authoritative?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type DnsUncheckedUpdateWithoutTicksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    ip_addr?: StringFieldUpdateOperationsInput | string
+    resolver?: NullableStringFieldUpdateOperationsInput | string | null
+    interval?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authoritative?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type WebsiteCreateWithoutUserInput = {
     id?: string
     url: string
-    timeAdded?: Date | string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     ticks?: WebsiteTickCreateNestedManyWithoutWebsiteInput
   }
 
   export type WebsiteUncheckedCreateWithoutUserInput = {
     id?: string
     url: string
-    timeAdded?: Date | string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     ticks?: WebsiteTickUncheckedCreateNestedManyWithoutWebsiteInput
   }
 
@@ -8265,25 +13147,35 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type IncidentCreateWithoutWebsiteInput = {
+  export type AlertsCreateWithoutUserInput = {
     id?: string
     website_id: string
+    alert_type: $Enums.Alert
+    type: $Enums.MsgType
+    verified?: boolean | null
+    status?: $Enums.AlertStatus
+    msg: string
     created_at?: Date | string
   }
 
-  export type IncidentUncheckedCreateWithoutWebsiteInput = {
+  export type AlertsUncheckedCreateWithoutUserInput = {
     id?: string
     website_id: string
+    alert_type: $Enums.Alert
+    type: $Enums.MsgType
+    verified?: boolean | null
+    status?: $Enums.AlertStatus
+    msg: string
     created_at?: Date | string
   }
 
-  export type IncidentCreateOrConnectWithoutWebsiteInput = {
-    where: IncidentWhereUniqueInput
-    create: XOR<IncidentCreateWithoutWebsiteInput, IncidentUncheckedCreateWithoutWebsiteInput>
+  export type AlertsCreateOrConnectWithoutUserInput = {
+    where: AlertsWhereUniqueInput
+    create: XOR<AlertsCreateWithoutUserInput, AlertsUncheckedCreateWithoutUserInput>
   }
 
-  export type IncidentCreateManyWebsiteInputEnvelope = {
-    data: IncidentCreateManyWebsiteInput | IncidentCreateManyWebsiteInput[]
+  export type AlertsCreateManyUserInputEnvelope = {
+    data: AlertsCreateManyUserInput | AlertsCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -8309,37 +13201,44 @@ export namespace Prisma {
     NOT?: WebsiteScalarWhereInput | WebsiteScalarWhereInput[]
     id?: StringFilter<"Website"> | string
     url?: StringFilter<"Website"> | string
-    timeAdded?: DateTimeFilter<"Website"> | Date | string
     userId?: StringFilter<"Website"> | string
+    active?: BoolFilter<"Website"> | boolean
+    createdAt?: DateTimeFilter<"Website"> | Date | string
+    updatedAt?: DateTimeFilter<"Website"> | Date | string
   }
 
-  export type IncidentUpsertWithWhereUniqueWithoutWebsiteInput = {
-    where: IncidentWhereUniqueInput
-    update: XOR<IncidentUpdateWithoutWebsiteInput, IncidentUncheckedUpdateWithoutWebsiteInput>
-    create: XOR<IncidentCreateWithoutWebsiteInput, IncidentUncheckedCreateWithoutWebsiteInput>
+  export type AlertsUpsertWithWhereUniqueWithoutUserInput = {
+    where: AlertsWhereUniqueInput
+    update: XOR<AlertsUpdateWithoutUserInput, AlertsUncheckedUpdateWithoutUserInput>
+    create: XOR<AlertsCreateWithoutUserInput, AlertsUncheckedCreateWithoutUserInput>
   }
 
-  export type IncidentUpdateWithWhereUniqueWithoutWebsiteInput = {
-    where: IncidentWhereUniqueInput
-    data: XOR<IncidentUpdateWithoutWebsiteInput, IncidentUncheckedUpdateWithoutWebsiteInput>
+  export type AlertsUpdateWithWhereUniqueWithoutUserInput = {
+    where: AlertsWhereUniqueInput
+    data: XOR<AlertsUpdateWithoutUserInput, AlertsUncheckedUpdateWithoutUserInput>
   }
 
-  export type IncidentUpdateManyWithWhereWithoutWebsiteInput = {
-    where: IncidentScalarWhereInput
-    data: XOR<IncidentUpdateManyMutationInput, IncidentUncheckedUpdateManyWithoutWebsiteInput>
+  export type AlertsUpdateManyWithWhereWithoutUserInput = {
+    where: AlertsScalarWhereInput
+    data: XOR<AlertsUpdateManyMutationInput, AlertsUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type IncidentScalarWhereInput = {
-    AND?: IncidentScalarWhereInput | IncidentScalarWhereInput[]
-    OR?: IncidentScalarWhereInput[]
-    NOT?: IncidentScalarWhereInput | IncidentScalarWhereInput[]
-    id?: StringFilter<"Incident"> | string
-    website_id?: StringFilter<"Incident"> | string
-    userId?: StringFilter<"Incident"> | string
-    created_at?: DateTimeFilter<"Incident"> | Date | string
+  export type AlertsScalarWhereInput = {
+    AND?: AlertsScalarWhereInput | AlertsScalarWhereInput[]
+    OR?: AlertsScalarWhereInput[]
+    NOT?: AlertsScalarWhereInput | AlertsScalarWhereInput[]
+    id?: StringFilter<"Alerts"> | string
+    website_id?: StringFilter<"Alerts"> | string
+    userId?: StringFilter<"Alerts"> | string
+    alert_type?: EnumAlertFilter<"Alerts"> | $Enums.Alert
+    type?: EnumMsgTypeFilter<"Alerts"> | $Enums.MsgType
+    verified?: BoolNullableFilter<"Alerts"> | boolean | null
+    status?: EnumAlertStatusFilter<"Alerts"> | $Enums.AlertStatus
+    msg?: StringFilter<"Alerts"> | string
+    created_at?: DateTimeFilter<"Alerts"> | Date | string
   }
 
-  export type UserCreateWithoutIncidentsInput = {
+  export type UserCreateWithoutAlertInput = {
     id?: string
     username: string
     password: string
@@ -8347,7 +13246,7 @@ export namespace Prisma {
     Websites?: WebsiteCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutIncidentsInput = {
+  export type UserUncheckedCreateWithoutAlertInput = {
     id?: string
     username: string
     password: string
@@ -8355,23 +13254,23 @@ export namespace Prisma {
     Websites?: WebsiteUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutIncidentsInput = {
+  export type UserCreateOrConnectWithoutAlertInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutIncidentsInput, UserUncheckedCreateWithoutIncidentsInput>
+    create: XOR<UserCreateWithoutAlertInput, UserUncheckedCreateWithoutAlertInput>
   }
 
-  export type UserUpsertWithoutIncidentsInput = {
-    update: XOR<UserUpdateWithoutIncidentsInput, UserUncheckedUpdateWithoutIncidentsInput>
-    create: XOR<UserCreateWithoutIncidentsInput, UserUncheckedCreateWithoutIncidentsInput>
+  export type UserUpsertWithoutAlertInput = {
+    update: XOR<UserUpdateWithoutAlertInput, UserUncheckedUpdateWithoutAlertInput>
+    create: XOR<UserCreateWithoutAlertInput, UserUncheckedCreateWithoutAlertInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutIncidentsInput = {
+  export type UserUpdateToOneWithWhereWithoutAlertInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutIncidentsInput, UserUncheckedUpdateWithoutIncidentsInput>
+    data: XOR<UserUpdateWithoutAlertInput, UserUncheckedUpdateWithoutAlertInput>
   }
 
-  export type UserUpdateWithoutIncidentsInput = {
+  export type UserUpdateWithoutAlertInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -8379,7 +13278,7 @@ export namespace Prisma {
     Websites?: WebsiteUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutIncidentsInput = {
+  export type UserUncheckedUpdateWithoutAlertInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -8391,8 +13290,8 @@ export namespace Prisma {
     id?: string
     response_time_ms: number
     status: $Enums.WebsiteStatus
+    region: string
     userId: string
-    region_id: string
     CreatedAt?: Date | string
   }
 
@@ -8400,17 +13299,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     response_time_ms?: IntFieldUpdateOperationsInput | number
     status?: EnumWebsiteStatusFieldUpdateOperationsInput | $Enums.WebsiteStatus
+    region?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneRequiredWithoutTickesNestedInput
   }
 
   export type WebsiteTickUncheckedUpdateWithoutWebsiteInput = {
     id?: StringFieldUpdateOperationsInput | string
     response_time_ms?: IntFieldUpdateOperationsInput | number
     status?: EnumWebsiteStatusFieldUpdateOperationsInput | $Enums.WebsiteStatus
+    region?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    region_id?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8418,94 +13317,130 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     response_time_ms?: IntFieldUpdateOperationsInput | number
     status?: EnumWebsiteStatusFieldUpdateOperationsInput | $Enums.WebsiteStatus
+    region?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    region_id?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type WebsiteTickCreateManyRegionInput = {
+  export type DnsTickCreateManyDnsInput = {
     id?: string
-    response_time_ms: number
-    status: $Enums.WebsiteStatus
+    latency_ms: number
+    status: $Enums.DnsStatus
+    region: string
     userId: string
-    website_id: string
+    check_id?: string | null
+    resolver_ip: string
     CreatedAt?: Date | string
   }
 
-  export type WebsiteTickUpdateWithoutRegionInput = {
+  export type DnsTickUpdateWithoutDnsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    response_time_ms?: IntFieldUpdateOperationsInput | number
-    status?: EnumWebsiteStatusFieldUpdateOperationsInput | $Enums.WebsiteStatus
+    latency_ms?: IntFieldUpdateOperationsInput | number
+    status?: EnumDnsStatusFieldUpdateOperationsInput | $Enums.DnsStatus
+    region?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    website?: WebsiteUpdateOneRequiredWithoutTicksNestedInput
-  }
-
-  export type WebsiteTickUncheckedUpdateWithoutRegionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    response_time_ms?: IntFieldUpdateOperationsInput | number
-    status?: EnumWebsiteStatusFieldUpdateOperationsInput | $Enums.WebsiteStatus
-    userId?: StringFieldUpdateOperationsInput | string
-    website_id?: StringFieldUpdateOperationsInput | string
+    check_id?: NullableStringFieldUpdateOperationsInput | string | null
+    resolver_ip?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type WebsiteTickUncheckedUpdateManyWithoutRegionInput = {
+  export type DnsTickUncheckedUpdateWithoutDnsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    response_time_ms?: IntFieldUpdateOperationsInput | number
-    status?: EnumWebsiteStatusFieldUpdateOperationsInput | $Enums.WebsiteStatus
+    latency_ms?: IntFieldUpdateOperationsInput | number
+    status?: EnumDnsStatusFieldUpdateOperationsInput | $Enums.DnsStatus
+    region?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    website_id?: StringFieldUpdateOperationsInput | string
+    check_id?: NullableStringFieldUpdateOperationsInput | string | null
+    resolver_ip?: StringFieldUpdateOperationsInput | string
+    CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DnsTickUncheckedUpdateManyWithoutDnsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    latency_ms?: IntFieldUpdateOperationsInput | number
+    status?: EnumDnsStatusFieldUpdateOperationsInput | $Enums.DnsStatus
+    region?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    check_id?: NullableStringFieldUpdateOperationsInput | string | null
+    resolver_ip?: StringFieldUpdateOperationsInput | string
     CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WebsiteCreateManyUserInput = {
     id?: string
     url: string
-    timeAdded?: Date | string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type IncidentCreateManyWebsiteInput = {
+  export type AlertsCreateManyUserInput = {
     id?: string
     website_id: string
+    alert_type: $Enums.Alert
+    type: $Enums.MsgType
+    verified?: boolean | null
+    status?: $Enums.AlertStatus
+    msg: string
     created_at?: Date | string
   }
 
   export type WebsiteUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
-    timeAdded?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ticks?: WebsiteTickUpdateManyWithoutWebsiteNestedInput
   }
 
   export type WebsiteUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
-    timeAdded?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ticks?: WebsiteTickUncheckedUpdateManyWithoutWebsiteNestedInput
   }
 
   export type WebsiteUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
-    timeAdded?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type IncidentUpdateWithoutWebsiteInput = {
+  export type AlertsUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     website_id?: StringFieldUpdateOperationsInput | string
+    alert_type?: EnumAlertFieldUpdateOperationsInput | $Enums.Alert
+    type?: EnumMsgTypeFieldUpdateOperationsInput | $Enums.MsgType
+    verified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    status?: EnumAlertStatusFieldUpdateOperationsInput | $Enums.AlertStatus
+    msg?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type IncidentUncheckedUpdateWithoutWebsiteInput = {
+  export type AlertsUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     website_id?: StringFieldUpdateOperationsInput | string
+    alert_type?: EnumAlertFieldUpdateOperationsInput | $Enums.Alert
+    type?: EnumMsgTypeFieldUpdateOperationsInput | $Enums.MsgType
+    verified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    status?: EnumAlertStatusFieldUpdateOperationsInput | $Enums.AlertStatus
+    msg?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type IncidentUncheckedUpdateManyWithoutWebsiteInput = {
+  export type AlertsUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     website_id?: StringFieldUpdateOperationsInput | string
+    alert_type?: EnumAlertFieldUpdateOperationsInput | $Enums.Alert
+    type?: EnumMsgTypeFieldUpdateOperationsInput | $Enums.MsgType
+    verified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    status?: EnumAlertStatusFieldUpdateOperationsInput | $Enums.AlertStatus
+    msg?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
