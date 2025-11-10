@@ -23,7 +23,7 @@ async function main() {
 
 
   //TODO: bring poll here 
- // await createGroup(consumerGroup, stream);
+  await createGroup(consumerGroup, stream);
   while (1) {
 
     // TODO: can create separate function instead of eriting it repeatedly

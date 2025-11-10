@@ -2,6 +2,7 @@ import { createClient, RedisClientType } from "redis";
 import { createRegion, pollWebsite } from "./helper";
 import { Alert, Status, Website } from "./types";
 import { client } from "@repo/db/client";
+import "dotenv/config"
 
 //TODO: redis client connection is made every time function triggers
 // export async function processTask(regionId: string, stream: string, workerId: string, consumerGroup: string, len: number) {
@@ -112,10 +113,10 @@ import { client } from "@repo/db/client";
 //     }
 // }
 
-
-
 export async function processXAdd(message: any, stream: string) {
-    const redisClient = await createClient()
+    const redisClient = await createClient({
+        url: process.env.REDIS_URL
+    })
         .on("error", (err) => console.log("Redis Client Error", err))
         .connect();
 
@@ -131,23 +132,24 @@ export async function processXAdd(message: any, stream: string) {
 
 export async function processXRead(stream: string, workerId: string, consumerGroup: string, len: number) {
     try {
-        const redisClient = await createClient()
-        .on("error", (err) => console.log("Redis Client Error", err))
-        .connect();
+        const redisClient = await createClient({
+            url: process.env.REDIS_URL
+        }).on("error", (err) => console.log("Redis Client Error", err))
+            .connect();
 
 
-    const res = await redisClient.xReadGroup(
-        consumerGroup,
-        workerId, {
-        key: stream,
-        id: '>'
-    }, {
-        COUNT: len,
-        BLOCK: 0
-    }
-    )
+        const res = await redisClient.xReadGroup(
+            consumerGroup,
+            workerId, {
+            key: stream,
+            id: '>'
+        }, {
+            COUNT: len,
+            BLOCK: 0
+        }
+        )
 
-    return res; 
+        return res;
     } catch (error) {
         console.error(error)
     }
@@ -156,7 +158,9 @@ export async function processXRead(stream: string, workerId: string, consumerGro
 
 
 export async function createGroup(consumerGroup: string, stream: string) {
-    const redisClient = await createClient()
+    const redisClient = await createClient({
+        url: process.env.REDIS_URL
+    })
         .on("error", (err) => console.log("Redis Client Error", err))
         .connect();
 
@@ -169,7 +173,9 @@ export async function createGroup(consumerGroup: string, stream: string) {
 
 
 export async function xAck(stream: string, consumerGroup: string, id: string) {
-    const redisClient = await createClient()
+    const redisClient = await createClient({
+        url: process.env.REDIS_URL
+    })
         .on("error", (err) => console.log("Redis Client Error", err))
         .connect();
 

@@ -3,18 +3,21 @@ FROM node:alpine
 WORKDIR /usr/src/app
 
 COPY ./packages ./packages
-COPY ./pnpm-lock.yaml ./pnpm-lock.yaml
 
+COPY ./pnpm-lock.yaml ./pnpm-lock.yaml
 COPY ./package.json ./package.json
 COPY ./turbo.json ./turbo.json
+COPY ./pnpm-workspace.yaml ./pnpm-workspace.yaml
 
 COPY ./apps/frontend ./apps/frontend
 
-RUN cd apps/frontend
 #this step can be replaced by just pnpm install, if pnpm is installed in vm
 RUN npm install -g pnpm
-RUN pnpm install 
-
+#RUN cd apps/frontend && rm -r node_modules && pnpm install
+RUN pnpm install
+#RUN pnpm install 
+RUN ls -a && cd node_modules && ls -a
+RUN ls -a
 EXPOSE 8080
 
 CMD [ "pnpm", "run", "start:frontend" ]
