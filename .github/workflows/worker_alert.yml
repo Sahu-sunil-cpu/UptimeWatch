@@ -23,7 +23,7 @@ jobs:
                 tags: sunilks761/uptime-worker-alert:${{ github.sha }}    
 
             - run: |
-                echo "${{ secrets.SSH_API_PRIVATE_KEY }}" &> ~/ssh_key
+                echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
                 mkdir -p /home/runner/.ssh
                 ls /home/runner/.ssh
                 chmod 700 /home/runner/ssh_key
