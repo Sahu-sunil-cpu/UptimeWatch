@@ -27,4 +27,4 @@ jobs:
                 mkdir -p /home/runner/.ssh
                 ls /home/runner/.ssh
                 chmod 700 /home/runner/ssh_key
-                ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@51.20.12.164 -t "docker kill uptime-api && docker run --name uptime-api -d -p 3001:3001 sunilks761/uptime-api:${{ github.sha }}"
+                ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@51.20.12.164 -t "docker kill uptime-api && docker run --name uptime-api -e DATABASE_URL=${{ secrets.DATABASE_URL }} -d -p 3001:3001 sunilks761/uptime-api:${{ github.sha }}"
