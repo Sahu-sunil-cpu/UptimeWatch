@@ -18,9 +18,9 @@ jobs:
               uses: docker/build-push-action@v4
               with:
                 context: .
-                file: ./docker/Dockerfile.api
+                file: ./docker/Dockerfile.worker-pusher
                 push: true
-                tags: sunilks761/uptime-worker-alert:${{ github.sha }}    
+                tags: sunilks761/uptime-worker-pusher:${{ github.sha }}    
 
             - run: |
                 echo "${{ secrets.SSH_API_PRIVATE_KEY }}" &> ~/ssh_key

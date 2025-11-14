@@ -18,7 +18,7 @@ jobs:
               uses: docker/build-push-action@v4
               with:
                 context: .
-                file: ./docker/Dockerfile.api
+                file: ./docker/Dockerfile.worker-dns
                 push: true
                 tags: sunilks761/uptime-worker-dns:${{ github.sha }}    
 
