@@ -130,3 +130,8 @@ networks:
 volumes:
   # pgdata:
   redisdata:
+
+
+#  sudo docker run --network my-network -e DATABASE_URL="postgresql://neondb_owner:npg_V0KJ6PtsQfaj@ep-gentle-shadow-a4u4c56t-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require" -e REDIS_URL="redis://m-redis:6379" sunilks761/uptime-worker-pusher
+
+#  sudo docker run --network my-network --name m-redis -p 6379:6379 -d redis

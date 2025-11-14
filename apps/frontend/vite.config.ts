@@ -6,6 +6,11 @@ import { componentTagger } from "lovable-tagger";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
+    allowedHosts: [
+      'uptime.thesolvers.site',
+      'localhost',
+      '127.0.0.1',
+    ],
     host: "::",
     port: 8080,
   },

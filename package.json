@@ -14,7 +14,7 @@
     "start:worker-dns": "cd apps/worker-dns && pnpm run dev",
     "start:worker-db": "cd apps/worker-db && pnpm run dev",
     "start:worker-alert": "cd apps/worker-alert && pnpm run dev",
-    "start:worker-web": "apps/worker-web && pnpm run dev"
+    "start:worker-web": "cd apps/worker-web && pnpm run dev"
   },
   "devDependencies": {
     "prettier": "^3.5.3",

@@ -10,7 +10,7 @@ async function main() {
     const consumerGroup = "DB";
     const len = 10;
 
-    //await createGroup(consumerGroup, stream);
+    await createGroup(consumerGroup, stream);
 
     while (1) {
         const res = await processXRead(stream, workerId, consumerGroup, len) as {

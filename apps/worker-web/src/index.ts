@@ -19,7 +19,7 @@ async function main() {
     const notify_stream = "uptime:notification";
 
     //TODO: bring poll here 
-   // await createGroup(consumerGroup, stream);
+    await createGroup(consumerGroup, stream);
     while(1) {
     const res = await processXRead(stream, workerId, consumerGroup, len) as {
         name: string;

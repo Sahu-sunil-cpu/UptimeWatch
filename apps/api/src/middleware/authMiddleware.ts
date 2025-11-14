@@ -13,6 +13,9 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
         req.userId = decoded.userId as string;
         next();
     } catch (error) {
+        res.status(404).json({
+            message: "jwt authentication failed"
+        })
         console.log(error);
     }
 
