@@ -28,7 +28,8 @@ jobs:
                 ls /home/runner/.ssh
                 chmod 700 /home/runner/ssh_key
                 ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.49.78.194  -t "
-             
+                sudo docker stop uptime-frontend || true &&
+                sudo docker rm uptime-frontend || true &&
                 sudo docker run --name uptime-frontend -d \
                 -p 8080:8080 \
                 sunilks761/uptime-frontend:${{ github.sha }}
