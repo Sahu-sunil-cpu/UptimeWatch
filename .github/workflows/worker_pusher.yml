@@ -31,6 +31,6 @@ jobs:
                 sudo docker stop uptime-worker-pusher || true &&
                 sudo docker rm uptime-worker-pusher || true &&
                 sudo docker run --name uptime-worker-pusher \
-                -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+                -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
                 -e REDIS_URL=${{ secrets.REDIS_URL }} \
                 -d sunilks761/uptime-worker-pusher:${{ github.sha }}"
