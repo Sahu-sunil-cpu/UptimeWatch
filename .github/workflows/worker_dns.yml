@@ -27,11 +27,11 @@ jobs:
                 mkdir -p /home/runner/.ssh
                 ls /home/runner/.ssh
                 chmod 700 /home/runner/ssh_key
-                ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.49.78.194  -t "
+                ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.49.78.194 << EOF
                 sudo docker stop uptime-worker-dns || true &&
                 sudo docker rm uptime-worker-dns || true &&
                 sudo docker run --name uptime-worker-dns \
                 -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
-                -e REDIS_URL=${{ secrets.REDIS_URL }} \
+                -e REDIS_URL="${{ secrets.REDIS_URL }}" \
                 -d sunilks761/uptime-worker-dns:${{ github.sha }}
-                "
+                EOF
