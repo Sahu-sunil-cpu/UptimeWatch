@@ -143,6 +143,4 @@ userAuthRouter.post("/signup", async (req, res) => {
             message: "Internal Error",
         })
     }
-
-
 })
