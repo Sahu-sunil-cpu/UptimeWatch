@@ -3,27 +3,44 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Github } from "lucide-react";
 import signupIllustration from "@/assets/login-illustration.jpg";
+import axios from "axios";
+import { BASE_URL } from "@/lib/config";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Signup attempt:", { email, fullName });
-  };
+     const res = await axios.post(`${BASE_URL}/api/v1/user/signup`, {
+      email: email,
+      username: fullName,
+      password: password
+    }, {
+      withCredentials: true
+    }
+  )
+   
+  if(res.data.success)
+  navigate("/dashboard/monitors")
+
+  
+}
+  
 
   const handleGoogleSignup = () => {
     console.log("Google signup clicked");
   };
-
-  const handleGithubSignup = () => {
-    console.log("GitHub signup clicked");
-  };
+  
 
   return (
     <div className="min-h-screen flex">
@@ -67,15 +84,6 @@ const Signup = () => {
                 />
               </svg>
               Continue with Google
-            </Button>
-
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleGithubSignup}
-            >
-              <Github className="w-5 h-5 mr-2" />
-              Continue with GitHub
             </Button>
           </div>
 

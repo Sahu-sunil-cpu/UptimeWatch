@@ -5,6 +5,8 @@ export async function pollWebsite(url: string): Promise<{status: boolean, respon
     try {
         const startTime = Date.now();
     const res = await fetch(url);
+
+    // if(!res.ok) return;
     const endTime = Date.now();
     const responseTime = endTime - startTime;
 
@@ -15,7 +17,7 @@ export async function pollWebsite(url: string): Promise<{status: boolean, respon
     const status = res.status == 200 ? true : false
     return { status, responseTime };
     
-    } catch (error) {
+    } catch (error: any) {
         console.log(error)
     }
    

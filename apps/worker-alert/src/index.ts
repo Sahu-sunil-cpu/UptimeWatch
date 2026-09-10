@@ -1,10 +1,13 @@
 import FormData from "form-data"; // form-data v4.0.1
 import Mailgun from "mailgun.js"; // mailgun.js v11.1.0
 import "dotenv/config";
-import { createGroup, processXRead } from "@repo/redis-stream"
+import { createGroup, processXRead, connectRedis } from "@repo/redis-stream"
+
 
 // TODO: remove hard coded code
 async function main() {
+    await connectRedis();
+
     const workerId = process.env.WORKER_ID!;
     const stream = "uptime:notification";
     const consumerGroup = "NOTIFY-1";

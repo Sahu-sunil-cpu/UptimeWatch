@@ -32,7 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AUTHORIZATION, BASE_URL } from "@/lib/config";
+import { BASE_URL } from "@/lib/config";
 
 type MonitorType = "website" | "dns";
 
@@ -133,9 +133,7 @@ export default function DashboardMonitors() {
       id: id,
       active: !monitor.active
     }, {
-      headers: {
-        'Authorization': AUTHORIZATION
-      }
+     withCredentials: true
     }
     )
 
@@ -162,9 +160,7 @@ export default function DashboardMonitors() {
       id: id,
       active: !monitor.active
     }, {
-      headers: {
-        'Authorization': AUTHORIZATION
-      }
+     withCredentials: true
     }
     )
 
@@ -188,9 +184,7 @@ export default function DashboardMonitors() {
     const res = await axios.post(`${BASE_URL}/api/v1/core/dns/delete`, {
       id: id
     }, {
-      headers: {
-        'Authorization': AUTHORIZATION
-      }
+      withCredentials: true,
     }
     )
 
@@ -215,9 +209,7 @@ export default function DashboardMonitors() {
     const res = await axios.post(`${BASE_URL}/api/v1/core/website/delete`, {
       id: id
     }, {
-      headers: {
-        'Authorization': AUTHORIZATION
-      }
+      withCredentials: true,
     }
     )
 
@@ -250,9 +242,7 @@ export default function DashboardMonitors() {
     const res = await axios.post(`${BASE_URL}/api/v1/core/website`, {
       url: newWebsiteMonitorUrl
     }, {
-      headers: {
-        'Authorization': AUTHORIZATION
-      }
+     withCredentials: true
     }
     )
 
@@ -272,9 +262,7 @@ export default function DashboardMonitors() {
       interval: Number(newDnsMonitor.interval),
      
     }, {
-      headers: {
-        'Authorization': AUTHORIZATION
-      }
+      withCredentials: true
     }
     )
 
@@ -286,9 +274,7 @@ export default function DashboardMonitors() {
 
   const getWebsitesData = async () => {
     const res = await axios.get(`${BASE_URL}/api/v1/core/user/websites`, {
-      headers: {
-        'Authorization': AUTHORIZATION
-      }
+      withCredentials: true
     }
     )
 
@@ -312,9 +298,7 @@ export default function DashboardMonitors() {
 
   const getDnsData = async () => {
     const res = await axios.get(`${BASE_URL}/api/v1/core/user/dns`, {
-      headers: {
-        'Authorization': AUTHORIZATION
-      }
+     withCredentials: true
     }
     )
 

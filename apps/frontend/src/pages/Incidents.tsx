@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
 import axios from "axios";
-import { AUTHORIZATION, BASE_URL } from "@/lib/config";
+import { BASE_URL } from "@/lib/config";
 
 interface Incident {
   id: string;
@@ -89,9 +89,7 @@ export default function Incidents() {
 
   const getIncidents = async () => {
     const res = await axios.get(`${BASE_URL}/api/v1/core/alerts`, {
-      headers: {
-        'Authorization': AUTHORIZATION
-      }
+      withCredentials: true
     }
     )
 

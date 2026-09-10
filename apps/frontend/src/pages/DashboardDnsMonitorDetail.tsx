@@ -82,9 +82,7 @@ export default function DashboardDnsMonitorDetail() {
   
   const getTicks = async () => {
     const res = await axios.get(`${BASE_URL}/api/v1/core/dns/ticks/${monitorId}`, {
-      headers: {
-        'Authorization': AUTHORIZATION
-      }
+      withCredentials: true
     }
     )
 

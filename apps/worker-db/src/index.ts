@@ -1,10 +1,11 @@
 import "dotenv/config";
-import { createGroup, processXRead, xAck } from "@repo/redis-stream"
+import { createGroup, processXRead, xAck, connectRedis } from "@repo/redis-stream"
 import { client } from "@repo/db/client"
 import { Alert, Channel, DnsStatus, IncomingMessage, PingStatus } from "./types";
 
 
 async function main() {
+    await connectRedis();
     const workerId = process.env.WORKER_ID!;
     const stream = "uptime:db1";
     const consumerGroup = "DB";

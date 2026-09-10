@@ -110,7 +110,7 @@ services:
   worker-web:
     build:
       context: .
-      dockerfile: docker/Dockerfile.worker-db
+      dockerfile: docker/Dockerfile.worker-web
     depends_on:
       - redis
       - postgres

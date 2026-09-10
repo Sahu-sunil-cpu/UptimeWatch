@@ -3,9 +3,13 @@ import { client } from "@repo/db/client";
 import { UserLoginSchema, userSignupSchema } from "./type";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import 'dotenv/config'
+import 'dotenv/config';
+import cookieParser from "cookie-parser";
 
 
+const MY_ACCESS_TOKEN = 'MY_ACCESS_TOKEN';
+const MY_REFERESH_TOKEN = 'MY_REFERESH_TOKEN';
+const refereshTokenMap = new Map<String, String[]>();
 export const userAuthRouter: Router = Router();
 
 userAuthRouter.get("/details", async (req, res) => {
@@ -76,13 +80,20 @@ userAuthRouter.post("/login", async (req, res) => {
         const userId = userExist.id;
 
         //TODO: expiry time is pending
-        const token = jwt.sign({ userId }, process.env.JWT_SECRET!);
+        const token = jwt.sign({ userId }, process.env.JWT_SECRET!, {expiresIn: '15m'});
+        
+        res.cookie("token", token, {
+         httpOnly: true,
+         secure: true,
+         sameSite: "lax",
+        });
 
         res.json({
-            message: token
+            userId: userId
         })
     } catch (error) {
         res.status(401).json({
+            success: true,
             message: "Internal Error",
         })
     }
@@ -132,10 +143,18 @@ userAuthRouter.post("/signup", async (req, res) => {
 
         //TODO: expiry time is pending
 
-        const token = jwt.sign({ userId }, process.env.JWT_SECRET!);
+        const token = jwt.sign({ userId }, process.env.JWT_SECRET!, {expiresIn: '15m'});
+
+
+        res.cookie("token", token, {
+         httpOnly: true,
+         secure: true,
+         sameSite: "lax",
+        });
 
         res.json({
-            message: token
+            success: true,
+            userId: userId
         })
     } catch (error) {
         console.log(error)

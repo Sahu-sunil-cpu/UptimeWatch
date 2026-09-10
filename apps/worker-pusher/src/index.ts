@@ -1,4 +1,4 @@
-import { processXAdd } from "@repo/redis-stream"
+import { processXAdd, connectRedis } from "@repo/redis-stream"
 import { client } from "@repo/db/client"
 
 /**
@@ -15,7 +15,8 @@ import { client } from "@repo/db/client"
 
 
 async function main() {
-
+    
+    await connectRedis();
     const stream = "uptime:app"
     const dns_stream = "uptime:dns1"
 

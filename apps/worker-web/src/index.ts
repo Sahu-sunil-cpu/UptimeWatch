@@ -1,4 +1,4 @@
-import { createGroup, processXAdd, processXRead, xAck } from "@repo/redis-stream";
+import { createGroup, processXAdd, processXRead, xAck, connectRedis } from "@repo/redis-stream";
 import { createRegion, pollWebsite } from "@repo/package-helper";
 import "dotenv/config";
 import { client } from "@repo/db/client";
@@ -10,6 +10,7 @@ poll website
 */
 
 async function main() {
+    await connectRedis();
     const workerId = process.env.WORKER_ID!;
     const regionId = await createRegion('usa');
     const stream = "uptime:app";

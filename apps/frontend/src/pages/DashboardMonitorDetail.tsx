@@ -21,7 +21,7 @@ import {
 } from "recharts";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { AUTHORIZATION, BASE_URL } from "@/lib/config";
+import { BASE_URL } from "@/lib/config";
 
 interface Tick {
   time: string;
@@ -47,9 +47,7 @@ export default function DashboardMonitorDetail() {
   
   const getTicks = async () => {
     const res = await axios.get(`${BASE_URL}/api/v1/core/website/ticks/${monitorId}`, {
-      headers: {
-        'Authorization': AUTHORIZATION
-      }
+      withCredentials: true
     }
     )
 
